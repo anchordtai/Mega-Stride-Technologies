@@ -1,1 +1,0 @@
-GitHub write-access connection test for Mega Stride Technologies.
