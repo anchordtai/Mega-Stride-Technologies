@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./commerce-academy.css";
 
 export const metadata: Metadata = {
-  title: { default: "Mega Stride Technologies Ltd | Technology & Digital Solutions", template: "%s | Mega Stride Technologies Ltd" },
-  description: "Mega Stride Technologies Ltd delivers ICT solutions, software engineering, networks, cybersecurity, cloud infrastructure, automation and digital transformation services.",
-  keywords: ["ICT solutions", "software development", "network infrastructure", "cybersecurity", "cloud computing", "digital transformation", "Nigeria"],
-  openGraph: { title: "Mega Stride Technologies Ltd", description: "Technology solutions engineered for progress.", type: "website" },
+  title: { default: "Mega Stride Technologies Ltd | Technology, Training & Global Trade", template: "%s | Mega Stride Technologies Ltd" },
+  description: "Mega Stride Technologies Ltd delivers ICT solutions, professional technology training, and ICT-related importation and exportation services in Nigeria.",
+  keywords: ["ICT solutions", "software development", "network infrastructure", "cybersecurity", "cloud computing", "digital transformation", "technology training", "importation", "exportation", "Nigeria"],
+  openGraph: { title: "Mega Stride Technologies Ltd", description: "Technology engineered for the next stride.", type: "website" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
