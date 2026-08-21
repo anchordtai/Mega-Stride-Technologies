@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./commerce-academy.css";
+import WhatsAppFloat from "@/components/whatsapp-float";
 
 export const metadata: Metadata = {
   title: { default: "Mega Stride Technologies Ltd | Technology, Training & Global Trade", template: "%s | Mega Stride Technologies Ltd" },
@@ -10,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+  return <html lang="en"><body>{children}<WhatsAppFloat /></body></html>;
 }
