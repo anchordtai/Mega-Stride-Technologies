@@ -1,0 +1,22 @@
+import SiteHeader from "@/components/site-header";
+import CourseRegistration from "@/components/course-registration";
+
+const courses = [
+  { title: "Networking & Infrastructure", tag: "Infrastructure", image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=85", text: "Practical networking, infrastructure operations and enterprise connectivity." },
+  { title: "Cybersecurity Fundamentals", tag: "Security", image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=85", text: "Security principles, risk awareness, defensive controls and cyber hygiene." },
+  { title: "Cloud Computing & DevOps", tag: "Cloud", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=85", text: "Cloud foundations, automation, deployment workflows and resilient infrastructure." },
+  { title: "Software Development", tag: "Engineering", image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85", text: "Modern software engineering concepts, web applications and development practice." },
+  { title: "Linux & Server Administration", tag: "Systems", image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1200&q=85", text: "Linux administration, server operations, automation and troubleshooting." },
+  { title: "AI, Automation & Emerging Technologies", tag: "Innovation", image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=85", text: "Explore AI, automation, IoT and practical emerging-technology concepts." },
+];
+
+export default function AcademyPage() {
+  return (
+    <main className="min-h-screen bg-slate-50 text-slate-950"><SiteHeader />
+      <section className="inner-hero academy-hero"><div className="container"><p className="section-kicker text-cyan-300">Mega Stride Academy</p><h1 className="mt-5 max-w-5xl text-5xl font-black tracking-[-.06em] text-white md:text-7xl">Build practical technology skills for the next stride.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">Professional learning pathways across infrastructure, cybersecurity, software, cloud, Linux and emerging technologies.</p><div className="mt-8 flex flex-wrap gap-3"><a href="#courses" className="primary-button">Explore courses <span>↓</span></a><a href="/academy/dashboard" className="secondary-button">Learner dashboard</a></div></div></section>
+      <section id="courses" className="section-space"><div className="container"><div className="section-heading-row"><div><p className="section-kicker">Learning pathways</p><h2 className="section-title max-w-3xl">Courses designed around practical capability.</h2></div><a href="#register" className="text-sm font-black text-blue-600">Register for a course →</a></div><div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">{courses.map((course) => <article key={course.title} className="course-card"><div className="course-image" style={{ backgroundImage: `url(${course.image})` }}><span>{course.tag}</span></div><div className="p-6"><h3 className="text-xl font-black tracking-[-.02em]">{course.title}</h3><p className="mt-3 text-sm leading-7 text-slate-500">{course.text}</p><a href="#register" className="mt-6 inline-flex text-sm font-black text-blue-600">Register →</a></div></article>)}</div></div></section>
+      <section id="register" className="section-space bg-white"><div className="container"><div className="mb-12 max-w-3xl"><p className="section-kicker">Online registration</p><h2 className="section-title">Choose your course and secure your place.</h2><p className="mt-5 text-base leading-7 text-slate-500">Registration is followed by payment verification and enrolment confirmation.</p></div><CourseRegistration /></div></section>
+      <section className="section-space"><div className="container grid gap-5 md:grid-cols-3"><div className="academy-feature"><span>01</span><h3>Practical</h3><p>Learning content focused on useful skills and real technology environments.</p></div><div className="academy-feature"><span>02</span><h3>Structured</h3><p>Lessons organized into clear pathways so learners can track progress.</p></div><div className="academy-feature"><span>03</span><h3>Career-minded</h3><p>Build a stronger technical foundation for work, projects and certification journeys.</p></div></div></section>
+    </main>
+  );
+}
