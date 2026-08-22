@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./commerce-academy.css";
+import "./site-overrides.css";
 import WhatsAppFloat from "@/components/whatsapp-float";
 import SiteFooter from "@/components/site-footer";
 
