@@ -7,7 +7,8 @@ import SiteFooter from "@/components/site-footer";
 export const metadata: Metadata = {
   title: { default: "Mega Stride Technologies Ltd | Technology, Training & Global Trade", template: "%s | Mega Stride Technologies Ltd" },
   description: "Mega Stride Technologies Ltd delivers ICT solutions, professional technology training, and ICT-related importation and exportation services in Nigeria.",
-  keywords: ["ICT solutions", "software development", "network infrastructure", "cybersecurity", "cloud computing", "digital transformation", "technology training", "importation", "exportation", "Nigeria"],
+  keywords: ["Mega Stride Technologies Ltd", "ICT solutions", "software development", "network infrastructure", "cybersecurity", "cloud computing", "digital transformation", "technology training", "importation", "exportation", "Nigeria"],
+  icons: { icon: "/mega-stride-exact-logo.svg", apple: "/mega-stride-exact-logo.svg" },
   openGraph: { title: "Mega Stride Technologies Ltd", description: "Technology engineered for the next stride.", type: "website" },
 };
 
