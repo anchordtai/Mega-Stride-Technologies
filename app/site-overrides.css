@@ -1,0 +1,2 @@
+/* Keep the shared root footer as the single footer across the site. */
+main > footer { display: none; }
