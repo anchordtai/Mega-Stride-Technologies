@@ -10,7 +10,7 @@ export default function SiteFooter() {
   return <footer className="border-t border-white/10 bg-[#040b16] text-white">
     <div className="container grid gap-10 py-14 lg:grid-cols-[1.25fr_.8fr_.9fr]">
       <div>
-        <div className="inline-flex rounded-2xl bg-white p-2 shadow-[0_12px_40px_rgba(0,0,0,.2)]"><img src="/mega-stride-logo-fixed.svg" alt="Mega Stride Technologies Ltd" className="h-16 w-[260px] object-contain" /></div>
+        <div className="inline-flex rounded-2xl bg-white p-2 shadow-[0_12px_40px_rgba(0,0,0,.2)]"><img src="/mega-stride-exact-logo.svg" alt="Mega Stride Technologies Ltd" className="h-16 w-[260px] object-contain" /></div>
         <p className="mt-5 max-w-md text-sm leading-7 text-slate-400">Technology engineering, digital transformation, professional training, and ICT-related importation and exportation services.</p>
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <a href={facebookUrl} target="_blank" rel="noreferrer" aria-label="Mega Stride Technologies on Facebook" className="group grid h-12 w-12 place-items-center rounded-2xl border border-blue-400/20 bg-blue-500/[.07] text-blue-300 shadow-[0_8px_30px_rgba(37,99,235,.08)] transition duration-300 hover:-translate-y-1 hover:border-blue-400/60 hover:bg-blue-500/20 hover:shadow-[0_12px_35px_rgba(37,99,235,.18)]"><FacebookIcon /></a>
