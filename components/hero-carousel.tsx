@@ -4,32 +4,20 @@ import { useEffect, useState } from "react";
 
 const slides = [
   {
-    eyebrow: "CLOUD & DATA CENTRES",
-    title: "Infrastructure built for scale, resilience and performance.",
-    text: "Modern cloud, server, data and network environments designed to support secure and reliable business operations.",
+    title: "Cloud & Data Centre Infrastructure",
     image: "/images/hero/cloud-data-centre.jpeg",
-    fallback: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1600&q=88",
   },
   {
-    eyebrow: "ENTERPRISE TECHNOLOGY",
-    title: "Connected workplaces engineered for intelligent operations.",
-    text: "Integrated technology environments that connect people, systems, data and infrastructure to move organizations forward.",
+    title: "Enterprise Technology & Digital Transformation",
     image: "/images/hero/enterprise-technology.jpeg",
-    fallback: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=88",
   },
   {
-    eyebrow: "SOFTWARE ENGINEERING",
-    title: "Digital products engineered for real-world operations.",
-    text: "From enterprise applications to web platforms and automation, we turn technology requirements into dependable digital products.",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=88",
-    fallback: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=88",
+    title: "Software Engineering & Digital Products",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1800&q=90",
   },
   {
-    eyebrow: "CYBERSECURITY & AI",
-    title: "Secure technology with intelligence built into the journey.",
-    text: "Security, automation and emerging technology working together to help organizations operate confidently in a connected world.",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1600&q=88",
-    fallback: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1600&q=88",
+    title: "Cybersecurity, AI & Emerging Technology",
+    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1800&q=90",
   },
 ];
 
@@ -39,65 +27,98 @@ export default function HeroCarousel() {
 
   useEffect(() => {
     if (paused) return;
-    const timer = window.setInterval(() => setActive((current) => (current + 1) % slides.length), 6500);
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % slides.length);
+    }, 5500);
+
     return () => window.clearInterval(timer);
   }, [paused]);
 
-  const previous = () => setActive((active - 1 + slides.length) % slides.length);
-  const next = () => setActive((active + 1) % slides.length);
+  const previous = () => setActive((current) => (current - 1 + slides.length) % slides.length);
+  const next = () => setActive((current) => (current + 1) % slides.length);
 
   return (
     <div
-      className="relative mx-auto w-full max-w-[620px]"
+      className="relative mx-auto w-full max-w-[700px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      aria-label="Mega Stride technology showcase"
+      aria-label="Mega Stride Technologies visual showcase"
     >
-      <div className="hero-image-card relative aspect-[16/10] overflow-hidden rounded-[30px] border border-white/15 bg-slate-900 shadow-2xl">
+      <div className="hero-image-card relative aspect-[16/10] overflow-hidden rounded-[32px] border border-white/15 bg-slate-950 shadow-[0_30px_90px_rgba(0,0,0,.42)]">
         {slides.map((slide, index) => (
           <div
-            key={slide.eyebrow}
-            className={`absolute inset-0 transition-all duration-700 ${index === active ? "opacity-100 scale-100" : "pointer-events-none opacity-0 scale-[1.03]"}`}
+            key={slide.title}
+            className={`absolute inset-0 transition-all duration-700 ease-out ${
+              index === active
+                ? "opacity-100 scale-100"
+                : "pointer-events-none opacity-0 scale-[1.04]"
+            }`}
             aria-hidden={index !== active}
           >
             <img
               src={slide.image}
               alt={slide.title}
               className="absolute inset-0 h-full w-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
               onError={(event) => {
-                const image = event.currentTarget;
-                if (image.src !== slide.fallback) image.src = slide.fallback;
+                event.currentTarget.style.display = "none";
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#030b18] via-[#06101f]/45 to-[#06101f]/10" />
-            <div className="absolute inset-x-5 bottom-5 rounded-2xl border border-white/15 bg-[#06101f]/78 p-5 backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-6">
-              <p className="text-[10px] font-black uppercase tracking-[.22em] text-cyan-300">{slide.eyebrow}</p>
-              <h2 className="mt-2 text-xl font-black tracking-[-.03em] text-white sm:text-2xl">{slide.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-300">{slide.text}</p>
-              <div className="mt-4 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-300">
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Engineering</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Security</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Innovation</span>
-              </div>
+
+            {/* Clean cinematic overlay: deliberately keeps the slide focused on image + title. */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/90 via-[#020817]/20 to-transparent" />
+
+            <div className="absolute inset-x-6 bottom-7 sm:inset-x-8 sm:bottom-9">
+              <h2 className="max-w-2xl text-2xl font-black leading-[1.05] tracking-[-.045em] text-white drop-shadow-2xl sm:text-3xl md:text-4xl lg:text-[2.7rem]">
+                {slide.title}
+              </h2>
             </div>
           </div>
         ))}
 
-        <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-white/15 bg-[#06101f]/60 px-3 py-2 text-[10px] font-black uppercase tracking-[.18em] text-white backdrop-blur-md">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" /> Technology in motion
+        <div className="absolute right-5 top-5 flex gap-2 sm:right-6 sm:top-6">
+          <button
+            type="button"
+            onClick={previous}
+            aria-label="Previous technology image"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/35 text-lg text-white backdrop-blur-md transition hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/60"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Next technology image"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/35 text-lg text-white backdrop-blur-md transition hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/60"
+          >
+            →
+          </button>
         </div>
 
-        <div className="absolute right-5 top-5 flex gap-2">
-          <button type="button" onClick={previous} aria-label="Previous technology slide" className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-[#06101f]/65 text-white backdrop-blur-md transition hover:bg-white/15">←</button>
-          <button type="button" onClick={next} aria-label="Next technology slide" className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-[#06101f]/65 text-white backdrop-blur-md transition hover:bg-white/15">→</button>
-        </div>
-
-        <div className="absolute bottom-6 right-6 flex gap-1.5">
+        <div className="absolute bottom-6 right-6 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/30 px-2.5 py-2 backdrop-blur-md" aria-label="Carousel navigation">
           {slides.map((slide, index) => (
-            <button key={slide.eyebrow} type="button" onClick={() => setActive(index)} aria-label={`Show slide ${index + 1}`} aria-current={index === active} className={`h-1.5 rounded-full transition-all ${index === active ? "w-8 bg-cyan-300" : "w-2 bg-white/40 hover:bg-white/70"}`} />
+            <button
+              key={slide.title}
+              type="button"
+              onClick={() => setActive(index)}
+              aria-label={`Show image ${index + 1}: ${slide.title}`}
+              aria-current={index === active}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                index === active
+                  ? "w-8 bg-white"
+                  : "w-1.5 bg-white/45 hover:bg-white/80"
+              }`}
+            />
           ))}
+        </div>
+
+        <div className="absolute bottom-0 left-0 h-1 w-full bg-white/10">
+          <div
+            className="h-full bg-cyan-300 transition-[width] duration-300"
+            style={{ width: `${((active + 1) / slides.length) * 100}%` }}
+          />
         </div>
       </div>
     </div>
