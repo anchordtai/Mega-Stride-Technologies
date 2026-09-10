@@ -4,28 +4,32 @@ import { useEffect, useState } from "react";
 
 const slides = [
   {
+    eyebrow: "CLOUD & DATA CENTRES",
+    title: "Infrastructure built for scale, resilience and performance.",
+    text: "Modern cloud, server, data and network environments designed to support secure and reliable business operations.",
+    image: "/images/hero/cloud-data-centre.jpeg",
+    fallback: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1600&q=88",
+  },
+  {
+    eyebrow: "ENTERPRISE TECHNOLOGY",
+    title: "Connected workplaces engineered for intelligent operations.",
+    text: "Integrated technology environments that connect people, systems, data and infrastructure to move organizations forward.",
+    image: "/images/hero/enterprise-technology.jpeg",
+    fallback: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=88",
+  },
+  {
     eyebrow: "SOFTWARE ENGINEERING",
     title: "Digital products engineered for real-world operations.",
     text: "From enterprise applications to web platforms and automation, we turn technology requirements into dependable digital products.",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=88",
+    fallback: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=88",
   },
   {
-    eyebrow: "CLOUD & INFRASTRUCTURE",
-    title: "Infrastructure built for scale, resilience and performance.",
-    text: "Modern cloud, server, data and network environments designed to support secure and reliable business operations.",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1600&q=88",
-  },
-  {
-    eyebrow: "CYBERSECURITY",
-    title: "Security engineered into every technology layer.",
-    text: "Risk assessment, security audits, cyber defence and resilient architecture for organizations operating in a connected world.",
+    eyebrow: "CYBERSECURITY & AI",
+    title: "Secure technology with intelligence built into the journey.",
+    text: "Security, automation and emerging technology working together to help organizations operate confidently in a connected world.",
     image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1600&q=88",
-  },
-  {
-    eyebrow: "AI & EMERGING TECHNOLOGY",
-    title: "Turning emerging technology into practical advantage.",
-    text: "Explore artificial intelligence, automation, IoT and other emerging technologies with a focus on useful outcomes.",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=88",
+    fallback: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1600&q=88",
   },
 ];
 
@@ -44,21 +48,29 @@ export default function HeroCarousel() {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-[560px]"
+      className="relative mx-auto w-full max-w-[620px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
       aria-label="Mega Stride technology showcase"
     >
-      <div className="hero-image-card relative aspect-[4/5] overflow-hidden rounded-[30px] border border-white/15 bg-slate-900 shadow-2xl">
+      <div className="hero-image-card relative aspect-[16/10] overflow-hidden rounded-[30px] border border-white/15 bg-slate-900 shadow-2xl">
         {slides.map((slide, index) => (
           <div
             key={slide.eyebrow}
             className={`absolute inset-0 transition-all duration-700 ${index === active ? "opacity-100 scale-100" : "pointer-events-none opacity-0 scale-[1.03]"}`}
             aria-hidden={index !== active}
           >
-            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${slide.image})` }} />
+            <img
+              src={slide.image}
+              alt={slide.title}
+              className="absolute inset-0 h-full w-full object-cover"
+              onError={(event) => {
+                const image = event.currentTarget;
+                if (image.src !== slide.fallback) image.src = slide.fallback;
+              }}
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-[#030b18] via-[#06101f]/45 to-[#06101f]/10" />
             <div className="absolute inset-x-5 bottom-5 rounded-2xl border border-white/15 bg-[#06101f]/78 p-5 backdrop-blur-xl sm:inset-x-6 sm:bottom-6 sm:p-6">
               <p className="text-[10px] font-black uppercase tracking-[.22em] text-cyan-300">{slide.eyebrow}</p>
