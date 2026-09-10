@@ -3,10 +3,10 @@ import HeroCarousel from "@/components/hero-carousel";
 
 const services = [
   ["01", "Software & Digital Products", "Software engineering, application design, web platforms and digital products built around real operational needs.", "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=85"],
-  ["02", "Networks & Infrastructure", "Enterprise networks, wireless, telecommunications, data centres, servers and infrastructure operations.", "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=85"],
+  ["02", "Networks & Infrastructure", "Enterprise networks, wireless, telecommunications, data centres, servers and infrastructure operations.", "/images/hero/cloud-data-centre.svg"],
   ["03", "Cybersecurity", "Security assessment, risk management, penetration testing, audits, digital forensics and cyber defence.", "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1000&q=85"],
-  ["04", "Cloud & Resilience", "Cloud computing, hosting, virtualization, database management, backup and disaster recovery.", "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=85"],
-  ["05", "Digital Transformation", "Systems integration, enterprise solutions, process automation and technology advisory for organizations.", "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=85"],
+  ["04", "Cloud & Resilience", "Cloud computing, hosting, virtualization, database management, backup and disaster recovery.", "/images/hero/cloud-data-centre.svg"],
+  ["05", "Digital Transformation", "Systems integration, enterprise solutions, process automation and technology advisory for organizations.", "/images/hero/enterprise-technology.svg"],
   ["06", "AI, Automation & IoT", "Research, innovation and commercialization of artificial intelligence, automation, IoT and emerging technologies.", "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1000&q=85"],
 ];
 const capabilities = ["Technology consulting", "Systems integration", "Project & technical management", "ICT equipment & solutions", "Technology training", "Outsourced & managed services"];
