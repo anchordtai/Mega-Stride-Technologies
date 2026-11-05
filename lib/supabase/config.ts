@@ -50,9 +50,9 @@ export function intakeReady(
   if (!env.SUPABASE_SERVICE_ROLE_KEY) return false;
   if (
     env.NODE_ENV === "production" &&
-    (!env.TURNSTILE_SECRET_KEY ||
-      !env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
-      !env.RATE_LIMIT_SALT)
+    (!env.RATE_LIMIT_SALT ||
+      (env.ENQUIRY_PROTECTION_MODE !== "signed-challenge" &&
+        (!env.TURNSTILE_SECRET_KEY || !env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)))
   )
     return false;
   return true;

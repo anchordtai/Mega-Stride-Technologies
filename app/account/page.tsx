@@ -41,62 +41,80 @@ export default async function AccountPage({
             : notices[notice || ""] || "Please try again."}
         </p>
       )}
+      {process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED !== "true" && (
+        <p className="mb-8 leading-7 text-slate-600">
+          Learner account access is arranged after enrolment confirmation.{" "}
+          <a
+            href="/academy/register"
+            className="font-bold text-blue-700 underline"
+          >
+            Send a training enquiry
+          </a>{" "}
+          to discuss your course.
+        </p>
+      )}
       <div className="grid gap-8 lg:grid-cols-2">
-        {["login", "register"].map((mode) => (
-          <form key={mode} action={accountAction} className="platform-panel">
-            <input type="hidden" name="mode" value={mode} />
-            <h2 className="text-2xl font-bold">
-              {mode === "login" ? "Sign in" : "Create a learner account"}
-            </h2>
-            <fieldset disabled={!ready}>
-              <legend className="sr-only">Account details</legend>
-              <label className="form-label mt-6">
-                Email
-                <input
-                  className="form-input"
-                  type="email"
-                  name="email"
-                  required
-                  autoComplete="email"
-                  maxLength={254}
-                />
-              </label>
-              <label className="form-label mt-5">
-                Password (12 characters minimum)
-                <input
-                  className="form-input"
-                  type="password"
-                  name="password"
-                  required
-                  minLength={12}
-                  maxLength={128}
-                  autoComplete={
-                    mode === "login" ? "current-password" : "new-password"
-                  }
-                />
-              </label>
-              {mode === "register" && (
-                <label className="mt-5 flex gap-3 text-sm">
-                  <input type="checkbox" name="consent" required />
-                  <span>
-                    I accept the{" "}
-                    <a className="underline" href="/academy/terms">
-                      Academy terms
-                    </a>{" "}
-                    and have read the{" "}
-                    <a className="underline" href="/privacy">
-                      privacy notice
-                    </a>
-                    .
-                  </span>
+        {["login", "register"]
+          .filter(
+            (mode) =>
+              mode === "login" ||
+              process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED === "true",
+          )
+          .map((mode) => (
+            <form key={mode} action={accountAction} className="platform-panel">
+              <input type="hidden" name="mode" value={mode} />
+              <h2 className="text-2xl font-bold">
+                {mode === "login" ? "Sign in" : "Create a learner account"}
+              </h2>
+              <fieldset disabled={!ready}>
+                <legend className="sr-only">Account details</legend>
+                <label className="form-label mt-6">
+                  Email
+                  <input
+                    className="form-input"
+                    type="email"
+                    name="email"
+                    required
+                    autoComplete="email"
+                    maxLength={254}
+                  />
                 </label>
-              )}
-              <button className="primary-button mt-6">
-                {mode === "login" ? "Sign in" : "Register account"}
-              </button>
-            </fieldset>
-          </form>
-        ))}
+                <label className="form-label mt-5">
+                  Password (12 characters minimum)
+                  <input
+                    className="form-input"
+                    type="password"
+                    name="password"
+                    required
+                    minLength={12}
+                    maxLength={128}
+                    autoComplete={
+                      mode === "login" ? "current-password" : "new-password"
+                    }
+                  />
+                </label>
+                {mode === "register" && (
+                  <label className="mt-5 flex gap-3 text-sm">
+                    <input type="checkbox" name="consent" required />
+                    <span>
+                      I accept the{" "}
+                      <a className="underline" href="/academy/terms">
+                        Academy terms
+                      </a>{" "}
+                      and have read the{" "}
+                      <a className="underline" href="/privacy">
+                        privacy notice
+                      </a>
+                      .
+                    </span>
+                  </label>
+                )}
+                <button className="primary-button mt-6">
+                  {mode === "login" ? "Sign in" : "Register account"}
+                </button>
+              </fieldset>
+            </form>
+          ))}
       </div>
       <form action={accountAction} className="platform-panel mt-8 max-w-xl">
         <h2 className="text-xl font-bold">Forgot your password?</h2>

@@ -24,6 +24,8 @@ export default function EnquiryForm({
     [error, setError] = useState(""),
     [reference, setReference] = useState("");
   const [scriptReady, setScriptReady] = useState(false);
+  const challenge = useRef("");
+  const challengeTime = useRef(0);
   const widget = useRef<HTMLDivElement>(null),
     widgetId = useRef<string | null>(null),
     token = useRef("");
@@ -48,6 +50,17 @@ export default function EnquiryForm({
       if (widgetId.current) window.turnstile?.remove(widgetId.current);
     };
   }, [scriptReady]);
+  useEffect(() => {
+    if (available && !process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+      fetch("/api/enquiry-challenge", { method: "POST" })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          challenge.current = d?.token || "";
+          challengeTime.current = Date.now();
+        })
+        .catch(() => {});
+    }
+  }, [available]);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
@@ -70,8 +83,13 @@ export default function EnquiryForm({
       website: String(f.get("website") || ""),
       consent: f.get("consent") === "on",
       turnstileToken: token.current,
+      challengeToken: challenge.current,
     };
     try {
+      if (challenge.current && Date.now() - challengeTime.current < 1600)
+        await new Promise((r) =>
+          setTimeout(r, 1600 - (Date.now() - challengeTime.current)),
+        );
       const r = await fetch("/api/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,6 +102,18 @@ export default function EnquiryForm({
       setError(err instanceof Error ? err.message : "Please try again.");
       if (widgetId.current) window.turnstile?.reset(widgetId.current);
       token.current = "";
+      if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+        try {
+          const fresh = await fetch("/api/enquiry-challenge", {
+            method: "POST",
+          });
+          const d = await fresh.json();
+          challenge.current = d.token || "";
+          challengeTime.current = Date.now();
+        } catch {
+          challenge.current = "";
+        }
+      }
     } finally {
       setPending(false);
     }

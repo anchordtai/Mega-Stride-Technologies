@@ -18,6 +18,7 @@ export const intakeSchema = z
     website: z.string().max(200).default(""),
     consent: z.literal(true),
     turnstileToken: field(2048),
+    challengeToken: field(200),
   })
   .strict()
   .superRefine((v, ctx) => {

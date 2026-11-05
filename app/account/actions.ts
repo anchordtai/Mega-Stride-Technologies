@@ -40,6 +40,8 @@ export async function accountAction(form: FormData) {
   const v = accountSchema.safeParse({ email, password });
   if (!v.success) redirect("/account?notice=invalid");
   if (mode === "register") {
+    if (process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED !== "true")
+      redirect("/account?notice=unavailable");
     if (form.get("consent") !== "on") redirect("/account?notice=invalid");
     const { error } = await db.auth.signUp({
       email,

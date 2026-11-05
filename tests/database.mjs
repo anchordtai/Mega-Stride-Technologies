@@ -46,6 +46,17 @@ await check("advisor-improvement migration applies", async () =>
     ),
   ),
 );
+await check("production enquiry protection migration applies", async () =>
+  db.exec(
+    await readFile(
+      new URL(
+        "../supabase/migrations/20261105114941_production_enquiry_protection.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  ),
+);
 const userA = "11111111-1111-4111-8111-111111111111",
   userB = "22222222-2222-4222-8222-222222222222",
   admin = "33333333-3333-4333-8333-333333333333",
@@ -305,6 +316,32 @@ await check(
     );
     await restored.close();
   },
+);
+await check("signed submission retries are idempotent", () =>
+  as("service_role", "", async () => {
+    const request = {
+      ...payload,
+      email: "retry@example.test",
+      submission_key: "a".repeat(48),
+    };
+    const first = await db.query(
+      "select public.submit_enquiry($1::jsonb,$2) as ref",
+      [JSON.stringify(request), "a".repeat(64)],
+    );
+    const retry = await db.query(
+      "select public.submit_enquiry($1::jsonb,$2) as ref",
+      [JSON.stringify(request), "a".repeat(64)],
+    );
+    assert.equal(first.rows[0].ref, retry.rows[0].ref);
+    assert.equal(
+      (
+        await db.query(
+          "select count(*)::int as n from public.enquiries where email='retry@example.test'",
+        )
+      ).rows[0].n,
+      1,
+    );
+  }),
 );
 console.log(
   `${passed} isolated PostgreSQL checks passed. Auth/Storage API and hosted restore remain release gates.`,

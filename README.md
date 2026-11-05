@@ -1,6 +1,6 @@
 # Mega Stride Technologies Limited
 
-Existing Next.js corporate website, extended on an isolated development branch with dedicated Supabase architecture, enquiry/CRM, publishing and Academy foundations. **Not deployed or production-complete.** The new dedicated Supabase project `okknsxrhbiiunjlaitcy` is provisioned and its schema verified. Website server credentials, activation and hosted Auth/Storage tests remain pending. No existing application database is reused.
+Existing Next.js corporate website, extended on an isolated development branch with dedicated Supabase architecture, enquiry/CRM, publishing and Academy foundations. **Not deployed or production-complete.** The new dedicated Supabase project `okknsxrhbiiunjlaitcy` is provisioned and its schema verified. Production server credentials are configured. Corporate-release staging/promotion and remaining Auth/Storage tests are tracked in docs/RELEASE-2026-11-05.md. No existing application database is reused.
 
 Start with:
 

@@ -1,17 +1,20 @@
 import { NextResponse, after } from "next/server";
 import { deliverNotifications } from "@/lib/notifications";
 import { createHash } from "node:crypto";
-import { intakeSchema, allowedOrigin } from "@/lib/intake";
+import { intakeSchema } from "@/lib/intake";
 import { intakeDatabase } from "@/lib/supabase/server";
 import { databaseReady } from "@/lib/supabase/config";
+import { cookies } from "next/headers";
+import {
+  challengeCookie,
+  clientAddress,
+  permittedRequestOrigin,
+  protectionMode,
+  verifyChallenge,
+} from "@/lib/enquiry-challenge";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
-  if (
-    !allowedOrigin(
-      request.headers.get("origin"),
-      process.env.SITE_URL || "http://localhost:3000",
-    )
-  )
+  if (!permittedRequestOrigin(request.headers.get("origin")))
     return NextResponse.json(
       { error: "This request could not be accepted." },
       { status: 403 },
@@ -65,15 +68,33 @@ export async function POST(request: Request) {
     );
   try {
     const secret = process.env.TURNSTILE_SECRET_KEY;
+    const mode = protectionMode();
+    const address = clientAddress(request.headers);
+    const jar = await cookies();
+    if (mode === "signed-challenge") {
+      if (
+        !process.env.RATE_LIMIT_SALT ||
+        !verifyChallenge(
+          v.challengeToken,
+          jar.get(challengeCookie)?.value || "",
+          address,
+          process.env.RATE_LIMIT_SALT,
+        )
+      )
+        return NextResponse.json(
+          { error: "Please refresh the security check and try again." },
+          { status: 400 },
+        );
+    }
     if (
       process.env.NODE_ENV === "production" &&
-      (!secret || !process.env.RATE_LIMIT_SALT)
+      (!process.env.RATE_LIMIT_SALT || (mode !== "signed-challenge" && !secret))
     )
       return NextResponse.json(
         { error: "Online submissions are temporarily unavailable." },
         { status: 503 },
       );
-    if (secret) {
+    if (mode === "turnstile" && secret) {
       const check = await fetch(
         "https://challenges.cloudflare.com/turnstile/v0/siteverify",
         {
@@ -92,15 +113,15 @@ export async function POST(request: Request) {
           { status: 400 },
         );
     }
-    // On Vercel this header is overwritten by the trusted edge. Never trust caller-supplied x-forwarded-for.
-    const address = process.env.VERCEL
-      ? request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-        "unknown"
-      : "local-development";
     const rateKey = createHash("sha256")
       .update(`${process.env.RATE_LIMIT_SALT || "local-only"}:${address}`)
       .digest("hex");
-    const { website, turnstileToken, consent, ...payload } = v;
+    const { website, turnstileToken, challengeToken, consent, ...fields } = v;
+    const payload = {
+      ...fields,
+      submission_key:
+        mode === "signed-challenge" ? challengeToken.split(".")[1] : null,
+    };
     void website;
     void turnstileToken;
     void consent;
@@ -122,6 +143,13 @@ export async function POST(request: Request) {
       } catch {
         /* Persisted outbox is retained for the retry worker. */
       }
+    });
+    jar.set(challengeCookie, "", {
+      path: "/api",
+      maxAge: 0,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
     });
     return NextResponse.json(
       {

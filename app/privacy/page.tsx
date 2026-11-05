@@ -2,62 +2,75 @@ import PageShell from "@/components/page-shell";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Privacy Notice",
-  "How to contact Mega Stride about personal information and website enquiries.",
+  "How Mega Stride handles website enquiries, account information and privacy requests.",
   "/privacy",
 );
 export default function Privacy() {
   return (
-    <PageShell
-      eyebrow="Privacy notice · draft for management review"
-      title="Your information deserves care."
-    >
+    <PageShell eyebrow="Privacy notice" title="Your information deserves care.">
       <article className="platform-panel max-w-4xl space-y-7 leading-8">
         <p>
-          This notice is a draft for approval before the upgraded online
-          platform is activated. It does not certify regulatory compliance.
-          Contact info@megastride.com.ng for questions about personal
-          information.
+          Mega Stride Technologies Limited, Abuja, Nigeria, handles the
+          information submitted through this website. Contact{" "}
+          <a className="underline" href="mailto:info@megastride.com.ng">
+            info@megastride.com.ng
+          </a>{" "}
+          about privacy or your personal information.
         </p>
         <section>
-          <h2 className="text-xl font-bold">Information and purpose</h2>
+          <h2 className="text-xl font-bold">What we collect and why</h2>
           <p>
-            Enquiry forms request your name, contact information, country,
-            organisation and requirements so Mega Stride Technologies Limited
-            can respond and manage the business enquiry. Training accounts and
-            enrolments use account identity and permitted learning records to
-            provide the Academy service. Do not submit payment-card details,
-            passwords or unnecessary sensitive information in enquiries.
+            Enquiry forms collect your name, contact details, country,
+            organisation and requirements so we can respond, discuss a quotation
+            or arrange training. Your form consent covers this use; it does not
+            subscribe you to marketing. Confirmed learner accounts use identity,
+            enrolment and permitted learning records to provide course access.
+            We also process limited security information, including hashed
+            network identifiers, to prevent abuse.
           </p>
         </section>
         <section>
-          <h2 className="text-xl font-bold">Access and service providers</h2>
+          <h2 className="text-xl font-bold">Who can access it</h2>
           <p>
-            Access is restricted according to staff responsibilities. The
-            proposed platform uses hosting, authentication/database and security
-            verification providers. Its final provider list, processing
-            locations and safeguards must be confirmed before collection begins.
+            Access is restricted to authorised staff and the technology
+            providers supporting the service. This website uses Vercel for
+            hosting and Supabase for database, authentication and storage. The
+            dedicated database is in Ireland, and service processing may occur
+            outside Nigeria. We do not sell enquiry details. Please do not
+            submit passwords, card details or unnecessary sensitive information
+            in a message.
           </p>
         </section>
         <section>
-          <h2 className="text-xl font-bold">Cookies</h2>
+          <h2 className="text-xl font-bold">Cookies and external content</h2>
           <p>
-            Account authentication uses essential session cookies. Optional
-            analytics or marketing tools require separate review before
-            activation. No optional analytics integration is included in this
-            development version.
+            Essential cookies support account sessions and secure enquiry
+            submission. This release does not include optional advertising or
+            analytics cookies. Some illustrative images are loaded from external
+            image providers, which receive the network information needed to
+            deliver those images.
           </p>
         </section>
         <section>
-          <h2 className="text-xl font-bold">Requests and retention</h2>
+          <h2 className="text-xl font-bold">Retention and your requests</h2>
           <p>
-            You may contact info@megastride.com.ng to ask about access,
-            correction, deletion or concerns regarding your information. Mega
-            Stride must confirm identity before disclosing records. Management
-            must approve the applicable lawful bases, retention periods,
-            complaint route and handling of international transfers before
-            production activation.
+            We retain information for handling the enquiry or service and
+            related operational or legal requirements. You may contact us to
+            request access, correction, deletion, or withdrawal of consent. We
+            may need to verify your identity and explain any records that must
+            be retained. You can also contact the{" "}
+            <a
+              href="https://ndpc.gov.ng/"
+              className="underline"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Nigeria Data Protection Commission
+            </a>{" "}
+            about a privacy concern.
           </p>
         </section>
+        <p className="text-sm text-slate-600">Last updated: 5 November 2026.</p>
       </article>
     </PageShell>
   );

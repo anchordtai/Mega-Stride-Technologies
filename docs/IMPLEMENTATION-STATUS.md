@@ -69,3 +69,8 @@ The source configuration is pinned to the verified new project. Direct HTTPS Dat
 ## Production protection
 
 Baseline: `4ef866162bb2579661a01a14f8b21f8e5887564f`. Development branch: `feat/mega-stride-platform`. The audit was committed before application changes. Keep the PR in draft; do not merge or promote to production until release gates are met. No live credentials, payment account details or personal customer records belong in this repository.
+
+
+## Owner-authorised corporate release preparation
+
+The owner subsequently authorised production configuration and release. Production secrets and dedicated-database settings are now installed in the verified Vercel project. See RELEASE-2026-11-05.md for the exact release scope, signed-challenge spam protection, 38-test validation and prior deployment rollback target. The earlier statements that hosting credentials were unavailable are historical; live promotion still requires the staged verification recorded separately. Advanced Academy and payment work remains outstanding.
