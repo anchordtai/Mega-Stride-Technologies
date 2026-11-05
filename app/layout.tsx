@@ -5,6 +5,7 @@ import "./globals.css";
 import "./commerce-academy.css";
 import "./site-overrides.css";
 import "./premium.css";
+import "./visual-experience.css";
 import WhatsAppFloat from "@/components/whatsapp-float";
 import SiteFooter from "@/components/site-footer";
 

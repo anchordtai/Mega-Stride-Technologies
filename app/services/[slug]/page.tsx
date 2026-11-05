@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { CTA, FAQ, SectionHeading } from "@/components/design";
+import { solutionVisuals } from "@/lib/visuals";
 import { delivery } from "@/lib/presentation";
 import PageShell from "@/components/page-shell";
 import { serviceCategories } from "@/lib/company";
@@ -24,16 +25,14 @@ export default async function ServicePage({
   const { slug } = await params;
   const s = serviceCategories.find((s) => s.slug === slug);
   if (!s) notFound();
+  const visual = solutionVisuals[s.slug];
   return (
     <PageShell
       eyebrow="Services & solutions"
       title={s.title}
       intro={s.summary}
-      image={
-        s.slug === "software-engineering" || s.slug === "ai-automation-iot"
-          ? "/images/editorial/engineering.webp"
-          : "/images/editorial/infrastructure.webp"
-      }
+      image={visual.src}
+      imageAlt={visual.alt}
     >
       <script
         type="application/ld+json"
@@ -51,6 +50,17 @@ export default async function ServicePage({
           }).replace(/</g, "\u003c"),
         }}
       />
+      <section className="service-context">
+        <div>
+          <p className="section-kicker">The business challenge</p>
+          <h2>{visual.challenge}</h2>
+        </div>
+        <div className="technology-tags" aria-label="Technology focus">
+          {visual.technologies.map((t) => (
+            <span key={t}>{t}</span>
+          ))}
+        </div>
+      </section>
       <div className="grid gap-10 lg:grid-cols-2">
         <section>
           <h2 className="text-3xl font-bold">
@@ -83,6 +93,20 @@ export default async function ServicePage({
           </a>
         </aside>
       </div>
+      <section className="application-band section-divider">
+        <SectionHeading
+          kicker="Where it can help"
+          title="From capability to a practical application."
+        />
+        <ol>
+          {visual.applications.map((x, i) => (
+            <li key={x}>
+              <span>0{i + 1}</span>
+              <h3>{x}</h3>
+            </li>
+          ))}
+        </ol>
+      </section>
       <section className="section-divider">
         <SectionHeading
           kicker="From requirement to delivery"

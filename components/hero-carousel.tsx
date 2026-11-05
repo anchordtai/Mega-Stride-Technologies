@@ -1,149 +1,133 @@
 "use client";
-
+import Image from "next/image";
 import { useEffect, useState } from "react";
-
+import { visuals } from "@/lib/visuals";
 const slides = [
   {
-    title: "Cloud & Data Centre Infrastructure",
-    image: "/images/hero/cloud-data-centre.svg",
+    title: "Infrastructure",
+    detail: "The foundation for everything that follows.",
+    image: visuals.infrastructure,
+    alt: "AI illustration of a modern data centre with precision server racks and fibre connectivity",
   },
   {
-    title: "Enterprise Technology & Digital Transformation",
-    image: "/images/hero/enterprise-technology.svg",
+    title: "Transformation",
+    detail: "Connect your people, processes and technology.",
+    image: visuals.operations,
+    alt: "AI illustration of a professional team in an enterprise operations environment",
   },
   {
-    title: "Software Engineering & Digital Products",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1800&q=90",
+    title: "Digital products",
+    detail: "Engineer the tools your next chapter needs.",
+    image: visuals.software,
+    alt: "AI illustration of software engineers collaborating in a daylight studio",
   },
   {
-    title: "Cybersecurity, AI & Emerging Technology",
-    image:
-      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1800&q=90",
+    title: "Connectivity",
+    detail: "A connected view of your digital future.",
+    image: visuals.connectivity,
+    alt: "AI concept of a globe formed from illuminated fibre pathways",
   },
 ];
-
 export default function HeroCarousel() {
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const [hovered, setHovered] = useState(false);
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
+    const stop = () => {
+      if (media.matches) setPlaying(false);
+    };
+    media.addEventListener("change", stop);
+    return () => media.removeEventListener("change", stop);
   }, []);
-
   useEffect(() => {
-    if (paused || reducedMotion) return;
-    const timer = window.setInterval(() => {
-      setActive((current) => (current + 1) % slides.length);
-    }, 5500);
-
+    if (!playing || hovered) return;
+    const timer = window.setInterval(
+      () => setActive((x) => (x + 1) % slides.length),
+      7000,
+    );
     return () => window.clearInterval(timer);
-  }, [paused, reducedMotion]);
-
-  const previous = () =>
-    setActive((current) => (current - 1 + slides.length) % slides.length);
-  const next = () => setActive((current) => (current + 1) % slides.length);
-
+  }, [playing, hovered]);
+  const slide = slides[active];
   return (
-    <div
-      className="relative mx-auto w-full max-w-[700px]"
-      onFocus={() => setPaused(true)}
-      aria-label="Mega Stride Technologies visual showcase"
-      role="region"
+    <section
+      className="cinematic-hero"
+      aria-label="Mega Stride technology showcase"
+      aria-roledescription="carousel"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setPlaying(false)}
     >
-      <button
-        type="button"
-        className="mb-3 rounded-full border border-white/30 px-4 py-2 text-xs text-white"
-        onClick={() => {
-          setReducedMotion(false);
-          setPaused(!(paused || reducedMotion));
-        }}
-        aria-pressed={paused || reducedMotion}
-      >
-        {paused || reducedMotion ? "Play slideshow" : "Pause slideshow"}
-      </button>
-      <div className="hero-image-card relative aspect-[16/10] overflow-hidden rounded-[32px] border border-white/15 bg-slate-950 shadow-[0_30px_90px_rgba(0,0,0,.42)]">
-        {slides.map((slide, index) => (
-          <div
-            key={slide.title}
-            className={`absolute inset-0 transition-all duration-700 ease-out ${
-              index === active
-                ? "opacity-100 scale-100"
-                : "pointer-events-none opacity-0 scale-[1.04]"
-            }`}
-            aria-hidden={index !== active}
-          >
-            <img
-              src={slide.image}
-              alt={slide.title}
-              className="absolute inset-0 h-full w-full object-cover"
-              loading={index === 0 ? "eager" : "lazy"}
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
-              }}
-            />
-
-            {/* Clean cinematic overlay: deliberately keeps the slide focused on image + title. */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/90 via-[#020817]/20 to-transparent" />
-
-            <div className="absolute inset-x-6 bottom-7 sm:inset-x-8 sm:bottom-9">
-              <h2 className="max-w-2xl text-2xl font-black leading-[1.05] tracking-[-.045em] text-white drop-shadow-2xl sm:text-3xl md:text-4xl lg:text-[2.7rem]">
-                {slide.title}
-              </h2>
-            </div>
-          </div>
-        ))}
-
-        <div className="absolute right-5 top-5 flex gap-2 sm:right-6 sm:top-6">
-          <button
-            type="button"
-            onClick={previous}
-            aria-label="Previous technology image"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/35 text-lg text-white backdrop-blur-md transition hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/60"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            onClick={next}
-            aria-label="Next technology image"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/35 text-lg text-white backdrop-blur-md transition hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/60"
-          >
-            →
-          </button>
+      <div className="cinematic-photo" key={slide.image}>
+        <Image
+          src={slide.image}
+          alt={slide.alt}
+          fill
+          sizes="100vw"
+          priority={active === 0}
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+      <div className="cinematic-shade" />
+      <div className="container cinematic-content">
+        <p className="section-kicker">MEGA STRIDE / ENGINEERING WHAT’S NEXT</p>
+        <h1>
+          Technology
+          <br />
+          engineered for
+          <br />
+          <em>your next stride.</em>
+        </h1>
+        <p className="cinematic-intro">
+          Infrastructure. Software. Intelligence.
+          <br />
+          Connected expertise to move your organisation forward.
+        </p>
+        <div className="hero-actions">
+          <a href="/services" className="primary-button">
+            Explore our solutions <span aria-hidden="true">↗</span>
+          </a>
+          <a href="/contact" className="secondary-button">
+            Discuss your project <span aria-hidden="true">↗</span>
+          </a>
         </div>
-
-        <div
-          className="absolute bottom-6 right-6 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/30 px-2.5 py-2 backdrop-blur-md"
-          aria-label="Carousel navigation"
-        >
-          {slides.map((slide, index) => (
-            <button
-              key={slide.title}
-              type="button"
-              onClick={() => setActive(index)}
-              aria-label={`Show image ${index + 1}: ${slide.title}`}
-              aria-current={index === active}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                index === active
-                  ? "w-8 bg-white"
-                  : "w-1.5 bg-white/45 hover:bg-white/80"
-              }`}
-            />
-          ))}
-        </div>
-
-        <div className="absolute bottom-0 left-0 h-1 w-full bg-white/10">
-          <div
-            className="h-full bg-cyan-300 transition-[width] duration-300"
-            style={{ width: `${((active + 1) / slides.length) * 100}%` }}
-          />
+        <div className="cinematic-note">
+          <span>ABUJA, NIGERIA</span>
+          <span>CONNECTED THINKING. PRACTICAL ENGINEERING.</span>
         </div>
       </div>
-    </div>
+      <div className="container cinematic-controls">
+        <div className="scene-choices" aria-label="Choose a technology scene">
+          {slides.map((x, i) => (
+            <button
+              key={x.title}
+              type="button"
+              aria-pressed={active === i}
+              onClick={() => {
+                setActive(i);
+                setPlaying(false);
+              }}
+            >
+              <span>0{i + 1}</span>
+              {x.title}
+              <span aria-hidden="true">↗</span>
+            </button>
+          ))}
+        </div>
+        <button
+          className="scene-play"
+          type="button"
+          onClick={() => setPlaying((p) => !p)}
+          aria-pressed={playing}
+        >
+          {playing ? "Pause" : "Play"} showcase{" "}
+          <span aria-hidden="true">{playing ? "Ⅱ" : "▷"}</span>
+        </button>
+      </div>
+      <div className="container scene-description">
+        <p aria-live={playing ? "off" : "polite"}>{slide.detail}</p>
+        <span>Original AI illustration</span>
+      </div>
+    </section>
   );
 }

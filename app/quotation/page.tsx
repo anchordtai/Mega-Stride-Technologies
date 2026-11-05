@@ -15,6 +15,8 @@ export default async function QuotationPage({
   const { service } = await searchParams;
   return (
     <PageShell
+      image="/images/mega-stride/services/equipment.webp"
+      imageAlt="AI illustration of unbranded enterprise hardware for procurement planning"
       eyebrow="Procurement & project enquiries"
       title="Define the requirement. Take the next stride."
       intro="Request a quotation for technology equipment, infrastructure, software, consulting or training. Include specifications, quantity, location and expected timeframe."

@@ -13,7 +13,7 @@ export default function Page() {
       eyebrow="Industry applications"
       title="Technology shaped around your environment."
       intro="Every organisation operates differently. Explore potential applications of our capabilities, then discuss the scope that fits your needs."
-      image="/images/editorial/team.webp"
+      image="/images/mega-stride/hero/operations.webp"
     >
       <SectionHeading
         kicker="Where capabilities meet context"
