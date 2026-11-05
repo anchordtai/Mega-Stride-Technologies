@@ -17,7 +17,7 @@ export default async function Page({
       eyebrow="Projects & case studies"
       title="The thinking behind the technology."
       intro="Explore published project stories: the challenge, the engineering and the work that brings a solution to life."
-      image="/images/editorial/infrastructure.webp"
+      image="/images/mega-stride/hero/infrastructure.webp"
     >
       <ContentListing
         kind="project"

@@ -1,7 +1,18 @@
 import "server-only";
 import { userDatabase } from "./supabase/server";
 import { databaseReady } from "./supabase/config";
-export async function publishedContent(kind: string) {
+export type PublishedItem = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  body: string | null;
+  category: string | null;
+  updated_at: string;
+};
+export async function publishedContent(
+  kind: string,
+): Promise<{ items: PublishedItem[]; unavailable: boolean }> {
   if (!databaseReady()) return { items: [], unavailable: false };
   const db = await userDatabase();
   const { data, error } = await db

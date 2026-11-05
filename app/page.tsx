@@ -1,67 +1,15 @@
+import { Suspense } from "react";
 import SiteHeader from "@/components/site-header";
-import { CTA, EditorialImage, Icon, SectionHeading } from "@/components/design";
-import { serviceCategories } from "@/lib/company";
+import { CTA, EditorialImage, SectionHeading } from "@/components/design";
+import HeroCarousel from "@/components/hero-carousel";
+import SolutionGallery from "@/components/solution-gallery";
+import PublishedHighlights from "@/components/published-highlights";
 import { industries, delivery } from "@/lib/presentation";
 export default function Home() {
   return (
     <main id="main-content">
       <SiteHeader />
-      <section className="home-hero">
-        <div className="container hero-layout">
-          <div className="hero-copy">
-            <p className="section-kicker">
-              Technology. Infrastructure. Possibility.
-            </p>
-            <h1>
-              Engineering
-              <br />
-              your next
-              <br />
-              <em>great stride.</em>
-            </h1>
-            <p>
-              Intelligent technology. Dependable infrastructure. Practical
-              expertise. We connect the pieces that help your organisation move
-              forward.
-            </p>
-            <div className="hero-actions">
-              <a href="/services" className="primary-button">
-                Explore our solutions <span aria-hidden="true">↗</span>
-              </a>
-              <a href="/contact" className="secondary-button">
-                Request a consultation
-              </a>
-            </div>
-            <div className="hero-footnote">
-              <span>Built around your business</span>
-              <span>Based in Abuja, Nigeria</span>
-            </div>
-          </div>
-          <div className="hero-composition">
-            <EditorialImage
-              src="/images/editorial/infrastructure.webp"
-              alt="Server racks illustrating enterprise digital infrastructure"
-              className="hero-photo"
-              priority
-            />
-            <span className="hero-side-label">
-              MEGA STRIDE · TECHNOLOGY IN MOTION
-            </span>
-            <div className="hero-caption">
-              <span className="icon-tile">
-                <Icon index={1} />
-              </span>
-              <div>
-                <strong>Built to connect. Engineered to last.</strong>
-                <p>Infrastructure · Software · Security · Cloud</p>
-              </div>
-              <span className="caption-arrow" aria-hidden="true">
-                ↗
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroCarousel />
       <section className="scope-strip" aria-label="Our capabilities">
         <div className="container">
           <p>
@@ -137,40 +85,14 @@ export default function Home() {
               All solutions <span aria-hidden="true">↗</span>
             </a>
           </div>
-          <div className="solution-grid">
-            {serviceCategories.map((s, i) => (
-              <article className="solution-card" key={s.slug}>
-                <div className="card-top">
-                  <span className="icon-tile">
-                    <Icon index={i} />
-                  </span>
-                  <span className="card-index">0{i + 1}</span>
-                </div>
-                <h3>{s.title}</h3>
-                <p>{s.summary}</p>
-                <a className="text-link" href={`/services/${s.slug}`}>
-                  Explore solution <span aria-hidden="true">↗</span>
-                </a>
-              </article>
-            ))}
-            <div className="featured-card">
-              <h3>A challenge that crosses disciplines?</h3>
-              <p>
-                Start with your business need. We’ll help clarify the
-                combination of capabilities it requires.
-              </p>
-              <a className="text-link" href="/contact">
-                Talk to our team ↗
-              </a>
-            </div>
-          </div>
+          <SolutionGallery />
         </div>
       </section>
       <section className="editorial-section">
         <div className="container photo-split">
           <EditorialImage
-            src="/images/editorial/team.webp"
-            alt="Technology professionals collaborating, illustrative photography"
+            src="/images/mega-stride/hero/operations.webp"
+            alt="AI illustration of technology professionals collaborating"
             className="split-photo"
           />
           <div className="split-copy">
@@ -238,6 +160,17 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Suspense
+        fallback={
+          <section className="editorial-section">
+            <div className="container">
+              <p role="status">Loading the latest publications…</p>
+            </div>
+          </section>
+        }
+      >
+        <PublishedHighlights />
+      </Suspense>
       <section className="editorial-section">
         <div className="container">
           <div className="academy-band">
@@ -263,8 +196,8 @@ export default function Home() {
               </a>
             </div>
             <EditorialImage
-              src="/images/editorial/academy.webp"
-              alt="Collaborative learning environment, illustrative photography"
+              src="/images/mega-stride/academy/academy.webp"
+              alt="AI illustration of a professional networking workshop"
             />
           </div>
         </div>
@@ -303,8 +236,8 @@ export default function Home() {
             </a>
           </div>
           <EditorialImage
-            src="/images/editorial/trade.webp"
-            alt="Container logistics illustrating global trade"
+            src="/images/mega-stride/trade/trade.webp"
+            alt="AI illustration of technology equipment ready for global logistics"
             className="split-photo"
           />
         </div>

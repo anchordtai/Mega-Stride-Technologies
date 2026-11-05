@@ -10,7 +10,7 @@ export const metadata = pageMetadata(
 export default function TradePage() {
   return (
     <PageShell
-      image="/images/editorial/trade.webp"
+      image="/images/mega-stride/trade/trade.webp"
       eyebrow="Technology & global trade"
       title="Source with clarity. Coordinate with confidence."
       intro="ICT product sourcing, procurement support, supplier coordination and technology deployment, subject to applicable approvals and agreed commercial terms."

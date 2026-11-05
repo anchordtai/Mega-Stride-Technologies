@@ -67,7 +67,7 @@ export function SectionHeading({
   );
 }
 export function CTA({
-  title = "Your next move starts with a conversation.",
+  title = "Your next technology milestone starts here.",
   text = "Tell us where you want to go. Let’s work out how technology can take you there.",
 }: {
   title?: string;
@@ -80,9 +80,14 @@ export function CTA({
         <h2>{title}</h2>
         <p>{text}</p>
       </div>
-      <a href="/quotation" className="primary-button light-button">
-        Request a quotation <span aria-hidden="true">↗</span>
-      </a>
+      <div className="closing-actions">
+        <a href="/quotation" className="primary-button light-button">
+          Request a quotation <span aria-hidden="true">↗</span>
+        </a>
+        <a href="/contact" className="text-link">
+          Request a consultation ↗
+        </a>
+      </div>
     </section>
   );
 }

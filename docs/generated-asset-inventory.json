@@ -1,0 +1,74 @@
+[
+  {
+    "name": "hero-infrastructure",
+    "file": "/images/mega-stride/hero/infrastructure.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 324732,
+    "prompt": "Photorealistic premium corporate architectural photograph of an advanced enterprise data centre, elegant physically plausible server racks and tidy fibre connectivity, precision aluminium and graphite equipment, restrained cobalt status lights, warm neutral overhead light, deep perspective down aisle. Wide landscape 16:9, cinematic believable detail, no people, no writing, no logos, no text overlays. For Mega Stride technology website; illustrative conceptual facility, never a claim of company premises."
+  },
+  {
+    "name": "hero-operations",
+    "file": "/images/mega-stride/hero/operations.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 173318,
+    "prompt": "Photorealistic premium editorial corporate image: enterprise technology operations environment with a diverse team of African technology professionals collaborating, seen at mid distance, realistic well arranged workstations and large screens with abstract unreadable data visualisations, warm natural daylight, deep navy architectural details, restrained cobalt highlights. Wide landscape 16:9, sophisticated composition and believable equipment, no logos, no legible text, no branding. Fictional illustrative professionals, not actual Mega Stride employees."
+  },
+  {
+    "name": "hero-software",
+    "file": "/images/mega-stride/hero/software.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 152236,
+    "prompt": "Photorealistic premium editorial image of African software engineers collaborating around modern monitors in a refined daylight software studio, close medium composition, realistic hands and equipment, understated navy wardrobe, warm timber, natural skin tones, subtle blue details. Wide landscape16:9, confident cinematic corporate photography, no legible code, no writing or logos. Fictional illustrative team, not actual Mega Stride staff."
+  },
+  {
+    "name": "hero-connectivity",
+    "file": "/images/mega-stride/hero/connectivity.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 190568,
+    "prompt": "Sophisticated photorealistic conceptual architectural image for global digital connectivity: elegant dimensional globe of delicate illuminated fibre strands floating above a dark precision engineered network exchange surface, convincing material depth, fine cobalt and restrained warm metallic pathways, deep ink navy background. Wide landscape16:9, exceptional art direction, minimal uncluttered, no text, no icons, no logos, not a diagram or website screenshot."
+  },
+  {
+    "name": "security",
+    "file": "/images/mega-stride/services/security.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 177316,
+    "prompt": "Photorealistic premium corporate photograph of a professional cybersecurity operations centre, African security analysts seen from behind and side reviewing realistic abstract telemetry on monitors, no readable text, no hooded hackers, no padlock graphics. Graphite desks, restrained cobalt monitor glow balanced with neutral warm ceiling light, credible modern office. Wide landscape16:9, elegant believable equipment, no logos. Fictional illustrative environment, not actual company premises."
+  },
+  {
+    "name": "automation",
+    "file": "/images/mega-stride/services/automation.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 198470,
+    "prompt": "Photorealistic premium technology editorial photograph of an industrial IoT and intelligent automation engineering laboratory: compact precision robotic arm, sensor modules and orderly connected prototype equipment on a clean workbench, engineer's hands carefully adjusting a module, natural daylight and warm metallic details, restrained navy/cobalt accents. Wide16:9, realistic proportions, no manufacturer logos, no legible text or UI, no sci-fi holograms."
+  },
+  {
+    "name": "equipment",
+    "file": "/images/mega-stride/services/equipment.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 147052,
+    "prompt": "Premium photorealistic product photography of enterprise technology hardware: carefully arranged unbranded rackmount network switch, compact server, storage chassis and a modern professional workstation in a refined neutral graphite studio, accurate ports and tidy equipment geometry, warm soft studio highlights and restrained cobalt accents. Wide landscape16:9, clean editorial composition, no logos or writing, no invented brand."
+  },
+  {
+    "name": "academy",
+    "file": "/images/mega-stride/academy/academy.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 199134,
+    "prompt": "Photorealistic premium editorial photograph of a professional technology training laboratory in Abuja, diverse African adult learners in a practical networking workshop with a professional instructor demonstrating an unbranded network switch on a table, realistic workstations and tidy network equipment, bright natural light, sophisticated warm neutral room with navy accents. Wide landscape16:9, realistic anatomy/equipment, no legible text/logos. Fictional illustrative training, not a photograph of actual Mega Stride learners or instructors."
+  },
+  {
+    "name": "trade",
+    "file": "/images/mega-stride/trade/trade.webp",
+    "width": 1672,
+    "height": 941,
+    "bytes": 250860,
+    "prompt": "Photorealistic premium editorial photograph of international technology procurement and logistics: clean high quality warehouse dispatch area, unbranded enterprise hardware in protective packaging, neatly organised freight cases, container terminal visible through large doors in warm morning light. Wide16:9, elegant depth, realistic neutral industrial tones, restrained navy accents. No readable labels, logos or text. Illustrative supply chain, not an owned company facility."
+  }
+]

@@ -1,5 +1,6 @@
-import { FAQ, Icon, SectionHeading } from "@/components/design";
+import { FAQ, EditorialImage, SectionHeading } from "@/components/design";
 import PageShell from "@/components/page-shell";
+import { pathwayVisual } from "@/lib/visuals";
 import { pathways } from "@/lib/company";
 import { databaseReady } from "@/lib/supabase/config";
 import { userDatabase } from "@/lib/supabase/server";
@@ -32,7 +33,7 @@ export default async function Academy() {
   }
   return (
     <PageShell
-      image="/images/editorial/academy.webp"
+      image="/images/mega-stride/academy/academy.webp"
       eyebrow="Mega Stride Academy"
       title="Practical skills. A stronger next step."
       intro="Professional learning pathways for people building careers and organisations developing technical capability."
@@ -117,6 +118,11 @@ export default async function Academy() {
           <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {courses.map((c) => (
               <article key={c.id} className="pathway-card">
+                <EditorialImage
+                  src={pathwayVisual(c.category || c.title)}
+                  alt="Illustrative technology learning concept"
+                  className="pathway-visual"
+                />
                 <p className="section-kicker">{c.category}</p>
                 <h3 className="mt-5 text-xl font-bold">{c.title}</h3>
                 <p className="mt-4 leading-7 text-slate-600">
@@ -133,11 +139,13 @@ export default async function Academy() {
           </div>
         ) : (
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {pathways.map((title, index) => (
+            {pathways.map((title) => (
               <article key={title} className="pathway-card">
-                <span className="icon-tile">
-                  <Icon index={index} />
-                </span>
+                <EditorialImage
+                  src={pathwayVisual(title)}
+                  alt={`AI illustration for the ${title} learning pathway`}
+                  className="pathway-visual"
+                />
                 <p className="section-kicker mt-5">Training enquiries</p>
                 <h3 className="mt-5 text-xl font-bold">{title}</h3>
                 <a
