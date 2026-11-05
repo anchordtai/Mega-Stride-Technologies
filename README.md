@@ -1,6 +1,6 @@
 # Mega Stride Technologies Limited
 
-Existing Next.js corporate website, extended on an isolated development branch with dedicated Supabase architecture, enquiry/CRM, publishing and Academy foundations. **Not deployed or production-complete.** The new dedicated Supabase project `okknsxrhbiiunjlaitcy` is provisioned and its schema verified. Production server credentials are configured. Corporate-release staging/promotion and remaining Auth/Storage tests are tracked in docs/RELEASE-2026-11-05.md. No existing application database is reused.
+Live corporate website: https://www.megastride.com.ng/ . The existing Next.js application now uses the dedicated free Supabase project `okknsxrhbiiunjlaitcy` for protected enquiries and platform foundations. The corporate release is deployed; the wider Academy, payments and email roadmap remains incomplete. See [release evidence and limits](docs/RELEASE-2026-11-05.md). No other application's database is reused.
 
 Start with:
 
@@ -20,8 +20,8 @@ npm run test:database
 npm run build
 ```
 
-The database suite runs an isolated PGlite PostgreSQL instance with explicit Auth/Storage contract stubs. It never connects to a hosted project and creates only synthetic test records. Hosted Auth/Storage APIs, real notifications, sandbox payments, device/browser QA and hosted restoration remain release gates.
+The database suite runs an isolated PGlite PostgreSQL instance with explicit Auth/Storage contract stubs. It never connects to a hosted project and creates only synthetic test records. Hosted Auth/Storage APIs, real notifications, sandbox payments, physical-device QA and hosted restoration remain gates for those additional capabilities.
 
 ## Production
 
-Keep the PR in draft until the runbook's release gates are met. Confirm the correct hosting project/domain, new independent database, authorised content, secrets, backups and rollback before owner-approved deployment. No live payment provider is enabled. The old unsigned admin cookie is not accepted.
+Production configuration uses Vercel Secret values for the server key and request-signing salt. Public learner signup, live payments and automatic email delivery are held. The old unsigned admin cookie is not accepted. Preserve the rollback deployment and never replace the dedicated database with another project. See the release document and architecture runbook before future changes.
