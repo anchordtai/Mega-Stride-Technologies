@@ -1,2 +1,34 @@
-const services=["ICT solutions & software engineering","IT consulting & systems integration","Computer networks & telecommunications","Cybersecurity & cyber defence","Cloud, hosting & server administration","Web, mobile & digital products","ICT equipment supply & support","Technology training & digital skills","AI, automation & IoT solutions","Project, managed & outsourced services"];
-export default function ServicesPage(){return <main className="min-h-screen bg-[#071426] text-white"><div className="container py-24"><a href="/" className="text-sm font-bold text-cyan-300">← Mega Stride Technologies</a><p className="mt-16 text-sm font-bold uppercase tracking-[.2em] text-cyan-300">Services</p><h1 className="mt-4 max-w-4xl text-5xl font-black tracking-tight md:text-7xl">One technology partner. Multiple capabilities.</h1><p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">Our memorandum establishes a broad technology mandate. We translate that mandate into practical services for organizations at every stage of their digital journey.</p><div className="mt-14 grid gap-3 md:grid-cols-2">{services.map((s,i)=><div key={s} className="rounded-2xl border border-white/10 bg-white/[.04] p-6"><span className="text-xs font-bold text-cyan-300">{String(i+1).padStart(2,"0")}</span><h2 className="mt-6 text-lg font-bold">{s}</h2></div>)}</div></div></main>}
+import PageShell from "@/components/page-shell";
+import { serviceCategories } from "@/lib/company";
+import { pageMetadata } from "@/lib/seo";
+export const metadata = pageMetadata(
+  "Services & Solutions",
+  "Explore software engineering, networking, cloud, cybersecurity, digital transformation and ICT supply services in Abuja, Nigeria.",
+  "/services",
+);
+export default function ServicesPage() {
+  return (
+    <PageShell
+      eyebrow="Services & solutions"
+      title="A connected approach to technology."
+      intro="From defining a requirement to engineering and supporting the solution, find the capability that fits your next step."
+    >
+      <div className="grid gap-6 md:grid-cols-2">
+        {serviceCategories.map((s, i) => (
+          <a
+            key={s.slug}
+            href={`/services/${s.slug}`}
+            className="platform-panel service-link"
+          >
+            <span className="section-kicker">0{i + 1}</span>
+            <h2 className="mt-5 text-2xl font-bold">{s.title}</h2>
+            <p className="mt-4 leading-7 text-slate-600">{s.summary}</p>
+            <span className="mt-6 inline-block font-bold text-blue-700">
+              Explore this service →
+            </span>
+          </a>
+        ))}
+      </div>
+    </PageShell>
+  );
+}

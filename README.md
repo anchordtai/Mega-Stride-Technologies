@@ -1,31 +1,27 @@
-# Mega Stride Technologies Ltd
+# Mega Stride Technologies Limited
 
-Modern corporate website for Mega Stride Technologies Ltd, built with Next.js, TypeScript and Tailwind CSS.
+Existing Next.js corporate website, extended on an isolated development branch with dedicated Supabase architecture, enquiry/CRM, publishing and Academy foundations. **Not deployed or production-complete.** The new Supabase project is blocked by the account's active-free-project quota. No existing application database is reused.
 
-## Current website scope
+Start with:
 
-- Corporate homepage
-- About company
-- Technology services
-- Contact page
-- Responsive design
-- SEO metadata
-- Sitemap and robots configuration
-
-## Source of company information
-
-The initial corporate positioning is based on the company's Memorandum of Association supplied for this project. Official contact details, registration number, logo, address and additional company information will be added after verification.
+- [Existing website audit and roadmap](docs/AUDIT-2026-11-05.md)
+- [Implementation status, test evidence and outstanding work](docs/IMPLEMENTATION-STATUS.md)
+- [Architecture, API, configuration, backup and rollback runbook](docs/ARCHITECTURE-AND-OPERATIONS.md)
 
 ## Development
 
-```bash
-npm install
+Use Node 24 (at least Node 22), then `npm ci`. Copy `.env.example` to an ignored local environment file. Do not add another application's Supabase keys. With no database configured, corporate pages remain available and online forms/accounts fail closed with contact alternatives.
+
+```sh
 npm run dev
+npm run typecheck
+npm test
+npm run test:database
+npm run build
 ```
+
+The database suite runs an isolated PGlite PostgreSQL instance with explicit Auth/Storage contract stubs. It never connects to a hosted project and creates only synthetic test records. Hosted Auth/Storage APIs, real notifications, sandbox payments, device/browser QA and hosted restoration remain release gates.
 
 ## Production
 
-```bash
-npm run build
-npm start
-```
+Keep the PR in draft until the runbook's release gates are met. Confirm the correct hosting project/domain, new independent database, authorised content, secrets, backups and rollback before owner-approved deployment. No live payment provider is enabled. The old unsigned admin cookie is not accepted.

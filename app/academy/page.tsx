@@ -1,15 +1,112 @@
-import SiteHeader from "@/components/site-header";
-import CourseRegistration from "@/components/course-registration";
-
-const courses = [
-  { title: "Networking & Infrastructure", tag: "Infrastructure", image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=85", text: "Practical networking, infrastructure operations and enterprise connectivity." },
-  { title: "Cybersecurity Fundamentals", tag: "Security", image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=85", text: "Security principles, risk awareness, defensive controls and cyber hygiene." },
-  { title: "Cloud Computing & DevOps", tag: "Cloud", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=85", text: "Cloud foundations, automation, deployment workflows and resilient infrastructure." },
-  { title: "Software Development", tag: "Engineering", image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=85", text: "Modern software engineering concepts, web applications and development practice." },
-  { title: "Linux & Server Administration", tag: "Systems", image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1200&q=85", text: "Linux administration, server operations, automation and troubleshooting." },
-  { title: "AI, Automation & Emerging Technologies", tag: "Innovation", image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=85", text: "Explore AI, automation, IoT and practical emerging-technology concepts." },
-];
-
-export default function AcademyPage() {
-  return <main className="min-h-screen bg-slate-50 text-slate-950"><SiteHeader /><section className="inner-hero academy-hero"><div className="container"><p className="section-kicker text-cyan-300">Mega Stride Academy</p><h1 className="mt-5 max-w-5xl text-5xl font-black tracking-[-.06em] text-white md:text-7xl">Build practical technology skills for the next stride.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">Professional learning pathways across infrastructure, cybersecurity, software, cloud, Linux and emerging technologies.</p><div className="mt-8 flex flex-wrap gap-3"><a href="#courses" className="primary-button">Explore courses <span>↓</span></a><a href="/academy/dashboard" className="secondary-button">Learner dashboard</a></div></div></section><section id="courses" className="section-space"><div className="container"><div className="section-heading-row"><div><p className="section-kicker">Learning pathways</p><h2 className="section-title max-w-3xl">Courses designed around practical capability.</h2></div><a href="/academy/register" className="text-sm font-black text-blue-600">Register for a course →</a></div><div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">{courses.map((course) => <article key={course.title} className="course-card"><div className="course-image" style={{ backgroundImage: `url(${course.image})` }}><span>{course.tag}</span></div><div className="p-6"><h3 className="text-xl font-black tracking-[-.02em]">{course.title}</h3><p className="mt-3 text-sm leading-7 text-slate-500">{course.text}</p><a href="/academy/register" className="mt-6 inline-flex text-sm font-black text-blue-600">Register →</a></div></article>)}</div></div></section><section id="register" className="section-space bg-white"><div className="container"><div className="mb-12 max-w-3xl"><p className="section-kicker">Online registration</p><h2 className="section-title">Choose your course and secure your place.</h2><p className="mt-5 text-base leading-7 text-slate-500">Registration is followed by payment verification and enrolment confirmation.</p></div><CourseRegistration /></div></section><section className="section-space"><div className="container grid gap-5 md:grid-cols-3"><div className="academy-feature"><span>01</span><h3>Practical</h3><p>Learning content focused on useful skills and real technology environments.</p></div><div className="academy-feature"><span>02</span><h3>Structured</h3><p>Lessons organized into clear pathways so learners can track progress.</p></div><div className="academy-feature"><span>03</span><h3>Career-minded</h3><p>Build a stronger technical foundation for work, projects and certification journeys.</p></div></div></section></main>;
+import PageShell from "@/components/page-shell";
+import { pathways } from "@/lib/company";
+import { databaseReady } from "@/lib/supabase/config";
+import { userDatabase } from "@/lib/supabase/server";
+import { pageMetadata } from "@/lib/seo";
+export const metadata = pageMetadata(
+  "Mega Stride Academy",
+  "Explore independent technology training in networking, software, cybersecurity, Linux, cloud and emerging technologies in Abuja, Nigeria.",
+  "/academy",
+);
+export default async function Academy() {
+  let courses: {
+    id: string;
+    slug: string;
+    title: string;
+    description: string;
+    category: string;
+    price_minor: number | null;
+    currency: string;
+  }[] = [];
+  let unavailable = false;
+  if (databaseReady()) {
+    const db = await userDatabase();
+    const result = await db
+      .from("courses")
+      .select("id,slug,title,description,category,price_minor,currency")
+      .eq("status", "published")
+      .order("title");
+    courses = result.data || [];
+    unavailable = !!result.error;
+  }
+  return (
+    <PageShell
+      eyebrow="Mega Stride Academy"
+      title="Practical skills. A stronger next step."
+      intro="Professional learning pathways for people building careers and organisations developing technical capability."
+    >
+      <div className="mb-12 flex flex-wrap gap-4">
+        <a href="/academy/register" className="primary-button">
+          Discuss your training goals ↗
+        </a>
+        <a
+          href="/academy/dashboard"
+          className="rounded-full border border-slate-300 px-6 py-4 font-bold"
+        >
+          Learner workspace →
+        </a>
+        <a href="/account" className="self-center px-4 font-bold text-blue-700">
+          Sign in / create account
+        </a>
+      </div>
+      <section id="courses">
+        <p className="section-kicker">Learning pathways</p>
+        <h2 className="mt-4 text-3xl font-bold">
+          Build capability with purpose.
+        </h2>
+        <p className="mt-5 max-w-3xl leading-8 text-slate-600">
+          Training can support professional development and preparation for
+          certification journeys. Independent training does not confer
+          manufacturer certification or imply manufacturer authorisation.
+        </p>
+        {unavailable && (
+          <p role="status" className="mt-6">
+            Published course details are temporarily unavailable.
+          </p>
+        )}
+        {courses.length > 0 ? (
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {courses.map((c) => (
+              <article key={c.id} className="platform-panel">
+                <p className="section-kicker">{c.category}</p>
+                <h3 className="mt-5 text-xl font-bold">{c.title}</h3>
+                <p className="mt-4 leading-7 text-slate-600">
+                  {c.description.slice(0, 180)}
+                </p>
+                <a
+                  className="mt-6 inline-block font-bold text-blue-700"
+                  href={`/academy/courses/${c.slug}`}
+                >
+                  View course →
+                </a>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {pathways.map((title) => (
+              <article key={title} className="platform-panel">
+                <p className="section-kicker">Training enquiries</p>
+                <h3 className="mt-5 text-xl font-bold">{title}</h3>
+                <a
+                  className="mt-6 inline-block font-bold text-blue-700"
+                  href={`/academy/register?course=${encodeURIComponent(title)}`}
+                >
+                  Ask about this pathway →
+                </a>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+      <section className="platform-panel mt-12">
+        <h2 className="text-2xl font-bold">Plan your learning arrangement.</h2>
+        <p className="mt-5 max-w-3xl leading-8 text-slate-600">
+          Share your experience level, objectives and preferred format. We will
+          confirm course availability, instructor, schedule, fees and terms
+          before you enrol.
+        </p>
+      </section>
+    </PageShell>
+  );
 }
