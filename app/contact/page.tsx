@@ -11,6 +11,8 @@ export const metadata = pageMetadata(
 export default function ContactPage() {
   return (
     <PageShell
+      image="/images/mega-stride/hero/operations.webp"
+      imageAlt="AI illustration of technology professionals reviewing a project"
       eyebrow="Contact Mega Stride"
       title="Let’s turn your requirement into a plan."
       intro="Tell us what you are building, securing, modernising, sourcing or learning."

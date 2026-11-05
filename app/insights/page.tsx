@@ -17,7 +17,7 @@ export default async function Page({
       eyebrow="Ideas & insights"
       title="A clearer perspective on what’s next."
       intro="Technology thinking, practical guidance and perspectives for people building stronger digital foundations."
-      image="/images/editorial/engineering.webp"
+      image="/images/mega-stride/hero/software.webp"
     >
       <ContentListing
         kind="post"

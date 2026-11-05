@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import PageShell from "@/components/page-shell";
 import { currentIdentity } from "@/lib/supabase/server";
 import { databaseReady } from "@/lib/supabase/config";
+import { requestCertificate } from "@/app/academy/actions";
 import { completeLesson } from "./actions";
 export const metadata = {
   title: "Course learning",
@@ -36,6 +37,13 @@ export default async function Learn({
   ]);
   if (course.error || lessons.error || progress.error)
     throw Error("The course could not be loaded.");
+  const { data: assessment, error: assessmentError } = await i.db
+    .from("assessments")
+    .select("id,title,pass_percent")
+    .eq("course_id", id)
+    .eq("published", true)
+    .maybeSingle();
+  if (assessmentError) throw Error("Assessment could not be loaded.");
   const done = new Set(progress.data.map((p) => p.lesson_id));
   return (
     <PageShell eyebrow="Your learning" title={course.data.title}>
@@ -81,6 +89,43 @@ export default async function Learn({
           </article>
         ))}
       </div>
+      <section className="platform-panel mt-8">
+        <h2 className="text-2xl font-bold">
+          Assessment & completion certificate
+        </h2>
+        <p className="mt-4 leading-7 text-slate-600">
+          Complete the published lessons and pass the current course assessment.
+          Your profile name is used on the certificate.
+        </p>
+        {assessment ? (
+          <a
+            className="primary-button mt-5"
+            href={`/academy/assessments/${assessment.id}`}
+          >
+            Open {assessment.title} ↗
+          </a>
+        ) : (
+          <p className="mt-4">
+            Your instructor has not published an assessment yet.
+          </p>
+        )}
+        <form action={requestCertificate} className="mt-6">
+          <input name="course" type="hidden" value={id} />
+          <label className="flex gap-3 text-sm leading-7">
+            <input type="checkbox" name="confirm" required />
+            <span>
+              I have checked my name in{" "}
+              <a className="underline" href="/academy/profile">
+                my profile
+              </a>{" "}
+              and want to issue my completion certificate.
+            </span>
+          </label>
+          <button className="secondary-button mt-5">
+            Check eligibility & issue certificate
+          </button>
+        </form>
+      </section>
     </PageShell>
   );
 }

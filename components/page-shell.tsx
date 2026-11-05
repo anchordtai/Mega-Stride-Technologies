@@ -5,12 +5,14 @@ export default function PageShell({
   title,
   intro,
   image,
+  imageAlt = "Illustrative technology concept for Mega Stride",
   children,
 }: {
   eyebrow: string;
   title: string;
   intro?: string;
   image?: string;
+  imageAlt?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -31,7 +33,7 @@ export default function PageShell({
           {image ? (
             <EditorialImage
               src={image}
-              alt=""
+              alt={imageAlt}
               priority
               className="page-hero-photo"
             />

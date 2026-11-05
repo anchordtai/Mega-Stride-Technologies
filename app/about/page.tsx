@@ -13,7 +13,7 @@ export default function Page() {
       eyebrow="Our company"
       title="Progress starts with a different kind of technology partner."
       intro="Mega Stride Technologies Limited brings technical thinking, practical delivery and a connected view of your business needs."
-      image="/images/editorial/team.webp"
+      image="/images/mega-stride/hero/operations.webp"
     >
       <div className="intro-grid">
         <SectionHeading
@@ -37,6 +37,25 @@ export default function Page() {
           </p>
         </div>
       </div>
+      <section className="about-purpose" aria-label="Our purpose and ambition">
+        <div>
+          <p className="section-kicker">Our purpose</p>
+          <h2>Make technology a practical advantage.</h2>
+          <p>
+            Help organisations connect infrastructure, software and people
+            through considered engineering, clear communication and professional
+            learning.
+          </p>
+        </div>
+        <div>
+          <p className="section-kicker">Our ambition</p>
+          <h2>Build stronger digital foundations.</h2>
+          <p>
+            Be a dependable technology partner for organisations moving from
+            immediate needs to a more connected, capable and resilient future.
+          </p>
+        </div>
+      </section>
       <div className="principles">
         {[
           [
@@ -64,8 +83,8 @@ export default function Page() {
       </div>
       <section className="photo-split section-divider">
         <EditorialImage
-          src="/images/editorial/engineering.webp"
-          alt="Software engineering workspace, illustrative photography"
+          src="/images/mega-stride/hero/software.webp"
+          alt="AI illustration of a software engineering workspace"
           className="split-photo"
         />
         <div className="split-copy">
