@@ -1,10 +1,19 @@
+import localFont from "next/font/local";
 import { canonicalOrigin } from "@/lib/seo";
 import type { Metadata } from "next";
 import "./globals.css";
 import "./commerce-academy.css";
 import "./site-overrides.css";
+import "./premium.css";
 import WhatsAppFloat from "@/components/whatsapp-float";
 import SiteFooter from "@/components/site-footer";
+
+const manrope = localFont({
+  src: "../public/fonts/manrope.ttf",
+  display: "swap",
+  variable: "--font-manrope",
+  weight: "200 800",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(canonicalOrigin),
@@ -42,7 +51,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={manrope.variable}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

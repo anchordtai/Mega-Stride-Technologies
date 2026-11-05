@@ -1,3 +1,4 @@
+import { FAQ, Icon, SectionHeading } from "@/components/design";
 import PageShell from "@/components/page-shell";
 import { pathways } from "@/lib/company";
 import { databaseReady } from "@/lib/supabase/config";
@@ -31,6 +32,7 @@ export default async function Academy() {
   }
   return (
     <PageShell
+      image="/images/editorial/academy.webp"
       eyebrow="Mega Stride Academy"
       title="Practical skills. A stronger next step."
       intro="Professional learning pathways for people building careers and organisations developing technical capability."
@@ -46,7 +48,19 @@ export default async function Academy() {
           Learner workspace →
         </a>
         <a href="/account" className="self-center px-4 font-bold text-blue-700">
-          Sign in / create account
+          Learner sign in
+        </a>
+      </div>
+      <div className="learner-banner">
+        <div>
+          <strong>Learning built around your objectives.</strong>
+          <p>
+            Availability, instructor, schedule, fees and terms are confirmed
+            before enrolment.
+          </p>
+        </div>
+        <a className="text-link" href="/academy/register">
+          Discuss team training ↗
         </a>
       </div>
       <section id="courses">
@@ -67,7 +81,7 @@ export default async function Academy() {
         {courses.length > 0 ? (
           <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {courses.map((c) => (
-              <article key={c.id} className="platform-panel">
+              <article key={c.id} className="pathway-card">
                 <p className="section-kicker">{c.category}</p>
                 <h3 className="mt-5 text-xl font-bold">{c.title}</h3>
                 <p className="mt-4 leading-7 text-slate-600">
@@ -84,9 +98,12 @@ export default async function Academy() {
           </div>
         ) : (
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {pathways.map((title) => (
-              <article key={title} className="platform-panel">
-                <p className="section-kicker">Training enquiries</p>
+            {pathways.map((title, index) => (
+              <article key={title} className="pathway-card">
+                <span className="icon-tile">
+                  <Icon index={index} />
+                </span>
+                <p className="section-kicker mt-5">Training enquiries</p>
                 <h3 className="mt-5 text-xl font-bold">{title}</h3>
                 <a
                   className="mt-6 inline-block font-bold text-blue-700"
@@ -106,6 +123,32 @@ export default async function Academy() {
           confirm course availability, instructor, schedule, fees and terms
           before you enrol.
         </p>
+      </section>
+      <section className="faq-section">
+        <SectionHeading
+          kicker="Your learning journey"
+          title="A clear next step."
+        />
+        <FAQ
+          items={[
+            [
+              "How do I choose a pathway?",
+              "Tell us your experience, objectives and preferred format. We can discuss the pathway that best fits your learning needs.",
+            ],
+            [
+              "Are fees and schedules available?",
+              "Confirmed course availability, fees, schedules and instructor information are shared before enrolment. A training enquiry does not commit you to payment.",
+            ],
+            [
+              "Does training award a manufacturer certification?",
+              "Mega Stride provides independent training. Manufacturer certifications are awarded under the relevant vendor’s own examination and eligibility requirements.",
+            ],
+            [
+              "Where do existing learners sign in?",
+              "Use Learner workspace or Learner sign in to access your account. Access to course materials depends on your confirmed enrolments.",
+            ],
+          ]}
+        />
       </section>
     </PageShell>
   );

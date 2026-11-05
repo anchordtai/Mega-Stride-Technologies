@@ -10,10 +10,36 @@ export const metadata = pageMetadata(
 export default function TradePage() {
   return (
     <PageShell
+      image="/images/editorial/trade.webp"
       eyebrow="Technology & global trade"
       title="Source with clarity. Coordinate with confidence."
       intro="ICT product sourcing, procurement support, supplier coordination and technology deployment, subject to applicable approvals and agreed commercial terms."
     >
+      <div className="trade-process">
+        {[
+          [
+            "01",
+            "Specify",
+            "Define equipment, compatibility, quantities and destination.",
+          ],
+          [
+            "02",
+            "Coordinate",
+            "Review sourcing, supplier and logistics requirements.",
+          ],
+          [
+            "03",
+            "Deploy",
+            "Discuss delivery and any installation or integration scope.",
+          ],
+        ].map(([n, t, d]) => (
+          <div key={n}>
+            <span>{n} / PROCUREMENT</span>
+            <h2>{t}</h2>
+            <p>{d}</p>
+          </div>
+        ))}
+      </div>
       <div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr]">
         <section>
           <h2 className="text-3xl font-bold">
