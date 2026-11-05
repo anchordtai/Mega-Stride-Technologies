@@ -5,47 +5,67 @@ import { useEffect, useState } from "react";
 const slides = [
   {
     title: "Cloud & Data Centre Infrastructure",
-    image: "/images/hero/cloud-data-centre.jpeg",
+    image: "/images/hero/cloud-data-centre.svg",
   },
   {
     title: "Enterprise Technology & Digital Transformation",
-    image: "/images/hero/enterprise-technology.jpeg",
+    image: "/images/hero/enterprise-technology.svg",
   },
   {
     title: "Software Engineering & Digital Products",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1800&q=90",
+    image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1800&q=90",
   },
   {
     title: "Cybersecurity, AI & Emerging Technology",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1800&q=90",
+    image:
+      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1800&q=90",
   },
 ];
 
 export default function HeroCarousel() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(true);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || reducedMotion) return;
     const timer = window.setInterval(() => {
       setActive((current) => (current + 1) % slides.length);
     }, 5500);
 
     return () => window.clearInterval(timer);
-  }, [paused]);
+  }, [paused, reducedMotion]);
 
-  const previous = () => setActive((current) => (current - 1 + slides.length) % slides.length);
+  const previous = () =>
+    setActive((current) => (current - 1 + slides.length) % slides.length);
   const next = () => setActive((current) => (current + 1) % slides.length);
 
   return (
     <div
       className="relative mx-auto w-full max-w-[700px]"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
       aria-label="Mega Stride Technologies visual showcase"
+      role="region"
     >
+      <button
+        type="button"
+        className="mb-3 rounded-full border border-white/30 px-4 py-2 text-xs text-white"
+        onClick={() => {
+          setReducedMotion(false);
+          setPaused(!(paused || reducedMotion));
+        }}
+        aria-pressed={paused || reducedMotion}
+      >
+        {paused || reducedMotion ? "Play slideshow" : "Pause slideshow"}
+      </button>
       <div className="hero-image-card relative aspect-[16/10] overflow-hidden rounded-[32px] border border-white/15 bg-slate-950 shadow-[0_30px_90px_rgba(0,0,0,.42)]">
         {slides.map((slide, index) => (
           <div
@@ -97,7 +117,10 @@ export default function HeroCarousel() {
           </button>
         </div>
 
-        <div className="absolute bottom-6 right-6 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/30 px-2.5 py-2 backdrop-blur-md" aria-label="Carousel navigation">
+        <div
+          className="absolute bottom-6 right-6 flex items-center gap-1.5 rounded-full border border-white/15 bg-black/30 px-2.5 py-2 backdrop-blur-md"
+          aria-label="Carousel navigation"
+        >
           {slides.map((slide, index) => (
             <button
               key={slide.title}

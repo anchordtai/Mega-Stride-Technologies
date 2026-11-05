@@ -1,0 +1,325 @@
+"use client";
+import { FormEvent, useState, useRef, useEffect } from "react";
+import Script from "next/script";
+type Kind = "contact" | "trade" | "quotation" | "training";
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (el: HTMLElement, options: Record<string, unknown>) => string;
+      reset: (id: string) => void;
+      remove: (id: string) => void;
+    };
+  }
+}
+export default function EnquiryForm({
+  kind = "contact",
+  service = "General enquiry",
+  available = true,
+}: {
+  kind?: Kind;
+  service?: string;
+  available?: boolean;
+}) {
+  const [pending, setPending] = useState(false),
+    [error, setError] = useState(""),
+    [reference, setReference] = useState("");
+  const [scriptReady, setScriptReady] = useState(false);
+  const challenge = useRef("");
+  const challengeTime = useRef(0);
+  const widget = useRef<HTMLDivElement>(null),
+    widgetId = useRef<string | null>(null),
+    token = useRef("");
+  useEffect(() => {
+    if (
+      scriptReady &&
+      widget.current &&
+      window.turnstile &&
+      process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    ) {
+      widgetId.current = window.turnstile.render(widget.current, {
+        sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+        callback: (value: string) => {
+          token.current = value;
+        },
+        "expired-callback": () => {
+          token.current = "";
+        },
+      });
+    }
+    return () => {
+      if (widgetId.current) window.turnstile?.remove(widgetId.current);
+    };
+  }, [scriptReady]);
+  useEffect(() => {
+    if (available && !process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+      fetch("/api/enquiry-challenge", { method: "POST" })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          challenge.current = d?.token || "";
+          challengeTime.current = Date.now();
+        })
+        .catch(() => {});
+    }
+  }, [available]);
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError("");
+    setPending(true);
+    const f = new FormData(e.currentTarget);
+    const payload = {
+      kind,
+      name: String(f.get("name") || ""),
+      email: String(f.get("email") || ""),
+      company: String(f.get("company") || ""),
+      phone: String(f.get("phone") || ""),
+      country: String(f.get("country") || ""),
+      service: String(f.get("service") || service),
+      subject: String(f.get("subject") || ""),
+      message: String(f.get("message") || ""),
+      product: String(f.get("product") || ""),
+      quantity: String(f.get("quantity") || ""),
+      destination: String(f.get("destination") || ""),
+      timeframe: String(f.get("timeframe") || ""),
+      website: String(f.get("website") || ""),
+      consent: f.get("consent") === "on",
+      turnstileToken: token.current,
+      challengeToken: challenge.current,
+    };
+    try {
+      if (challenge.current && Date.now() - challengeTime.current < 1600)
+        await new Promise((r) =>
+          setTimeout(r, 1600 - (Date.now() - challengeTime.current)),
+        );
+      const r = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await r.json();
+      if (!r.ok) throw Error(data.error);
+      setReference(data.reference);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Please try again.");
+      if (widgetId.current) window.turnstile?.reset(widgetId.current);
+      token.current = "";
+      if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+        try {
+          const fresh = await fetch("/api/enquiry-challenge", {
+            method: "POST",
+          });
+          const d = await fresh.json();
+          challenge.current = d.token || "";
+          challengeTime.current = Date.now();
+        } catch {
+          challenge.current = "";
+        }
+      }
+    } finally {
+      setPending(false);
+    }
+  }
+  if (reference)
+    return (
+      <div role="status" className="platform-panel">
+        <p className="section-kicker">Enquiry received</p>
+        <h2 className="mt-4 text-3xl font-bold">
+          Thank you for taking the next stride.
+        </h2>
+        <p className="mt-4">
+          Your reference is <strong>{reference}</strong>. Our team will review
+          your requirements.
+        </p>
+      </div>
+    );
+  return (
+    <form onSubmit={submit} className="platform-panel" aria-busy={pending}>
+      {!available && (
+        <p
+          role="status"
+          className="mb-6 rounded-xl bg-blue-50 p-4 text-sm text-blue-950"
+        >
+          Online submissions are being upgraded. Please email{" "}
+          <a className="underline" href="mailto:info@megastride.com.ng">
+            info@megastride.com.ng
+          </a>{" "}
+          or call +234 813 846 3804.
+        </p>
+      )}
+      <fieldset disabled={!available || pending}>
+        <legend className="sr-only">{kind} enquiry details</legend>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <label className="form-label">
+            Full name
+            <input
+              className="form-input"
+              name="name"
+              autoComplete="name"
+              required
+              minLength={2}
+              maxLength={120}
+            />
+          </label>
+          <label className="form-label">
+            Email
+            <input
+              className="form-input"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              maxLength={254}
+            />
+          </label>
+          <label className="form-label">
+            Company
+            <input
+              className="form-input"
+              name="company"
+              autoComplete="organization"
+              maxLength={160}
+            />
+          </label>
+          <label className="form-label">
+            Telephone (including country code)
+            <input
+              className="form-input"
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              maxLength={40}
+            />
+          </label>
+          <label className="form-label">
+            Country
+            <input
+              className="form-input"
+              name="country"
+              autoComplete="country-name"
+              required
+              maxLength={80}
+            />
+          </label>
+          <label className="form-label">
+            {kind === "training"
+              ? "Learning pathway"
+              : "Service / product category"}
+            <input
+              className="form-input"
+              name="service"
+              defaultValue={service}
+              required
+              maxLength={120}
+            />
+          </label>
+          {kind === "trade" && (
+            <>
+              <label className="form-label">
+                Product description
+                <input
+                  name="product"
+                  className="form-input"
+                  required
+                  maxLength={240}
+                />
+              </label>
+              <label className="form-label">
+                Quantity
+                <input
+                  name="quantity"
+                  className="form-input"
+                  required
+                  maxLength={80}
+                />
+              </label>
+              <label className="form-label">
+                Destination
+                <input
+                  name="destination"
+                  className="form-input"
+                  required
+                  maxLength={160}
+                />
+              </label>
+              <label className="form-label">
+                Expected delivery timeframe
+                <input
+                  name="timeframe"
+                  className="form-input"
+                  maxLength={120}
+                />
+              </label>
+            </>
+          )}
+        </div>
+        <label className="form-label mt-5">
+          Subject
+          <input name="subject" className="form-input" maxLength={180} />
+        </label>
+        <label className="form-label mt-5">
+          {kind === "training"
+            ? "Learning goals and preferred training arrangement"
+            : "Requirements and additional information"}
+          <textarea
+            name="message"
+            className="form-input"
+            required
+            minLength={15}
+            maxLength={5000}
+            rows={6}
+          />
+        </label>
+        <div className="honeypot" aria-hidden="true">
+          <label>
+            Leave this empty
+            <input name="website" tabIndex={-1} autoComplete="off" />
+          </label>
+        </div>
+        <label className="mt-5 flex gap-3 text-sm leading-6">
+          <input
+            name="consent"
+            type="checkbox"
+            required
+            className="mt-1 h-5 w-5 shrink-0"
+          />
+          <span>
+            I agree to the use of my details to respond to this enquiry, as
+            described in the{" "}
+            <a href="/privacy" className="underline">
+              privacy notice
+            </a>
+            .
+          </span>
+        </label>
+        {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+          <>
+            <Script
+              src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+              onReady={() => setScriptReady(true)}
+            />
+            <div ref={widget} className="mt-5" />
+          </>
+        )}
+        {error && (
+          <p
+            role="alert"
+            className="mt-5 rounded-xl bg-red-50 p-4 text-red-800"
+          >
+            {error}
+          </p>
+        )}
+        <button
+          type="submit"
+          className="primary-button mt-6"
+          disabled={pending || !available}
+        >
+          {pending
+            ? "Sending…"
+            : kind === "training"
+              ? "Submit training enquiry"
+              : "Send enquiry"}{" "}
+          <span aria-hidden="true">↗</span>
+        </button>
+      </fieldset>
+    </form>
+  );
+}
