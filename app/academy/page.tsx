@@ -63,6 +63,41 @@ export default async function Academy() {
           Discuss team training ↗
         </a>
       </div>
+      <section className="mb-14">
+        <SectionHeading
+          kicker="For confirmed enrolments"
+          title="A workspace that supports your progress."
+          description="Course access and published materials depend on your enrolment. Each course defines its own lessons and assessment."
+        />
+        <div className="mt-7 grid gap-5 md:grid-cols-3">
+          {[
+            [
+              "01",
+              "Learn & track progress",
+              "Open your enrolled courses, read lessons and download permitted private learning materials.",
+            ],
+            [
+              "02",
+              "Assess & complete",
+              "Take published assessments and request a completion certificate after meeting the course requirements.",
+            ],
+            [
+              "03",
+              "Records & support",
+              "Manage your profile, view verified payment receipts and ask the Academy for help.",
+            ],
+          ].map(([n, t, d]) => (
+            <article key={n} className="platform-panel">
+              <p className="section-kicker">{n} / LEARNER WORKSPACE</p>
+              <h3 className="mt-5 text-xl font-bold">{t}</h3>
+              <p className="mt-4 text-sm leading-7 text-slate-600">{d}</p>
+            </article>
+          ))}
+        </div>
+        <a className="text-link mt-7" href="/academy/dashboard">
+          Sign in to your learning workspace ↗
+        </a>
+      </section>
       <section id="courses">
         <p className="section-kicker">Learning pathways</p>
         <h2 className="mt-4 text-3xl font-bold">

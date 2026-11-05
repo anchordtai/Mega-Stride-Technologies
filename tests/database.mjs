@@ -68,7 +68,17 @@ await check("Academy commerce delivery migration applies", async () =>
     ),
   ),
 );
-await check("explicit hosted grants migration applies",async()=>db.exec(await readFile(new URL("../supabase/migrations/20261105142305_academy_explicit_grants.sql",import.meta.url),"utf8")));
+await check("explicit hosted grants migration applies", async () =>
+  db.exec(
+    await readFile(
+      new URL(
+        "../supabase/migrations/20261105142305_academy_explicit_grants.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  ),
+);
 const userA = "11111111-1111-4111-8111-111111111111",
   userB = "22222222-2222-4222-8222-222222222222",
   admin = "33333333-3333-4333-8333-333333333333",
@@ -646,13 +656,120 @@ await check(
     }),
 );
 
-await db.query("update auth.users set email='support@example.test' where id=$1",[userB]);
+await db.query(
+  "update auth.users set email='support@example.test' where id=$1",
+  [userB],
+);
 let supportId;
-await check("support requests have atomic user rate limits",()=>as("service_role","",async()=>{for(let n=0;n<5;n++){const r=await db.query("select public.create_support_ticket($1,'Access help','Synthetic support request') as id",[userB]);if(n===0)supportId=r.rows[0].id;}await assert.rejects(()=>db.query("select public.create_support_ticket($1,'More help','Synthetic support request')",[userB]));}));
-await check("learners cannot read or reply to another learner's support ticket",()=>as("authenticated",userA,async()=>{assert.equal((await db.query("select * from public.support_tickets where id=$1",[supportId])).rows.length,0);await assert.rejects(()=>db.query("insert into public.support_replies(ticket_id,author_id,body) values($1,$2,'Invalid cross-user reply')",[supportId,userA]));await assert.rejects(()=>db.query("insert into public.support_tickets(user_id,subject,body) values($1,'Bypass','Synthetic direct insert')",[userA]));}));
-await check("staff support replies enqueue private notifications and remain visible to the owner",async()=>{await as("authenticated",admin,()=>db.query("insert into public.support_replies(ticket_id,author_id,body) values($1,$2,'A synthetic staff response')",[supportId,admin]));await as("authenticated",userB,async()=>{assert.equal((await db.query("select * from public.support_replies where ticket_id=$1",[supportId])).rows.length,1);});});
-await check("free enrolment rejects paid courses and only activates a published zero-fee course",()=>as("service_role","",async()=>{await assert.rejects(()=>db.query("select public.enrol_free_course($1,$2)",[userA,'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb']));await db.exec("insert into public.courses(id,slug,title,description,status,price_minor) values('eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee','free-fixture','Free fixture','Synthetic local course','published',0)");await db.query("select public.enrol_free_course($1,$2)",[userB,'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee']);assert.equal((await db.query("select status from public.enrolments where user_id=$1 and course_id=$2",[userB,'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee'])).rows[0].status,'active');}));
-await check("new email worker leases jobs once and excludes suppressed/accepted messages",()=>as("service_role","",async()=>{await db.exec("insert into public.email_jobs(dedupe_key,kind,recipient) values('lease-unit','enquiry_ack','unit@example.invalid')");const first=await db.query("select * from public.claim_email_jobs()");assert.ok(first.rows.some(j=>j.dedupe_key==='lease-unit'));assert.ok(first.rows.every(j=>j.status==='processing'));assert.equal((await db.query("select * from public.claim_email_jobs()")).rows.length,0);}));
+await check("support requests have atomic user rate limits", () =>
+  as("service_role", "", async () => {
+    for (let n = 0; n < 5; n++) {
+      const r = await db.query(
+        "select public.create_support_ticket($1,'Access help','Synthetic support request') as id",
+        [userB],
+      );
+      if (n === 0) supportId = r.rows[0].id;
+    }
+    await assert.rejects(() =>
+      db.query(
+        "select public.create_support_ticket($1,'More help','Synthetic support request')",
+        [userB],
+      ),
+    );
+  }),
+);
+await check(
+  "learners cannot read or reply to another learner's support ticket",
+  () =>
+    as("authenticated", userA, async () => {
+      assert.equal(
+        (
+          await db.query("select * from public.support_tickets where id=$1", [
+            supportId,
+          ])
+        ).rows.length,
+        0,
+      );
+      await assert.rejects(() =>
+        db.query(
+          "insert into public.support_replies(ticket_id,author_id,body) values($1,$2,'Invalid cross-user reply')",
+          [supportId, userA],
+        ),
+      );
+      await assert.rejects(() =>
+        db.query(
+          "insert into public.support_tickets(user_id,subject,body) values($1,'Bypass','Synthetic direct insert')",
+          [userA],
+        ),
+      );
+    }),
+);
+await check(
+  "staff support replies enqueue private notifications and remain visible to the owner",
+  async () => {
+    await as("authenticated", admin, () =>
+      db.query(
+        "insert into public.support_replies(ticket_id,author_id,body) values($1,$2,'A synthetic staff response')",
+        [supportId, admin],
+      ),
+    );
+    await as("authenticated", userB, async () => {
+      assert.equal(
+        (
+          await db.query(
+            "select * from public.support_replies where ticket_id=$1",
+            [supportId],
+          )
+        ).rows.length,
+        1,
+      );
+    });
+  },
+);
+await check(
+  "free enrolment rejects paid courses and only activates a published zero-fee course",
+  () =>
+    as("service_role", "", async () => {
+      await assert.rejects(() =>
+        db.query("select public.enrol_free_course($1,$2)", [
+          userA,
+          "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        ]),
+      );
+      await db.exec(
+        "insert into public.courses(id,slug,title,description,status,price_minor) values('eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee','free-fixture','Free fixture','Synthetic local course','published',0)",
+      );
+      await db.query("select public.enrol_free_course($1,$2)", [
+        userB,
+        "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+      ]);
+      assert.equal(
+        (
+          await db.query(
+            "select status from public.enrolments where user_id=$1 and course_id=$2",
+            [userB, "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"],
+          )
+        ).rows[0].status,
+        "active",
+      );
+    }),
+);
+await check(
+  "new email worker leases jobs once and excludes suppressed/accepted messages",
+  () =>
+    as("service_role", "", async () => {
+      await db.exec(
+        "insert into public.email_jobs(dedupe_key,kind,recipient) values('lease-unit','enquiry_ack','unit@example.invalid')",
+      );
+      const first = await db.query("select * from public.claim_email_jobs()");
+      assert.ok(first.rows.some((j) => j.dedupe_key === "lease-unit"));
+      assert.ok(first.rows.every((j) => j.status === "processing"));
+      assert.equal(
+        (await db.query("select * from public.claim_email_jobs()")).rows.length,
+        0,
+      );
+    }),
+);
 console.log(
   `${passed} isolated PostgreSQL checks passed. Auth/Storage API and hosted restore remain release gates.`,
 );
