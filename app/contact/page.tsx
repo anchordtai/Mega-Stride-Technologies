@@ -1,6 +1,6 @@
 import PageShell from "@/components/page-shell";
 import ContactForm from "@/components/contact-form";
-import { databaseReady } from "@/lib/supabase/config";
+import { intakeReady } from "@/lib/supabase/config";
 import { company } from "@/lib/company";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
@@ -47,7 +47,7 @@ export default function ContactPage() {
             </a>
           </div>
         </aside>
-        <ContactForm available={databaseReady()} />
+        <ContactForm available={intakeReady()} />
       </div>
     </PageShell>
   );

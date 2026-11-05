@@ -15,7 +15,7 @@ await db.exec(
 );
 const migration = await readFile(
   new URL(
-    "../supabase/migrations/20261105095201_mega_stride_foundation.sql",
+    "../supabase/migrations/20261105105526_mega_stride_foundation.sql",
     import.meta.url,
   ),
   "utf8",
@@ -28,7 +28,18 @@ await check("notification queue migration applies", async () =>
   db.exec(
     await readFile(
       new URL(
-        "../supabase/migrations/20261105100224_notification_delivery.sql",
+        "../supabase/migrations/20261105105547_notification_delivery.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  ),
+);
+await check("advisor-improvement migration applies", async () =>
+  db.exec(
+    await readFile(
+      new URL(
+        "../supabase/migrations/20261105105820_database_advisor_improvements.sql",
         import.meta.url,
       ),
       "utf8",

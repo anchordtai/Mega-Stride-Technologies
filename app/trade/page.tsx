@@ -1,6 +1,6 @@
 import PageShell from "@/components/page-shell";
 import EnquiryForm from "@/components/enquiry-form";
-import { databaseReady } from "@/lib/supabase/config";
+import { intakeReady } from "@/lib/supabase/config";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Importation & Exportation",
@@ -34,7 +34,7 @@ export default function TradePage() {
         <EnquiryForm
           kind="trade"
           service="Importation / exportation"
-          available={databaseReady()}
+          available={intakeReady()}
         />
       </div>
     </PageShell>

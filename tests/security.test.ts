@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { databaseConfig } from "../lib/supabase/config";
+import { databaseConfig, intakeReady } from "../lib/supabase/config";
 import { intakeSchema, allowedOrigin } from "../lib/intake";
 import { quotationTotal } from "../lib/quotation";
-const ref = "abcdefghijklmnopqrst";
+const ref = "okknsxrhbiiunjlaitcy";
 const env = {
   MEGA_STRIDE_SUPABASE_PROJECT_REF: ref,
   SUPABASE_URL: `https://${ref}.supabase.co`,
@@ -99,4 +99,24 @@ test("quotations calculate integer minor-unit totals and reject unsafe/negative 
     [{ description: "Test", quantity: 100001, unit_minor: 100 }],
   ])
     assert.throws(() => quotationTotal(items));
+});
+
+test("private intake remains disabled until server and production security credentials are configured", () => {
+  assert.equal(intakeReady(env), false);
+  assert.equal(
+    intakeReady({
+      ...env,
+      SUPABASE_SERVICE_ROLE_KEY: "test-server-key",
+      NODE_ENV: "development",
+    }),
+    true,
+  );
+  assert.equal(
+    intakeReady({
+      ...env,
+      SUPABASE_SERVICE_ROLE_KEY: "test-server-key",
+      NODE_ENV: "production",
+    }),
+    false,
+  );
 });

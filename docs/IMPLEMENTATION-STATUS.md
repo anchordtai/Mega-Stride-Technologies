@@ -36,18 +36,25 @@ The exact street number, secondary telephone/WhatsApp number and intact official
 | Production dependency audit | `npm audit --omit=dev --audit-level=high` returned zero vulnerabilities at inspection time |
 | Live baseline | Browser inspected all eight existing application pages, validated empty contact input and confirmed simulated progress increments |
 | Changed UI/mobile/tablet | **Not verified**: managed preview launched `next dev --host ... --strictPort`; Next.js rejected these unsupported arguments. No separate preview infrastructure or browser workaround was installed. Requires a compatible preview environment before release. |
-| Hosted authentication/storage/email/payments | **Not verified**; no dedicated project or external credentials available |
+| Hosted database verification | Dedicated project verified healthy; 14 public application tables and 2 private tables have RLS. Atomic enquiry/outbox and anonymous/learner isolation passed in rolled-back hosted tests. No synthetic rows retained. |
+| Hosted authentication/storage/email/payments | Auth signup/recovery, file transfer, email delivery and payments remain unverified; server credentials and approved provider setup are pending. |
 | Core Web Vitals, physical devices, full WCAG review | **Not performed**; no numerical score or certification claimed |
 
-## Database creation blocker
+## Dedicated database provisioned — update 5 November 2026
 
-Owner selected organisation **Anchord Taiwo**. Supabase quoted a new project at $0/month but rejected creation because the account has reached its **two-active-free-project limit**. The new project does not exist. No other project's URL, keys, tables, authentication or buckets were reused. No paid upgrade or pausing/deletion of another application was attempted.
+The initial project-creation quota blocker was resolved by the owner creating a new project and adding its account connection. Verified project: **mega stride database**, ref `okknsxrhbiiunjlaitcy`, organisation `ovyznglccnmnkiejqpkj`, region `eu-west-1`, status ACTIVE_HEALTHY, Postgres 17.11.0.011. Its dashboard is https://supabase.com/dashboard/project/okknsxrhbiiunjlaitcy . No paid plan change was made.
 
-Release remains blocked until an available project slot or an explicitly approved paid project is provided. The requested new database is prepared as migrations, not claimed as hosted infrastructure.
+Before schema setup the project had zero application tables, zero Auth users and zero buckets. The foundation, notification delivery and advisor improvements migrations were applied to this project only. Local migration filenames now match the hosted migration versions to prevent duplicate application in later CLI workflows.
+
+Verified: 14 public application tables plus 2 private tables, all protected by RLS; private `academy-resources` PDF bucket; service-only intake RPC; denied anonymous enquiry access and client staff-role creation. Hosted enquiry/outbox atomicity and anonymous/learner publication isolation passed using temporary transactions that were rolled back. No test enquiries, content or audit rows remained. Local tests now total **34 passed** (11 API/configuration + 23 PostgreSQL), including the additional migration.
+
+Advisor improvements added four foreign-key indexes and replaced overlapping SELECT policies without expanding access. Remaining advisor INFO notices are intentional deny-by-default backend tables ([RLS without a client policy](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy)) and indexes not yet used on a new empty database ([unused indexes](https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index)). No ERROR or WARN findings remained after these changes.
+
+The source configuration is pinned to the verified new project. Direct HTTPS Data API checks returned 200 for published content/courses and 401 permission denied for private enquiries. Intake activation is separately gated on server and production security credentials. Website environment credentials have **not** been installed in hosting and the production website has not been redeployed. The database is prepared; live website integration, real Auth/Storage flows and release gates remain outstanding. No other application's database was changed.
 
 ## Remaining work and business inputs
 
-1. Create/verify a new independent Mega Stride Supabase project; run hosted migrations/advisors; configure authentication, real identities and private storage; verify every permitted and denied flow through real APIs.
+1. Configure website server credentials for the verified independent project, authentication, real identities and private storage; verify every permitted and denied flow through real APIs. Database provisioning/migrations and database-level checks are complete.
 2. Confirm exact production hosting project/custom-domain ownership and Git integration. The connected Vercel project's returned domains did not include megastride.com.ng. Do not infer control or deploy over production.
 3. Confirm official address, complete WhatsApp number, original logo, authorised staff and course/instructor information. Add only approved genuine portfolio/media/management content.
 4. Confirm payment provider, settlement account, course pricing and refund policy. Payment initialisation, verified signed webhooks, idempotent settlement/enrolment, receipts and refunds remain **unimplemented**. The transaction table alone is not a payment integration.

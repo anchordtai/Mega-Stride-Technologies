@@ -1,6 +1,6 @@
 import PageShell from "@/components/page-shell";
 import EnquiryForm from "@/components/enquiry-form";
-import { databaseReady } from "@/lib/supabase/config";
+import { intakeReady } from "@/lib/supabase/config";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Request a Quotation",
@@ -23,7 +23,7 @@ export default async function QuotationPage({
         <EnquiryForm
           kind="quotation"
           service={service?.slice(0, 120) || "ICT equipment / services"}
-          available={databaseReady()}
+          available={intakeReady()}
         />
         <p className="mt-6 text-sm leading-7 text-slate-600">
           After your enquiry is received, our team can arrange a secure way to

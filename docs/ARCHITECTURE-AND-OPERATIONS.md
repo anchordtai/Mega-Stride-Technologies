@@ -58,7 +58,11 @@ Only the Turnstile site key is intentionally prefixed NEXT_PUBLIC. Set environme
 
 The CLI is deliberately pinned to 2.81.3; the November 2026 v3 local-default/hosted-confirmation breaking change was reviewed. Do not silently upgrade operational commands. The local tests do not need Docker or CLI linking.
 
-## New project setup — no existing database fallback
+## Verified project and remaining setup
+
+The owner created **mega stride database**, ref `okknsxrhbiiunjlaitcy`, in organisation `ovyznglccnmnkiejqpkj`, region eu-west-1. Its empty baseline was inspected and all three committed migrations were applied and checked on 5 November 2026. Source configuration now accepts only this ref. No existing business database is a fallback. Hosted migration versions are reflected in the filenames. Website hosting secrets have not been configured.
+
+The original setup procedure remains below as a recovery/reproduction reference; creation steps are already complete for the project above.
 
 1. Resolve the free-project quota or obtain approval for a priced project. Create **Mega Stride Technologies Limited** in the owner's selected **Anchord Taiwo** organisation. Suggested region: eu-west-1, subject to approved residency/latency needs.
 2. Verify returned project ID/status and that it is new/empty. Record ownership and project ref in the deployment runbook. Existing application projects are not candidates for linking.

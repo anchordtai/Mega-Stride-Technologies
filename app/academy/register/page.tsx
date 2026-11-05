@@ -1,6 +1,6 @@
 import PageShell from "@/components/page-shell";
 import CourseRegistration from "@/components/course-registration";
-import { databaseReady } from "@/lib/supabase/config";
+import { intakeReady } from "@/lib/supabase/config";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Academy Training Enquiry",
@@ -21,7 +21,7 @@ export default async function Registration({
     >
       <CourseRegistration
         service={course?.slice(0, 120) || "Technology training"}
-        available={databaseReady()}
+        available={intakeReady()}
       />
     </PageShell>
   );
