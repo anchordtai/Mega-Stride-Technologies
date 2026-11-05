@@ -1,32 +1,50 @@
 import SiteHeader from "./site-header";
+import { EditorialImage } from "./design";
 export default function PageShell({
   eyebrow,
   title,
   intro,
+  image,
+  imageAlt = "Illustrative technology concept for Mega Stride",
   children,
 }: {
   eyebrow: string;
   title: string;
   intro?: string;
+  image?: string;
+  imageAlt?: string;
   children: React.ReactNode;
 }) {
   return (
-    <main id="main-content" className="min-h-screen bg-slate-50 text-slate-950">
+    <main id="main-content" className="page-main">
       <SiteHeader />
-      <section className="inner-hero">
-        <div className="container">
-          <p className="section-kicker text-cyan-300">{eyebrow}</p>
-          <h1 className="mt-5 max-w-5xl text-4xl font-bold tracking-tight text-white md:text-6xl">
-            {title}
-          </h1>
-          {intro && (
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              {intro}
-            </p>
+      <section className={`page-hero ${image ? "with-image" : ""}`}>
+        <div className="container page-hero-grid">
+          <div>
+            <nav className="breadcrumbs" aria-label="Breadcrumb">
+              <a href="/">Home</a>
+              <span aria-hidden="true">/</span>
+              <span>{eyebrow}</span>
+            </nav>
+            <p className="section-kicker">{eyebrow}</p>
+            <h1>{title}</h1>
+            {intro && <p className="page-intro">{intro}</p>}
+          </div>
+          {image ? (
+            <EditorialImage
+              src={image}
+              alt={imageAlt}
+              priority
+              className="page-hero-photo"
+            />
+          ) : (
+            <div className="hero-geometry" aria-hidden="true">
+              <span>↗</span>
+            </div>
           )}
         </div>
       </section>
-      <div className="container py-16 md:py-24">{children}</div>
+      <div className="container page-content">{children}</div>
     </main>
   );
 }

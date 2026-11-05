@@ -1,416 +1,264 @@
+import { Suspense } from "react";
 import SiteHeader from "@/components/site-header";
+import { CTA, EditorialImage, SectionHeading } from "@/components/design";
 import HeroCarousel from "@/components/hero-carousel";
-
-const services = [
-  [
-    "01",
-    "Software & Digital Products",
-    "Software engineering, application design, web platforms and digital products built around real operational needs.",
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=85",
-  ],
-  [
-    "02",
-    "Networks & Infrastructure",
-    "Enterprise networks, wireless, telecommunications, data centres, servers and infrastructure operations.",
-    "/images/hero/cloud-data-centre.svg",
-  ],
-  [
-    "03",
-    "Cybersecurity",
-    "Network security architecture, firewall implementation, access controls and security awareness.",
-    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1000&q=85",
-  ],
-  [
-    "04",
-    "Cloud & Resilience",
-    "Cloud computing, hosting, virtualization, database management, backup and disaster recovery.",
-    "/images/hero/cloud-data-centre.svg",
-  ],
-  [
-    "05",
-    "Digital Transformation",
-    "Systems integration, enterprise solutions, process automation and technology advisory for organizations.",
-    "/images/hero/enterprise-technology.svg",
-  ],
-  [
-    "06",
-    "AI, Automation & IoT",
-    "Research, innovation and commercialization of artificial intelligence, automation, IoT and emerging technologies.",
-    "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1000&q=85",
-  ],
-  [
-    "07",
-    "ICT Equipment & Technology Supply",
-    "Source networking equipment, servers, storage, computers and related technology for your requirements.",
-    "/images/hero/enterprise-technology.svg",
-  ],
-];
-const capabilities = [
-  "Technology consulting",
-  "Systems integration",
-  "Project & technical management",
-  "ICT equipment & solutions",
-  "Technology training",
-  "Outsourced & managed services",
-];
-const industries = [
-  "Public sector",
-  "Education",
-  "Enterprise",
-  "Infrastructure",
-  "Technology",
-  "Institutions",
-];
-
+import SolutionGallery from "@/components/solution-gallery";
+import PublishedHighlights from "@/components/published-highlights";
+import { industries, delivery } from "@/lib/presentation";
 export default function Home() {
   return (
-    <main id="main-content" className="overflow-hidden bg-white text-slate-950">
+    <main id="main-content">
       <SiteHeader />
-      <section
-        id="home"
-        className="hero relative min-h-[760px] overflow-hidden bg-[#06101f] pt-36 text-white"
-      >
-        <div className="hero-orb hero-orb-one" />
-        <div className="hero-orb hero-orb-two" />
-        <div className="hero-lines" />
-        <div className="container relative grid items-center gap-16 pb-28 lg:grid-cols-[1.08fr_.92fr] lg:pb-36">
-          <div className="max-w-4xl">
-            <div className="eyebrow">
-              <span className="pulse-dot" /> Technology. Infrastructure. Trade.
-              Transformation.
-            </div>
-            <h1 className="hero-title mt-7">
-              Technology engineered for your{" "}
-              <span className="gradient-text">next stride.</span>
-            </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-              Mega Stride Technologies Ltd delivers integrated ICT solutions,
-              professional technology training, and importation and exportation
-              services.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#services" className="primary-button">
-                Explore capabilities <span>↗</span>
-              </a>
-              <a href="/contact" className="secondary-button">
-                Talk to Mega Stride
-              </a>
-            </div>
-            <div className="mt-14 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-7 text-sm text-slate-400">
-              <span>
-                <strong className="text-white">Secure</strong> by design
-              </span>
-              <span>
-                <strong className="text-white">Scalable</strong> by architecture
-              </span>
-              <span>
-                <strong className="text-white">Practical</strong> by delivery
-              </span>
-            </div>
-          </div>
-          <HeroCarousel />
-        </div>
-      </section>
-
-      <section className="border-b border-slate-200 bg-white py-8">
-        <div className="container grid grid-cols-2 gap-6 md:grid-cols-4">
-          <div className="metric">
-            <strong>07</strong>
-            <span>Technology pillars</span>
-          </div>
-          <div className="metric">
-            <strong>360°</strong>
-            <span>ICT capability</span>
-          </div>
-          <div className="metric">
-            <strong>Trade</strong>
-            <span>Import & export</span>
-          </div>
-          <div className="metric">
-            <strong>∞</strong>
-            <span>Room to innovate</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="about" className="section-space relative">
-        <div className="container grid gap-16 lg:grid-cols-[.82fr_1.18fr] lg:items-center">
-          <div>
-            <p className="section-kicker">Who we are</p>
-            <h2 className="section-title">
-              A technology and trade partner built for the next stride.
-            </h2>
-          </div>
-          <div>
-            <p className="lead-copy">
-              Mega Stride Technologies Ltd is established to provide practical,
-              secure and scalable ICT solutions to public and private
-              organizations while participating in technology-related commerce.
-            </p>
-            <p className="body-copy">
-              Our scope brings together software engineering, systems
-              integration, enterprise technology, networking,
-              telecommunications, cybersecurity, cloud infrastructure, digital
-              products, training, research, emerging technologies, and the sale,
-              supply, importation and exportation of ICT-related equipment and
-              devices.
-            </p>
-            <div className="mt-9 grid gap-3 sm:grid-cols-3">
-              <div className="value-card">
-                <span>01</span>
-                <strong>Practical</strong>
-                <p>Solutions designed for operational reality.</p>
-              </div>
-              <div className="value-card">
-                <span>02</span>
-                <strong>Secure</strong>
-                <p>Security considered throughout the lifecycle.</p>
-              </div>
-              <div className="value-card">
-                <span>03</span>
-                <strong>Forward</strong>
-                <p>Built with emerging technology in view.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="services" className="section-space bg-slate-50">
+      <HeroCarousel />
+      <section className="scope-strip" aria-label="Our capabilities">
         <div className="container">
-          <div className="section-heading-row">
-            <div>
-              <p className="section-kicker">What we do</p>
-              <h2 className="section-title max-w-3xl">
-                One partner. A complete technology spectrum.
-              </h2>
+          <p>
+            One connected partner.
+            <br />A world of possibility.
+          </p>
+          <span>Digital infrastructure</span>
+          <span>Software & systems</span>
+          <span>Professional learning</span>
+          <span>Global ICT sourcing</span>
+        </div>
+      </section>
+      <section className="editorial-section">
+        <div className="container">
+          <div className="intro-grid">
+            <SectionHeading
+              kicker="We are Mega Stride"
+              title="Technology is the tool. Your progress is the purpose."
+            />
+            <div className="intro-copy">
+              <p>
+                Great technology starts with understanding what you need to
+                achieve. Mega Stride Technologies Limited brings software
+                engineering, ICT infrastructure, professional learning and
+                technology trade into one practical conversation.
+              </p>
+              <p>
+                From a connected campus to a business application or a
+                well-defined procurement requirement, we help you plan a clear
+                next step.
+              </p>
+              <a className="text-link" href="/about">
+                Meet Mega Stride <span aria-hidden="true">↗</span>
+              </a>
             </div>
-            <p className="max-w-md text-base leading-7 text-slate-500">
-              Explore our core capabilities through a visual, service-led
-              experience designed to make the right solution easier to find.
-            </p>
           </div>
-          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {services.map(([n, title, text, image]) => (
-              <article key={title} className="service-card image-service-card">
-                <div
-                  className="service-visual"
-                  style={{ backgroundImage: `url(${image})` }}
-                >
-                  <div className="service-visual-shade" />
-                  <span className="service-number">{n}</span>
-                  <span className="service-arrow" aria-hidden="true">
-                    ↗
-                  </span>
+          <div className="principles">
+            {[
+              [
+                "01",
+                "Connected expertise",
+                "Software, networks, cloud, security and supply considered together.",
+              ],
+              [
+                "02",
+                "Practical engineering",
+                "Technology decisions grounded in your real operating environment.",
+              ],
+              [
+                "03",
+                "A responsible approach",
+                "Clear requirements, considered design and honest communication.",
+              ],
+            ].map(([n, t, d]) => (
+              <div key={n}>
+                <span>{n} / OUR APPROACH</span>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="editorial-section soft" id="services">
+        <div className="container">
+          <div className="section-topline">
+            <SectionHeading
+              kicker="Our solutions"
+              title="The right expertise. Connected."
+              description="Build, connect, secure and evolve your technology environment with a capability that fits your needs."
+            />
+            <a className="text-link" href="/services">
+              All solutions <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <SolutionGallery />
+        </div>
+      </section>
+      <section className="editorial-section">
+        <div className="container photo-split">
+          <EditorialImage
+            src="/images/mega-stride/hero/operations.webp"
+            alt="AI illustration of technology professionals collaborating"
+            className="split-photo"
+          />
+          <div className="split-copy">
+            <SectionHeading
+              kicker="Why Mega Stride"
+              title="The bigger picture. The details that matter."
+              description="Good engineering brings technical decisions and business realities into focus."
+            />
+            <div className="feature-list">
+              {[
+                [
+                  "01",
+                  "Business before technology",
+                  "Understand the requirement before recommending the solution.",
+                ],
+                [
+                  "02",
+                  "Security from the start",
+                  "Consider access, resilience and maintainability throughout the design.",
+                ],
+                [
+                  "03",
+                  "People are part of the system",
+                  "Support adoption through knowledge transfer and professional learning.",
+                ],
+              ].map(([n, t, d]) => (
+                <div key={n}>
+                  <span>{n}</span>
+                  <div>
+                    <h3>{t}</h3>
+                    <p>{d}</p>
+                  </div>
                 </div>
-                <div className="p-6">
-                  <div className="service-icon">+</div>
-                  <h3>
-                    <a
-                      href={`/services/${["software-engineering", "networks-infrastructure", "cybersecurity", "cloud-data-centre", "digital-transformation", "ai-automation-iot", "equipment-supply"][Number(n) - 1]}`}
-                    >
-                      {title} →
-                    </a>
-                  </h3>
-                  <p>{text}</p>
-                  <div className="service-line" />
-                </div>
+              ))}
+            </div>
+            <a href="/about" className="text-link">
+              Our approach to delivery ↗
+            </a>
+          </div>
+        </div>
+      </section>
+      <section className="editorial-section soft">
+        <div className="container">
+          <div className="section-topline">
+            <SectionHeading
+              kicker="Industry applications"
+              title="Different environments. Shared ambition."
+              description="Explore how our capabilities can be applied to your organisation’s requirements."
+            />
+            <a href="/industries" className="text-link">
+              Explore industries ↗
+            </a>
+          </div>
+          <div className="industry-grid">
+            {industries.map((x, i) => (
+              <article key={x.slug} className="industry-card">
+                <span>0{i + 1} / APPLICATIONS</span>
+                <h3>{x.title}</h3>
+                <p>{x.description}</p>
+                <a href={`/industries#${x.slug}`}>
+                  Explore <span aria-hidden="true">↗</span>
+                </a>
               </article>
             ))}
           </div>
         </div>
       </section>
-
-      <section id="trade" className="trade-section">
-        <div className="container grid gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
-          <div>
-            <p className="section-kicker text-cyan-300">
-              Importation & exportation
-            </p>
-            <h2 className="section-title text-white">
-              Move technology and products with confidence.
-            </h2>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              Importation and exportation is a critical part of Mega
-              Stride&apos;s commercial scope. We can support sourcing, supply,
-              movement and distribution of computers, networking equipment,
-              telecommunications equipment, software products, accessories and
-              other ICT-related devices, subject to applicable approvals and
-              requirements.
-            </p>
-            <div className="mt-9 grid gap-3 sm:grid-cols-3">
-              <div className="trade-step">
-                <span>01</span>
-                <strong>Source</strong>
-                <p>Identify suitable products and suppliers.</p>
-              </div>
-              <div className="trade-step">
-                <span>02</span>
-                <strong>Coordinate</strong>
-                <p>Organize supply and movement requirements.</p>
-              </div>
-              <div className="trade-step">
-                <span>03</span>
-                <strong>Deliver</strong>
-                <p>Support distribution and technology deployment.</p>
-              </div>
+      <Suspense
+        fallback={
+          <section className="editorial-section">
+            <div className="container">
+              <p role="status">Loading the latest publications…</p>
             </div>
-            <a href="/trade" className="primary-button mt-9">
-              Request a trade enquiry <span>↗</span>
-            </a>
-          </div>
-          <div
-            className="trade-image"
-            style={{
-              backgroundImage:
-                "url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?auto=format&fit=crop&w=1400&q=90)",
-            }}
-          >
-            <div className="trade-image-label">
-              <span>GLOBAL TRADE</span>
-              <strong>Import · Export · Supply</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section-space">
-        <div className="container grid gap-16 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
-          <div>
-            <p className="section-kicker">Technology capabilities</p>
-            <h2 className="section-title">From strategy to implementation.</h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-500">
-              We combine technical expertise, disciplined delivery and long-term
-              support to turn technology objectives into dependable operational
-              systems.
-            </p>
-            <a
-              href="/contact"
-              className="mt-9 inline-flex text-sm font-bold text-blue-600 hover:text-blue-800"
-            >
-              Talk about your technology needs <span className="ml-2">→</span>
-            </a>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {capabilities.map((x, i) => (
-              <div key={x} className="capability-row light-capability">
-                <span className="text-xs text-blue-600">0{i + 1}</span>
-                <strong>{x}</strong>
-                <span className="text-slate-400">↗</span>
+          </section>
+        }
+      >
+        <PublishedHighlights />
+      </Suspense>
+      <section className="editorial-section">
+        <div className="container">
+          <div className="academy-band">
+            <div className="academy-band-copy">
+              <p className="section-kicker">Mega Stride Academy</p>
+              <h2>
+                Your knowledge.
+                <br />
+                Your next advantage.
+              </h2>
+              <p>
+                Practical technology learning for professionals, growing teams
+                and the people building what comes next.
+              </p>
+              <div className="academy-tags">
+                <span>Networking</span>
+                <span>Cybersecurity</span>
+                <span>Cloud</span>
+                <span>Software</span>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="academy-preview" className="academy-promo">
-        <div className="container grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-center">
-          <div>
-            <p className="section-kicker text-cyan-300">Mega Stride Academy</p>
-            <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-[-.05em] text-white md:text-6xl">
-              Build practical skills for the technology economy.
-            </h2>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-              Professional pathways in networking, cybersecurity, Linux, cloud,
-              software development and emerging technologies.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href="/academy" className="primary-button">
-                Explore the academy <span>↗</span>
-              </a>
-              <a href="/academy#register" className="secondary-button">
-                Register online
+              <a href="/academy" className="primary-button light-button">
+                Discover the Academy ↗
               </a>
             </div>
-          </div>
-          <div
-            className="academy-promo-image"
-            style={{
-              backgroundImage:
-                "url(https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=85)",
-            }}
-          >
-            <div className="academy-promo-badge">LEARN · BUILD · ADVANCE</div>
+            <EditorialImage
+              src="/images/mega-stride/academy/academy.webp"
+              alt="AI illustration of a professional networking workshop"
+            />
           </div>
         </div>
       </section>
-
-      <section id="approach" className="section-space">
-        <div className="container">
-          <div className="max-w-2xl">
-            <p className="section-kicker">Our approach</p>
-            <h2 className="section-title">
-              Technology without the complexity.
-            </h2>
-          </div>
-          <div className="mt-14 grid gap-4 md:grid-cols-3">
-            <div className="process-card">
-              <span>01</span>
-              <h3>Understand</h3>
-              <p>
-                We clarify the operational challenge, constraints and desired
-                outcome before recommending technology.
-              </p>
-            </div>
-            <div className="process-card featured">
-              <span>02</span>
-              <h3>Engineer</h3>
-              <p>
-                We design integrated solutions around security, reliability,
-                scalability and maintainability.
-              </p>
-            </div>
-            <div className="process-card">
-              <span>03</span>
-              <h3>Enable</h3>
-              <p>
-                We support implementation, knowledge transfer and ongoing
-                technology operations.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-y border-slate-200 bg-slate-50 py-14">
-        <div className="container">
-          <p className="mb-7 text-center text-xs font-bold uppercase tracking-[.25em] text-slate-400">
-            Designed to serve
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {industries.map((x) => (
-              <span key={x} className="industry-pill">
-                {x}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="section-space">
-        <div className="container">
-          <div className="cta-panel">
-            <div className="cta-glow" />
-            <div className="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+      <section className="editorial-section soft">
+        <div className="container photo-split">
+          <div className="split-copy">
+            <SectionHeading
+              kicker="Global procurement & trade"
+              title="Better specifications. Smarter sourcing."
+              description="Connect your ICT procurement requirements with equipment supply, supplier coordination and deployment planning."
+            />
+            <div className="feature-list">
               <div>
-                <p className="section-kicker text-cyan-200">
-                  Start the conversation
-                </p>
-                <h2 className="mt-4 max-w-3xl text-4xl font-black tracking-[-.04em] text-white md:text-6xl">
-                  Have a technology or trade challenge worth solving?
-                </h2>
-                <p className="mt-5 max-w-2xl text-lg leading-8 text-blue-100">
-                  Tell us what you are building, securing, modernizing,
-                  importing or exporting.
-                </p>
+                <span>01</span>
+                <div>
+                  <h3>Specify with clarity</h3>
+                  <p>
+                    Define equipment, compatibility, quantities and destination.
+                  </p>
+                </div>
               </div>
-              <a
-                href="/contact"
-                className="rounded-full bg-white px-7 py-4 text-center font-black text-[#0754c7] shadow-xl transition hover:-translate-y-0.5 hover:bg-cyan-50"
-              >
-                Contact Mega Stride <span className="ml-2">↗</span>
-              </a>
+              <div>
+                <span>02</span>
+                <div>
+                  <h3>Coordinate with purpose</h3>
+                  <p>
+                    Discuss sourcing, supply and logistics requirements before
+                    commitments are made.
+                  </p>
+                </div>
+              </div>
             </div>
+            <a href="/trade" className="primary-button">
+              Explore global trade ↗
+            </a>
+          </div>
+          <EditorialImage
+            src="/images/mega-stride/trade/trade.webp"
+            alt="AI illustration of technology equipment ready for global logistics"
+            className="split-photo"
+          />
+        </div>
+      </section>
+      <section className="editorial-section">
+        <div className="container">
+          <SectionHeading
+            kicker="How we work"
+            title="From the first question to your next stride."
+          />
+          <div className="process-grid">
+            {delivery.map(([t, d], i) => (
+              <article className="delivery-step" key={t}>
+                <span>0{i + 1} / DELIVERY</span>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </article>
+            ))}
+          </div>
+          <div style={{ marginTop: 70 }}>
+            <CTA />
           </div>
         </div>
       </section>

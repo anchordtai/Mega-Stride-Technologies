@@ -100,6 +100,12 @@ export default async function Admin({
       title="Manage the next stride."
     >
       <div className="mb-10 flex flex-wrap gap-5">
+        <a className="text-link" href="/admin/learning">
+          Academy management
+        </a>
+        <a className="text-link" href="/admin/integrations">
+          Email & payments
+        </a>
         <form action={accountAction}>
           <input type="hidden" name="mode" value="logout" />
           <button className="font-bold text-blue-700">Sign out</button>

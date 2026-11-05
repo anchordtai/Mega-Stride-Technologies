@@ -15,21 +15,48 @@ export default async function QuotationPage({
   const { service } = await searchParams;
   return (
     <PageShell
+      image="/images/mega-stride/services/equipment.webp"
+      imageAlt="AI illustration of unbranded enterprise hardware for procurement planning"
       eyebrow="Procurement & project enquiries"
       title="Define the requirement. Take the next stride."
       intro="Request a quotation for technology equipment, infrastructure, software, consulting or training. Include specifications, quantity, location and expected timeframe."
     >
-      <div className="mx-auto max-w-3xl">
-        <EnquiryForm
-          kind="quotation"
-          service={service?.slice(0, 120) || "ICT equipment / services"}
-          available={intakeReady()}
-        />
-        <p className="mt-6 text-sm leading-7 text-slate-600">
-          After your enquiry is received, our team can arrange a secure way to
-          share supporting documents. Please do not include passwords,
-          payment-card information or confidential credentials.
-        </p>
+      <div className="grid gap-10 lg:grid-cols-[.65fr_1.35fr]">
+        <aside>
+          <p className="section-kicker">Make your requirements clear</p>
+          <h2 className="mt-4 text-3xl font-medium">
+            A good specification is a strong beginning.
+          </h2>
+          <p className="mt-5 leading-8 text-slate-600">
+            Share the detail you have. We will clarify scope and dependencies
+            before preparing a formal quotation.
+          </p>
+          <div className="form-aside">
+            <h3>Useful information to include</h3>
+            <ul>
+              <li>Project objectives and location</li>
+              <li>Equipment specifications and quantities</li>
+              <li>Current systems and integration requirements</li>
+              <li>Preferred timeframe and delivery destination</li>
+            </ul>
+          </div>
+          <p className="mt-6 text-sm leading-7 text-slate-600">
+            Submitting this form is an enquiry. Prices and delivery commitments
+            are confirmed in an authorised quotation.
+          </p>
+        </aside>
+        <div>
+          <EnquiryForm
+            kind="quotation"
+            service={service?.slice(0, 120) || "ICT equipment / services"}
+            available={intakeReady()}
+          />
+          <p className="mt-6 text-sm leading-7 text-slate-600">
+            After your enquiry is received, our team can arrange a secure way to
+            share supporting documents. Please do not include passwords,
+            payment-card information or confidential credentials.
+          </p>
+        </div>
       </div>
     </PageShell>
   );

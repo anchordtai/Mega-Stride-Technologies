@@ -1,71 +1,89 @@
-import { company } from "@/lib/company";
+import { company, serviceCategories } from "@/lib/company";
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#040b16] text-white">
-      <div className="container grid gap-10 py-16 md:grid-cols-3">
-        <div>
-          <p className="text-2xl font-black">
-            MEGA <span className="text-[#d2ad63]">STRIDE</span>
+    <footer className="site-footer">
+      <div className="container">
+        <div className="footer-top">
+          <a
+            className="wordmark"
+            href="/"
+            aria-label="Mega Stride Technologies home"
+          >
+            <span>
+              MEGA <b>STRIDE</b>
+              <i aria-hidden="true">↗</i>
+            </span>
+            <small>TECHNOLOGIES LIMITED</small>
+          </a>
+          <p>
+            Technology. Infrastructure.
+            <br />
+            Innovation. Global solutions.
           </p>
-          <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
-            Technology. Infrastructure. Trade. Transformation.
-          </p>
-          <p className="mt-4 text-sm leading-7 text-slate-400">
-            Technology engineering, digital solutions, professional development
-            and ICT trade.
-          </p>
+          <a href="/contact" className="footer-contact-link">
+            Start a conversation ↗
+          </a>
         </div>
-        <nav aria-label="Footer navigation">
-          <h2 className="section-kicker text-[#d2ad63]">Explore</h2>
-          <div className="mt-5 grid gap-4 text-sm text-slate-300">
+        <div className="footer-grid">
+          <div>
+            <p className="footer-label">Built for your next stride</p>
+            <p className="footer-description">
+              Technology engineering, digital infrastructure, professional
+              learning and ICT trade. Based in Abuja. Focused on your next step.
+            </p>
+            <a
+              href="https://www.facebook.com/profile.php?id=61590753162681"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook ↗
+            </a>
+          </div>
+          <nav aria-label="Footer solutions">
+            <p className="footer-label">Solutions</p>
+            {serviceCategories.map((s) => (
+              <a key={s.slug} href={`/services/${s.slug}`}>
+                {s.title
+                  .replace(" & Digital Products", "")
+                  .replace("Enterprise ", "")}
+              </a>
+            ))}
+          </nav>
+          <nav aria-label="Footer navigation">
+            <p className="footer-label">Explore</p>
             {[
-              ["About us", "/about"],
-              ["Services & solutions", "/services"],
-              ["Global trade", "/trade"],
-              ["Mega Stride Academy", "/academy"],
+              ["Our company", "/about"],
+              ["Industries", "/industries"],
               ["Projects", "/projects"],
+              ["Academy", "/academy"],
               ["Insights", "/insights"],
-              ["Request a quotation", "/quotation"],
+              ["Global trade", "/trade"],
+              ["Learner sign in", "/account"],
             ].map(([l, h]) => (
-              <a key={h} href={h}>
+              <a href={h} key={h}>
                 {l}
               </a>
             ))}
+          </nav>
+          <div>
+            <p className="footer-label">Get in touch</p>
+            <a href={`mailto:${company.email}`}>{company.email}</a>
+            <a href={`tel:${company.phone}`}>{company.phoneDisplay}</a>
+            <p className="footer-description">{company.location}</p>
+            <a href="/quotation">Request a quotation ↗</a>
           </div>
-        </nav>
-        <div>
-          <h2 className="section-kicker text-[#d2ad63]">
-            Start a conversation
-          </h2>
-          <a className="mt-5 block text-sm" href={`mailto:${company.email}`}>
-            {company.email}
-          </a>
-          <a className="mt-4 block text-sm" href={`tel:${company.phone}`}>
-            {company.phoneDisplay}
-          </a>
-          <p className="mt-4 text-sm leading-7 text-slate-300">
-            {company.location}
-          </p>
-          <a
-            href="https://www.facebook.com/profile.php?id=61590753162681"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 inline-block text-sm underline"
-          >
-            Facebook
-          </a>
         </div>
-      </div>
-      <div className="container flex flex-wrap justify-between gap-5 border-t border-white/10 py-6 text-xs leading-6 text-slate-400">
-        <p>
-          © {new Date().getFullYear()} {company.name}. RC{" "}
-          {company.registration}.
-        </p>
-        <nav aria-label="Policies" className="flex gap-5">
-          <a href="/privacy">Privacy</a>
-          <a href="/terms">Terms</a>
-          <a href="/academy/terms">Academy terms</a>
-        </nav>
+        <div className="footer-bottom">
+          <p>
+            © {new Date().getFullYear()} {company.name}. RC{" "}
+            {company.registration}.
+          </p>
+          <nav aria-label="Policies">
+            <a href="/privacy">Privacy & cookies</a>
+            <a href="/terms">Website terms</a>
+            <a href="/academy/terms">Academy terms</a>
+          </nav>
+        </div>
       </div>
     </footer>
   );

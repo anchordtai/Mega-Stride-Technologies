@@ -1,80 +1,119 @@
 import PageShell from "@/components/page-shell";
+import { CTA, EditorialImage, SectionHeading } from "@/components/design";
+import { delivery } from "@/lib/presentation";
 import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "About Mega Stride",
   "Technology engineering, ICT infrastructure, professional training and technology trade in Abuja, Nigeria.",
   "/about",
 );
-export default function AboutPage() {
+export default function Page() {
   return (
     <PageShell
-      eyebrow="About Mega Stride"
-      title="Engineering the next stride for organisations and people."
-      intro="Mega Stride Technologies Limited brings technology, infrastructure, professional development and ICT trade into one practical conversation."
+      eyebrow="Our company"
+      title="Progress starts with a different kind of technology partner."
+      intro="Mega Stride Technologies Limited brings technical thinking, practical delivery and a connected view of your business needs."
+      image="/images/mega-stride/hero/operations.webp"
     >
-      <div className="grid gap-10 lg:grid-cols-2">
-        <section>
-          <h2 className="text-3xl font-bold">
-            Technology built around real outcomes.
-          </h2>
-          <p className="mt-6 text-lg leading-8 text-slate-600">
-            We work across software engineering, enterprise networking, cloud
-            infrastructure, systems integration, technology supply and
-            professional learning. Our approach starts with the operating
-            environment, the people using it and the outcome required.
+      <div className="intro-grid">
+        <SectionHeading
+          kicker="Who we are"
+          title="Built around the work you need to do."
+        />
+        <div className="intro-copy">
+          <p>
+            Based in Abuja, Nigeria, we work across software engineering,
+            enterprise networking, cloud infrastructure, systems integration,
+            technology supply and professional learning.
           </p>
-          <p className="mt-5 leading-8 text-slate-600">
-            Based in Abuja, Nigeria, Mega Stride is positioned to support public
-            institutions, educational organisations, businesses and technology
-            professionals.
+          <p>
+            Our approach begins with the operating environment, the people using
+            it and the outcome required. We bring these requirements together to
+            shape a practical, maintainable solution.
           </p>
-        </section>
-        <section className="platform-panel">
-          <h2 className="text-2xl font-bold">How we work</h2>
-          <ol className="mt-6 space-y-5">
-            {[
-              [
-                "Understand",
-                "Clarify objectives, constraints and requirements.",
-              ],
-              [
-                "Engineer",
-                "Design for reliability, security and maintainability.",
-              ],
-              [
-                "Enable",
-                "Support implementation, knowledge transfer and ongoing operations.",
-              ],
-            ].map(([t, d]) => (
-              <li key={t}>
-                <h3 className="font-bold">{t}</h3>
-                <p className="mt-2 leading-7 text-slate-600">{d}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
+          <p>
+            We are positioned to support public institutions, educational
+            organisations, businesses and technology professionals.
+          </p>
+        </div>
       </div>
-      <div className="mt-12 grid gap-5 md:grid-cols-3">
+      <section className="about-purpose" aria-label="Our purpose and ambition">
+        <div>
+          <p className="section-kicker">Our purpose</p>
+          <h2>Make technology a practical advantage.</h2>
+          <p>
+            Help organisations connect infrastructure, software and people
+            through considered engineering, clear communication and professional
+            learning.
+          </p>
+        </div>
+        <div>
+          <p className="section-kicker">Our ambition</p>
+          <h2>Build stronger digital foundations.</h2>
+          <p>
+            Be a dependable technology partner for organisations moving from
+            immediate needs to a more connected, capable and resilient future.
+          </p>
+        </div>
+      </section>
+      <div className="principles">
         {[
-          ["Practical", "Technology decisions grounded in operational needs."],
           [
+            "01",
+            "Practical",
+            "Technology decisions grounded in operational needs.",
+          ],
+          [
+            "02",
             "Responsible",
             "Clear scope, honest communication and security-conscious delivery.",
           ],
           [
+            "03",
             "Forward-looking",
-            "Maintainable foundations that can evolve with the organisation.",
+            "Maintainable foundations that can evolve with your organisation.",
           ],
-        ].map(([t, d]) => (
-          <section key={t} className="platform-panel">
-            <h2 className="text-xl font-bold">{t}</h2>
-            <p className="mt-4 leading-7 text-slate-600">{d}</p>
-          </section>
+        ].map(([n, t, d]) => (
+          <div key={n}>
+            <span>{n} / OUR PRINCIPLES</span>
+            <h3>{t}</h3>
+            <p>{d}</p>
+          </div>
         ))}
       </div>
-      <a href="/contact" className="primary-button mt-12">
-        Discuss your requirements ↗
-      </a>
+      <section className="photo-split section-divider">
+        <EditorialImage
+          src="/images/mega-stride/hero/software.webp"
+          alt="AI illustration of a software engineering workspace"
+          className="split-photo"
+        />
+        <div className="split-copy">
+          <SectionHeading
+            kicker="Connected capabilities"
+            title="See the whole environment. Engineer the right next step."
+            description="Applications depend on infrastructure. Infrastructure needs security. People need the knowledge to use it well. We consider those connections when discussing your project."
+          />
+          <a href="/services" className="primary-button">
+            Explore our capabilities ↗
+          </a>
+        </div>
+      </section>
+      <section className="section-divider">
+        <SectionHeading
+          kicker="Our delivery approach"
+          title="Clarity at every stage."
+        />
+        <div className="process-grid">
+          {delivery.map(([t, d], i) => (
+            <article className="delivery-step" key={t}>
+              <span>0{i + 1}</span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <CTA />
     </PageShell>
   );
 }

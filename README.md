@@ -1,5 +1,9 @@
 # Mega Stride Technologies Limited
 
+Academy, payment and email functionality: [implementation, verification and account activation requirements](docs/ACADEMY-COMMERCE-2026-11-05.md).
+
+Premium public-site redesign deployed 5 November 2026. See [redesign release evidence and remaining work](docs/REDESIGN-2026-11-05.md). PR #4 remains open; production currently serves its verified commit.
+
 Live corporate website: https://www.megastride.com.ng/ . The existing Next.js application now uses the dedicated free Supabase project `okknsxrhbiiunjlaitcy` for protected enquiries and platform foundations. The corporate release is deployed; the wider Academy, payments and email roadmap remains incomplete. See [release evidence and limits](docs/RELEASE-2026-11-05.md). No other application's database is reused.
 
 Start with:

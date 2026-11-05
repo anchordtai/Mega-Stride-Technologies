@@ -5,9 +5,9 @@ export default function ContactFloat() {
     <a
       href={`tel:${company.phone}`}
       aria-label="Call Mega Stride Technologies"
-      className="fixed bottom-5 right-5 z-40 rounded-full border border-white/60 bg-blue-700 px-5 py-4 text-sm font-bold text-white shadow-lg"
+      className="contact-float"
     >
-      Call Mega Stride
+      <span aria-hidden="true">↗</span> Talk to Mega Stride
     </a>
   );
 }

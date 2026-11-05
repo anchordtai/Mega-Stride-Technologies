@@ -15,6 +15,7 @@ export default async function Registration({
   const { course } = await searchParams;
   return (
     <PageShell
+      image="/images/mega-stride/academy/academy.webp"
       eyebrow="Mega Stride Academy"
       title="Your next stride starts with a conversation."
       intro="Choose a pathway and tell us what you want to achieve."

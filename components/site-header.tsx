@@ -1,83 +1,140 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { serviceCategories } from "@/lib/company";
 const links = [
   ["About", "/about"],
-  ["Solutions", "/services"],
-  ["Global trade", "/trade"],
+  ["Industries", "/industries"],
+  ["Projects", "/projects"],
   ["Academy", "/academy"],
   ["Insights", "/insights"],
+  ["Global trade", "/trade"],
 ];
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
+  const solutions = useRef<HTMLDetailsElement>(null);
+  const path = usePathname();
+  useEffect(() => {
+    const close = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (solutions.current?.open) {
+          solutions.current.open = false;
+          solutions.current.querySelector("summary")?.focus();
+        }
+        if (open) {
+          setOpen(false);
+          toggle.current?.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
+  }, [open]);
+  const active = (href: string) => path === href || path.startsWith(href + "/");
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#06101f]/95 text-white backdrop-blur-xl">
-      <div className="container flex min-h-[88px] items-center justify-between gap-4 py-3">
+    <header className="masthead">
+      <div className="container masthead-row">
         <a
+          className="wordmark"
           href="/"
           aria-label="Mega Stride Technologies home"
-          className="shrink-0"
-          onClick={() => setOpen(false)}
         >
-          <span className="block text-xl font-black tracking-tight sm:text-2xl">
-            MEGA <span className="text-[#d2ad63]">STRIDE</span>
+          <span>
+            MEGA <b>STRIDE</b>
+            <i aria-hidden="true">↗</i>
           </span>
-          <span className="block text-[9px] tracking-[.2em] text-slate-300">
-            TECHNOLOGIES LIMITED
-          </span>
+          <small>TECHNOLOGIES LIMITED</small>
         </a>
-        <nav
-          aria-label="Primary navigation"
-          className="hidden items-center gap-5 xl:flex"
-        >
-          {links.map(([label, href]) => (
-            <a key={href} className="nav-link py-3" href={href}>
-              {label}
+        <nav className="desktop-nav" aria-label="Primary navigation">
+          <a
+            className="nav-item"
+            href="/about"
+            aria-current={active("/about") ? "page" : undefined}
+          >
+            About
+          </a>
+          <details
+            ref={solutions}
+            className="solutions-menu"
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node))
+                e.currentTarget.open = false;
+            }}
+          >
+            <summary
+              className={`nav-item ${active("/services") ? "selected" : ""}`}
+            >
+              Solutions <span aria-hidden="true">⌄</span>
+            </summary>
+            <div className="mega-menu">
+              <div className="menu-intro">
+                <p className="section-kicker">Our expertise</p>
+                <h2>
+                  Connected thinking.
+                  <br />
+                  Practical solutions.
+                </h2>
+                <a href="/services">All solutions ↗</a>
+              </div>
+              <div className="menu-services">
+                {serviceCategories.map((s) => (
+                  <a key={s.slug} href={`/services/${s.slug}`}>
+                    <strong>{s.title}</strong>
+                    <span>{s.summary}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </details>
+          {links.slice(1).map(([l, h]) => (
+            <a
+              className="nav-item"
+              key={h}
+              href={h}
+              aria-current={active(h) ? "page" : undefined}
+            >
+              {l}
             </a>
           ))}
         </nav>
-        <a
-          href="/contact"
-          className="hidden rounded-full bg-white px-5 py-3 text-sm font-bold text-[#06101f] xl:inline-flex"
-        >
-          Start a conversation ↗
+        <a className="header-quote" href="/quotation">
+          Let’s talk <span aria-hidden="true">↗</span>
         </a>
         <button
           ref={toggle}
-          type="button"
-          onClick={() => setOpen(!open)}
+          className="menu-toggle"
           aria-expanded={open}
           aria-controls="mobile-navigation"
-          className="rounded-lg border border-white/30 px-4 py-3 text-sm xl:hidden"
+          onClick={() => setOpen(!open)}
         >
-          {open ? "Close menu" : "Menu"}
+          {open ? "Close" : "Menu"}{" "}
+          <span aria-hidden="true">{open ? "×" : "☰"}</span>
         </button>
       </div>
       {open && (
         <nav
           id="mobile-navigation"
+          className="mobile-nav"
           aria-label="Mobile navigation"
-          className="max-h-[calc(100dvh-88px)] overflow-y-auto border-t border-white/10 bg-[#06101f] xl:hidden"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              setOpen(false);
-              toggle.current?.focus();
-            }
-          }}
         >
-          <div className="container grid gap-2 py-5">
+          <div className="container">
             {[
-              ...links,
+              ["Home", "/"],
+              links[0],
+              ["Solutions", "/services"],
+              ...links.slice(1),
               ["Contact", "/contact"],
               ["Request a quotation", "/quotation"],
-            ].map(([label, href]) => (
+            ].map(([l, h]) => (
               <a
-                key={href}
-                href={href}
+                href={h}
+                key={h}
+                aria-current={path === h ? "page" : undefined}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-4 text-base hover:bg-white/10"
               >
-                {label}
+                {l}
+                <span aria-hidden="true">↗</span>
               </a>
             ))}
           </div>

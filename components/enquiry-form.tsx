@@ -24,6 +24,7 @@ export default function EnquiryForm({
     [error, setError] = useState(""),
     [reference, setReference] = useState("");
   const [scriptReady, setScriptReady] = useState(false);
+  const sending = useRef(false);
   const challenge = useRef("");
   const challengeTime = useRef(0);
   const widget = useRef<HTMLDivElement>(null),
@@ -52,7 +53,10 @@ export default function EnquiryForm({
   }, [scriptReady]);
   useEffect(() => {
     if (available && !process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
-      fetch("/api/enquiry-challenge", { method: "POST" })
+      fetch("/api/enquiry-challenge", {
+        method: "POST",
+        signal: AbortSignal.timeout(12000),
+      })
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
           challenge.current = d?.token || "";
@@ -63,6 +67,8 @@ export default function EnquiryForm({
   }, [available]);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (sending.current) return;
+    sending.current = true;
     setError("");
     setPending(true);
     const f = new FormData(e.currentTarget);
@@ -94,18 +100,31 @@ export default function EnquiryForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(30000),
       });
+      if (!r.headers.get("content-type")?.includes("application/json"))
+        throw Error(
+          "We could not confirm the response. Your details are still here; please contact us if the problem continues.",
+        );
       const data = await r.json();
       if (!r.ok) throw Error(data.error);
       setReference(data.reference);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Please try again.");
+      setError(
+        err instanceof DOMException &&
+          (err.name === "TimeoutError" || err.name === "AbortError")
+          ? "The connection took too long. We could not confirm submission. Please keep your details and contact our team before sending again."
+          : err instanceof Error
+            ? err.message
+            : "We could not confirm submission. Your details are still here. Please try again or contact us.",
+      );
       if (widgetId.current) window.turnstile?.reset(widgetId.current);
       token.current = "";
       if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
         try {
           const fresh = await fetch("/api/enquiry-challenge", {
             method: "POST",
+            signal: AbortSignal.timeout(12000),
           });
           const d = await fresh.json();
           challenge.current = d.token || "";
@@ -115,24 +134,47 @@ export default function EnquiryForm({
         }
       }
     } finally {
+      sending.current = false;
       setPending(false);
     }
   }
   if (reference)
     return (
-      <div role="status" className="platform-panel">
+      <div role="status" className="platform-panel form-success">
+        <span className="success-mark" aria-hidden="true">
+          ✓
+        </span>
         <p className="section-kicker">Enquiry received</p>
         <h2 className="mt-4 text-3xl font-bold">
           Thank you for taking the next stride.
         </h2>
-        <p className="mt-4">
+        <p className="enquiry-reference">
           Your reference is <strong>{reference}</strong>. Our team will review
           your requirements.
         </p>
       </div>
     );
   return (
-    <form onSubmit={submit} className="platform-panel" aria-busy={pending}>
+    <form
+      onSubmit={submit}
+      className="platform-panel enquiry-form"
+      aria-busy={pending}
+    >
+      <div className="form-intro">
+        <h2>
+          {kind === "training"
+            ? "Let’s plan your learning."
+            : kind === "trade"
+              ? "Tell us what you need to source."
+              : kind === "quotation"
+                ? "Share your project requirements."
+                : "Start the conversation."}
+        </h2>
+        <p>
+          Fields marked * are required. You’ll receive a reference after your
+          enquiry is saved.
+        </p>
+      </div>
       {!available && (
         <p
           role="status"
@@ -149,7 +191,7 @@ export default function EnquiryForm({
         <legend className="sr-only">{kind} enquiry details</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="form-label">
-            Full name
+            Full name *
             <input
               className="form-input"
               name="name"
@@ -160,7 +202,7 @@ export default function EnquiryForm({
             />
           </label>
           <label className="form-label">
-            Email
+            Email *
             <input
               className="form-input"
               name="email"
@@ -190,7 +232,7 @@ export default function EnquiryForm({
             />
           </label>
           <label className="form-label">
-            Country
+            Country *
             <input
               className="form-input"
               name="country"
@@ -214,7 +256,7 @@ export default function EnquiryForm({
           {kind === "trade" && (
             <>
               <label className="form-label">
-                Product description
+                Product description *
                 <input
                   name="product"
                   className="form-input"
@@ -232,7 +274,7 @@ export default function EnquiryForm({
                 />
               </label>
               <label className="form-label">
-                Destination
+                Destination *
                 <input
                   name="destination"
                   className="form-input"
@@ -258,7 +300,7 @@ export default function EnquiryForm({
         <label className="form-label mt-5">
           {kind === "training"
             ? "Learning goals and preferred training arrangement"
-            : "Requirements and additional information"}
+            : "Requirements and additional information *"}
           <textarea
             name="message"
             className="form-input"

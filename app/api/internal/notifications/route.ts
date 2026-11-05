@@ -21,3 +21,6 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export const GET = POST;
+export const maxDuration = 60;
