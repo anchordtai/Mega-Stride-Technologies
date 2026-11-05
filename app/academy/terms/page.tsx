@@ -24,19 +24,22 @@ export default function Terms() {
         <section>
           <h2 className="text-xl font-bold">Fees and cancellations</h2>
           <p>
-            Online payment collection is not currently available. Obtain
-            official payment instructions and the applicable cancellation,
-            rescheduling and refund terms in writing before paying for a course.
+            Use online checkout only when it is offered for a published course.
+            Test checkout does not collect real money or grant course access.
+            Obtain official payment instructions and the applicable
+            cancellation, rescheduling and refund terms in writing before paying
+            for a course.
           </p>
         </section>
         <section>
           <h2 className="text-xl font-bold">Learning records and awards</h2>
           <p>
             Marking a lesson complete records a learner acknowledgement; it does
-            not demonstrate assessed competence. Any completion award is subject
-            to the requirements confirmed for that course. Independent
-            professional training does not imply manufacturer accreditation or
-            manufacturer certification.
+            not demonstrate assessed competence. Completion certificates require
+            all published lessons and a passed current course assessment. The
+            name comes from the learner profile. Independent professional
+            training does not imply manufacturer accreditation or manufacturer
+            certification.
           </p>
         </section>
         <section>

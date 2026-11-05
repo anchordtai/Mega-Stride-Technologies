@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    "/api/academy/certificates/*": ["./public/fonts/manrope.ttf"],
+  },
   experimental: { serverActions: { bodySizeLimit: "4mb" } },
   async headers() {
     return [

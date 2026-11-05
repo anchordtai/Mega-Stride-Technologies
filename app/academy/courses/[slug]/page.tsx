@@ -1,3 +1,7 @@
+import CheckoutButton from "@/components/checkout-button";
+import { paymentMode } from "@/lib/payment-security";
+import { currentIdentity } from "@/lib/supabase/server";
+import { enrolFree } from "@/app/academy/actions";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/page-shell";
 import { userDatabase } from "@/lib/supabase/server";
@@ -37,6 +41,8 @@ export default async function Course({
   const { slug } = await params;
   const c = await course(slug);
   if (!c) notFound();
+  const identity = await currentIdentity();
+  const mode = paymentMode();
   return (
     <PageShell eyebrow={c.category || "Mega Stride Academy"} title={c.title}>
       <script
@@ -56,6 +62,21 @@ export default async function Course({
       />
       <article className="platform-panel max-w-4xl">
         <p className="whitespace-pre-wrap text-lg leading-9">{c.description}</p>
+        {c.duration_text && <p className="mt-6 font-bold">{c.duration_text}</p>}
+        {c.objectives && (
+          <section className="mt-7">
+            <h2 className="text-xl font-bold">What you will learn</h2>
+            <p className="mt-4 whitespace-pre-wrap leading-8">{c.objectives}</p>
+          </section>
+        )}
+        {c.prerequisites && (
+          <section className="mt-7">
+            <h2 className="text-xl font-bold">Before you begin</h2>
+            <p className="mt-4 whitespace-pre-wrap leading-8">
+              {c.prerequisites}
+            </p>
+          </section>
+        )}
         <p className="mt-6 font-bold">
           {c.price_minor === null
             ? "Contact the Academy for confirmed fees."
@@ -79,6 +100,25 @@ export default async function Course({
           Independent professional training. Enrolment, schedule and any payment
           arrangements require confirmation by the Academy.
         </p>
+        {identity && c.price_minor === 0 ? (
+          <form action={enrolFree} className="mt-7">
+            <input type="hidden" name="course" value={c.id} />
+            <button className="primary-button">
+              Enrol in this free course
+            </button>
+          </form>
+        ) : identity &&
+          c.price_minor > 0 &&
+          mode &&
+          (mode === "live" || identity.role === "admin") ? (
+          <div className="mt-7">
+            <CheckoutButton course={c.id} test={mode === "test"} />
+          </div>
+        ) : !identity && c.price_minor !== null ? (
+          <a className="primary-button mt-7" href="/account">
+            Sign in to discuss enrolment ↗
+          </a>
+        ) : null}
         <a
           href={`/academy/register?course=${encodeURIComponent(c.title)}`}
           className="primary-button mt-7"
