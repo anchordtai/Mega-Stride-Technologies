@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { serviceCategories } from "@/lib/company";
@@ -40,11 +41,14 @@ export default function SiteHeader() {
           href="/"
           aria-label="Mega Stride Technologies home"
         >
-          <span>
-            MEGA <b>STRIDE</b>
-            <i aria-hidden="true">↗</i>
-          </span>
-          <small>TECHNOLOGIES LIMITED</small>
+          <Image
+            src="/brand/mega-stride-logo.webp"
+            alt="Mega Stride Technologies Ltd"
+            width={1100}
+            height={304}
+            className="company-logo"
+            priority
+          />
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           <a

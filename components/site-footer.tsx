@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { company, serviceCategories } from "@/lib/company";
 export default function SiteFooter() {
   return (
@@ -9,11 +10,7 @@ export default function SiteFooter() {
             href="/"
             aria-label="Mega Stride Technologies home"
           >
-            <span>
-              MEGA <b>STRIDE</b>
-              <i aria-hidden="true">↗</i>
-            </span>
-            <small>TECHNOLOGIES LIMITED</small>
+            <Image src="/brand/mega-stride-logo.webp" alt="Mega Stride Technologies Ltd" width={1100} height={304} className="company-logo" />
           </a>
           <p>
             Technology. Infrastructure.

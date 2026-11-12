@@ -61,6 +61,7 @@ export default function RootLayout({
               "@type": "Organization",
               name: "Mega Stride Technologies Limited",
               url: canonicalOrigin,
+              logo: `${canonicalOrigin}/brand/mega-stride-logo.jpg`,
               email: "info@megastride.com.ng",
               telephone: "+2348138463804",
               address: {

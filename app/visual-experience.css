@@ -649,3 +649,10 @@
     font-size: 11px;
   }
 }
+
+/* Owner-supplied identity; preserve the original artwork and proportions. */
+.wordmark .company-logo { display:block; width:244px; height:auto; }
+.site-footer .wordmark { background:#fff; padding:12px 16px; border-radius:10px; }
+@media(max-width:1200px) { .wordmark .company-logo { width:210px; } .masthead-row { gap:18px; } }
+@media(max-width:640px) { .wordmark .company-logo { width:190px; } .masthead-row { height:80px; gap:12px; } }
+@media(max-width:360px) { .wordmark .company-logo { width:160px; } }
