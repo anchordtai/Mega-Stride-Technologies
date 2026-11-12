@@ -15,7 +15,11 @@ export async function GET(
     .select("*")
     .eq("code", code)
     .maybeSingle();
-  if (!c || c.revoked_at)
+  if (
+    !c ||
+    c.revoked_at ||
+    (c.expires_at && new Date(c.expires_at).getTime() <= Date.now())
+  )
     return NextResponse.json(
       { error: "Certificate unavailable" },
       { status: 404 },

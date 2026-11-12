@@ -6,5 +6,6 @@ export async function requireLearner() {
   if (!databaseReady()) redirect("/account?notice=unavailable");
   const i = await currentIdentity();
   if (!i) redirect("/account");
+  if (!i.user.email_confirmed_at) redirect("/account?notice=verify-email");
   return i;
 }

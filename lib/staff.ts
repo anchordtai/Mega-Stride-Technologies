@@ -8,6 +8,7 @@ export async function requireStaff(
   if (!databaseReady()) redirect("/account?notice=unavailable");
   const i = await currentIdentity();
   if (!i) redirect("/account");
+  if (!i.user.email_confirmed_at) redirect("/account?notice=verify-email");
   if (!i.role || !roles.includes(i.role)) redirect("/academy/dashboard");
   return i;
 }

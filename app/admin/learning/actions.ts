@@ -1,11 +1,12 @@
 "use server";
+import { requireTeachingCourse } from "@/lib/teaching";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/staff";
 import { intakeDatabase } from "@/lib/supabase/server";
 export async function saveAssessment(f: FormData) {
-  await requireStaff(["admin", "instructor"]);
   const course = z.uuid().parse(f.get("course"));
+  await requireTeachingCourse(course);
   const questions = z
     .array(
       z
@@ -42,7 +43,7 @@ export async function saveAssessment(f: FormData) {
   revalidatePath("/admin/learning");
 }
 export async function editCourse(f: FormData) {
-  const i = await requireStaff(["admin", "instructor"]);
+  const i = await requireStaff(["admin"]);
   const id = z.uuid().parse(f.get("id"));
   const text = (key: string, max: number, min = 0) =>
     z

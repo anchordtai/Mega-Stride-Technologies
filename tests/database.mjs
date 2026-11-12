@@ -770,6 +770,7 @@ await check(
       );
     }),
 );
+await (await import("./lms-database-cases.mjs")).runLmsChecks({db,as,check,userA,userB,admin});
 console.log(
   `${passed} isolated PostgreSQL checks passed. Auth/Storage API and hosted restore remain release gates.`,
 );
