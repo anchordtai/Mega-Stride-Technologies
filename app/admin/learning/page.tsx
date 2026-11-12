@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import PageShell from "@/components/page-shell";
 import { requireStaff } from "@/lib/staff";
 import AssessmentEditor from "@/components/assessment-editor";
@@ -45,6 +46,7 @@ export default async function Page({
   searchParams: Promise<{ course?: string }>;
 }) {
   const i = await requireStaff(["admin", "staff", "instructor"]);
+  if (i.role === "instructor") redirect("/instructor");
   const teaching = ["admin", "instructor"].includes(i.role!);
   const sales = ["admin", "staff"].includes(i.role!);
   const { course } = await searchParams;

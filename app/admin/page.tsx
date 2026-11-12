@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import PageShell from "@/components/page-shell";
 import { requireStaff } from "@/lib/staff";
 import { accountAction } from "@/app/account/actions";
@@ -48,6 +49,7 @@ export default async function Admin({
   searchParams: Promise<{ q?: string; status?: string; edit?: string }>;
 }) {
   const i = await requireStaff();
+  if (i.role === "instructor") redirect("/instructor");
   const { q = "", status = "", edit = "" } = await searchParams;
   const operational = ["admin", "staff"].includes(i.role!);
   const publishing = ["admin", "editor"].includes(i.role!);
@@ -100,7 +102,7 @@ export default async function Admin({
       title="Manage the next stride."
     >
       <div className="mb-10 flex flex-wrap gap-5">
-        <a className="text-link" href="/admin/learning">
+        <a className="text-link" href="/instructor">
           Academy management
         </a>
         <a className="text-link" href="/admin/integrations">

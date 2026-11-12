@@ -16,26 +16,35 @@ export default async function Page({
   if (!/^[a-f0-9]{32}$/.test(code) || !databaseReady()) notFound();
   const { data: c, error } = await intakeDatabase()
     .from("certificates")
-    .select("code,course_title,issued_at,revoked_at")
+    .select("code,holder_name,course_title,issued_at,revoked_at,expires_at")
     .eq("code", code)
     .maybeSingle();
   if (error) throw Error("Verification unavailable");
   if (!c) notFound();
+  const expired =
+    !!c.expires_at && new Date(c.expires_at).getTime() <= Date.now();
   return (
     <PageShell
       eyebrow="Certificate verification"
       title={
         c.revoked_at
-          ? "Certificate withdrawn."
-          : "A verified learning milestone."
+          ? "Certificate revoked."
+          : expired
+            ? "Certificate expired."
+            : "A verified learning milestone."
       }
       intro="Mega Stride Academy · Independent professional training"
     >
       <section className="platform-panel max-w-3xl">
         <p className="section-kicker">
-          {c.revoked_at ? "Withdrawn" : "Valid completion record"}
+          {c.revoked_at
+            ? "Revoked"
+            : expired
+              ? "Expired"
+              : "Valid completion record"}
         </p>
         <h2 className="mt-5 text-3xl font-bold">{c.course_title}</h2>
+        <p className="mt-5 text-xl">Awarded to {c.holder_name}</p>
         <p className="mt-5">
           Issued:{" "}
           {new Date(c.issued_at).toLocaleDateString("en-NG", {
@@ -47,10 +56,11 @@ export default async function Page({
           Certificate reference: {c.code}
         </p>
         <p className="mt-5 leading-8 text-slate-600">
-          This page confirms the course and record status. Compare the holder’s
-          name against the original certificate. Holder contact details are not
-          published. This is a Mega Stride Academy completion certificate, not a
-          manufacturer certification.
+          This page confirms the holder’s name, course and record status.
+          Compare these details and the certificate ID against the original
+          document. Holder contact details are not published. This is a Mega
+          Stride Academy completion certificate, not a manufacturer
+          certification.
         </p>
         <a
           className="primary-button mt-6"
