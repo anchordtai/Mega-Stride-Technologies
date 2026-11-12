@@ -44,28 +44,11 @@ export async function certificatePdf(c: {
       color: navy,
     });
   };
-  center("MEGA STRIDE TECHNOLOGIES LIMITED", 510, 18);
-  center("ACADEMY", 480, 11);
-  p.drawRectangle({ x: 680, y: 475, width: 35, height: 35, color: blue });
-  const white = rgb(1, 1, 1);
-  p.drawLine({
-    start: { x: 689, y: 484 },
-    end: { x: 706, y: 501 },
-    thickness: 2,
-    color: white,
-  });
-  p.drawLine({
-    start: { x: 695, y: 501 },
-    end: { x: 706, y: 501 },
-    thickness: 2,
-    color: white,
-  });
-  p.drawLine({
-    start: { x: 706, y: 490 },
-    end: { x: 706, y: 501 },
-    thickness: 2,
-    color: white,
-  });
+  const logo = await doc.embedJpg(
+    await readFile(join(process.cwd(), "public/brand/mega-stride-logo.jpg")),
+  );
+  p.drawImage(logo, { x: 256, y: 465, width: 330, height: 91.2 });
+  center("ACADEMY", 451, 10);
 
   center("Certificate of Completion", 425, 32);
   center("This certifies that", 375, 13);
