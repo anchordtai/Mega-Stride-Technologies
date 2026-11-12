@@ -58,7 +58,7 @@ export async function GET(
     y -= 15;
     line(`TOTAL: ${q.currency} ${(total / 100).toFixed(2)}`, 15, true);
     line("Scope, taxes and delivery terms must be agreed before acceptance.");
-    line("info@megastride.com.ng | +234 813 846 3804 | Abuja, Nigeria");
+    line("info@megastride.com.ng | +234 707 572 1887 | Abuja, Nigeria");
     const bytes = await doc.save();
     return new Response(Buffer.from(bytes), {
       headers: {

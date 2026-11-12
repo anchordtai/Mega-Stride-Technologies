@@ -30,3 +30,10 @@ Hosted browser checks covered the corporate pages, homepage appearance and unaut
 8. Measure real performance/accessibility and verify physical mobile/tablet devices. Complete hosted database/storage restore and operational retention rehearsals.
 
 No other application's database was modified. No paid upgrade was made. Application rollback preserves the new enquiry records. Credentials and customer data must never be committed.
+
+
+## Current content publication · 12 November 2026
+
+Supersedes earlier course-content draft counts: all five course packages are authored and published in the protected LMS at ₦15,000 each. Totals: 36 modules/lessons, 41 required graded tasks (five written final assessments and five projects included), five objective final assessments, 191 academic documents and 137 separate academic-bank items. The complete import/publication was replayed in isolated PostgreSQL; hosted unpaid-role checks found five visible public course records and zero visible lessons/modules/documents/tasks. No instructor solution is added to this public repository. See the current ACADEMY-CONTENT-REGISTER-2026-11-12.md for exact validation and execution limitations.
+
+Phone changed to +2347075721887 across company configuration, display text, call links, quotation PDF contact line and organization metadata. Catalogue cards now show the fee and course pages explicitly state when online payment is unavailable. Paystack credentials are absent; online charging and public signup remain closed. No paid plan, real transaction, email or assumed administrator identity was created. The AI tutor and advanced timed/randomized exam roadmap are separate from the published teaching materials.

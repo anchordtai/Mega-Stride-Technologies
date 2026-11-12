@@ -184,7 +184,7 @@ export default function EnquiryForm({
           <a className="underline" href="mailto:info@megastride.com.ng">
             info@megastride.com.ng
           </a>{" "}
-          or call +234 813 846 3804.
+          or call +234 707 572 1887.
         </p>
       )}
       <fieldset disabled={!available || pending}>

@@ -1,46 +1,27 @@
-# Academic content completion register · 12 November 2026
+# Academic publication register · 12 November 2026
 
-“Authored draft” does not mean reviewed, practically executed, classroom tested or approved. No course is marked complete in this batch.
+All five course teaching packages are authored and published in the protected LMS. This is an editorial content release, not a claim of independent accreditation or completed classroom/provider/simulator trials.
 
-| Course                                 | Fee     | Authored material                                                                                                                              | Review/test status                                                                              | Remaining content                                                                                                    |
-| -------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Cloud Computing                        | ₦15,000 | Modules 1–3: student lectures, instructor guides, three labs, marking guides, twenty-eight varied questions and solutions; capstone blueprint | Draft; Module 3 local Python practical and controlled fault/rollback executed; full VM exercise and classroom trial pending | Modules 4–10, complete mid-course/final exams, reviewed final project and provider-specific lab execution            |
-| Digital Marketing                      | ₦15,000 | Curriculum sequence below only                                                                                                                 | Not authored or approved                                                                        | Complete lecture, practical, question, solution and project package                                                  |
-| Computer Networking — Huawei and Cisco | ₦15,000 | Curriculum sequence below only                                                                                                                 | Not authored or approved                                                                        | Complete lecture, legitimate-simulator labs, dual-vendor configurations, questions, solutions and enterprise project |
-| Project Management                     | ₦15,000 | Curriculum sequence below only                                                                                                                 | Not authored or approved                                                                        | Complete lecture, templates, simulations, questions, solutions and final project                                     |
-| Artificial Intelligence and Automation | ₦15,000 | Curriculum sequence below only                                                                                                                 | Not authored or approved                                                                        | Complete lecture, workflow/API/Python labs, questions, solutions and practical project                               |
+| Course | Modules/lessons | Bank items, including practicals and written cases | Objective final questions | Fee |
+| --- | ---: | ---: | ---: | ---: |
+| Cloud-Computing | 10 | 51 | 22 | ₦15,000 |
+| Digital-Marketing | 6 | 20 | 12 | ₦15,000 |
+| Computer-Networking-Huawei-Cisco | 8 | 26 | 16 | ₦15,000 |
+| Project-Management | 6 | 20 | 12 | ₦15,000 |
+| Artificial-Intelligence-and-Automation | 6 | 20 | 12 | ₦15,000 |
 
-## Planned Cloud sequence
+Each course includes student notes, instructor teaching notes and delivery guidance, practical instructions, marking, revision questions, mid-course bank, final objective and written assessments, and a required integrated project. The LMS has 36 lessons, 41 required graded tasks (including five written finals and five projects), five objective final assessments and 191 academic documents. Student questions omit answer/solution/rubric fields; instructor solutions remain restricted. The course publication transaction checked completeness, fixed fees and matching objective-key counts.
 
-1. Business requirements, models, responsibility and cost ownership — authored draft.
-2. Virtual machines, process binding, reproducible deployment and local recovery — authored draft; VM execution pending.
-3. Cloud networks, addressing, routes, DNS and controlled connectivity — authored draft; local Python practical executed.
-4. AWS compute, storage and IAM training-account exercise — pending.
-5. Microsoft Azure compute, storage and identity exercise — pending.
-6. Google Cloud compute, storage, IAM and firewall exercise — pending.
-7. Storage choices, permissions, backup and disaster recovery — pending.
-8. Security, identity, secrets and monitoring — pending.
-9. Deployment, change control, troubleshooting and cleanup — pending.
-10. Integrated project, practical examination and handover — pending.
+## Validation
 
-## Planned other-course sequences — not teaching material
+- Application/security tests: 20 passed. Isolated PostgreSQL access/payment/grading/certificate checks: 65 passed. Production build and TypeScript passed.
+- The complete content import and publication were replayed against isolated PostgreSQL, checking counts, private objective keys, public question shape and unpaid-user isolation.
+- Hosted unpaid authenticated-role check: five public course records, zero visible lessons/modules/documents/tasks, false Cloud access. No retained test user or payment was created.
+- Cloud Module 3 local network script and its deliberate failure/restored baseline were executed in the prior batch. The new local automation fixture passed eight contract cases with one logical ledger action and no external sends.
+- Provider cloud accounts, VM/hypervisor exercises, Cisco/Huawei simulators, actual marketing accounts and classroom delivery were not executed here. Learner operational sign-off requires genuine evidence on permitted supported resources; do not fabricate it. Core local/offline alternatives and optional provider costs are explicit in the course guides.
 
-Digital Marketing: objectives and branding → audience/content strategy → Facebook/Instagram/LinkedIn/TikTok → search/SEO → paid-ad planning with no unauthorised spend → consent-based email → analytics/conversion → AI-assisted campaign governance → integrated campaign and evaluation.
+## Commercial and operational state
 
-Networking: OSI/TCP-IP → IPv4/subnetting → IPv6 → switching/VLAN/trunks → STP and link aggregation → routing/OSPF → BGP fundamentals → wireless/security → monitoring/troubleshooting → Huawei/Cisco enterprise lab and defence. Specific command sets and simulator capabilities require version-specific verification.
+The public catalogue and protected teaching materials are published. Online payment and public self-signup remain closed pending company Paystack setup/credentials, verified provider tests, approved enrolment arrangements and operational identity/instructor setup. No live transaction or real email was sent. No paid hosting upgrade was made. An organisation-approved instructor must grade practicals and provide feedback; none has been silently assigned to an assumed account.
 
-Project Management: initiation/charter → scope/WBS → schedule/dependencies → budget/resources → risk/stakeholders → Agile/Scrum/Kanban → execution/monitoring/change → closure/lessons → integrated project simulation.
-
-AI and Automation: capabilities/limitations → ML and generative AI → prompt evaluation → responsible/security controls → APIs and Python foundations → n8n/Make/Zapier boundaries and approvals → document/notification workflows → retrieval-grounded agents → end-to-end project and cost evaluation.
-
-## LMS implementation register
-
-Implemented in this batch: assigned-instructor authorization, fixed-price draft course records, paid-backend learning access, protected academic document editing, practical submission/grading with feedback, module-aware learner navigation and explicit resume position, stricter certificate eligibility, QR certificate output and certificate-ID verification entry.
-
-Still pending: complete timed/randomized examination sessions, comprehensive instructor analytics, approved video/media delivery, AI tutor model integration and usage/cost controls, automatic consent-aware certificate issuance, authentic CEO signature, all-five-course academic completion, real-account end-to-end verification, Resend delivered-email testing and Paystack sandbox/live activation. Do not describe the institution as fully operational until these are addressed.
-
-## Release checkpoint
-
-PR #7 merged as 3dc1c4a69b58bc77415ed543a386ba596ec178d8; its interface is live. PR #8 merged as 6a212da948f055f20d9e55b8d65c763183add7be; the supplied official logo, favicon, Apple icon and certificate branding are live on the production domains. GitHub Platform checks passed on both PR heads.
-
-Protected content import now contains 3 Cloud modules, 3 unpublished lessons and 16 draft academic documents, including 7 instructor-only documents. No course has been published for paid study. Cloud Module 3 includes a local executable network lab and eight varied revision questions with separate solutions. The separate academic ZIP is version 1. Other four courses and Cloud Modules 4–10 remain unfinished. No provider-account, classroom or actual learner browser validation is claimed.
+The separate advanced LMS roadmap still includes live AI tutor/provider activation, timed/randomised examination sessions, media delivery and fuller analytics. This publication does not claim those systems are active. Resend delivery setup and the authentic CEO signature also remain separate work.
