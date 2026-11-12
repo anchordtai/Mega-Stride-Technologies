@@ -34,3 +34,9 @@ The protected draft import created two Cloud modules, two unpublished lessons an
 Hosted privileges confirm no anonymous academic-document access, no authenticated grade/override RPC execution and no client submission mark updates. Every public table has RLS. A rolled-back authenticated learner query returned zero courses, documents and lessons and false paid access. Final security advisors report no ERROR/WARN; INFO findings are intentional deny-by-default backend tables. Performance advisors show unused-index INFO only in the largely empty platform. See [RLS advisor explanation](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy).
 
 The application source remains in draft PR #7 and has not been merged or deployed. Database approval completes the schema/import step, not the wider academic content, AI, examination or provider activation work. Verify deployment and real-account workflows before describing this new LMS interface as live.
+
+## Deployment checkpoint · 12 November 2026
+
+PR #7 has since been merged and deployed to the live production domains. PR #8 adds the owner-supplied official company logo, favicon/Apple icon and certificate PDF branding. Production deployment dpl_C8nLNBzxxebUovSkKX9AXTWcZB51 is READY at commit 6a212da948f055f20d9e55b8d65c763183add7be, with www.megastride.com.ng assigned. The live certificate lookup page and its new header logo were observed in the browser.
+
+The academic package and protected draft import have been extended to Cloud Module 3. Its local Python network evidence lab, deliberate HTTP-path failure and restored baseline were executed; VM/provider/classroom tests are not implied. The latest content register supersedes earlier two-module counts. All five courses remain unpublished drafts. No provider has been activated, no real certificate issued and no role granted to an assumed account.
