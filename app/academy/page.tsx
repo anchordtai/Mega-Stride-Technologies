@@ -128,6 +128,12 @@ export default async function Academy() {
                 <p className="mt-4 leading-7 text-slate-600">
                   {c.description.slice(0, 180)}
                 </p>
+                {c.price_minor !== null && (
+                  <p className="mt-5 text-lg font-extrabold text-blue-800">
+                    {new Intl.NumberFormat("en-NG", { style: "currency", currency: c.currency, maximumFractionDigits: 0 }).format(c.price_minor / 100)}
+                    <span className="ml-2 text-sm font-normal text-slate-500">per course</span>
+                  </p>
+                )}
                 <a
                   className="mt-6 inline-block font-bold text-blue-700"
                   href={`/academy/courses/${c.slug}`}

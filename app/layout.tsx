@@ -63,7 +63,7 @@ export default function RootLayout({
               url: canonicalOrigin,
               logo: `${canonicalOrigin}/brand/mega-stride-logo.jpg`,
               email: "info@megastride.com.ng",
-              telephone: "+2348138463804",
+              telephone: "+2347075721887",
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Abuja",

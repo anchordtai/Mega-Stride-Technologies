@@ -85,6 +85,11 @@ export default async function Course({
                 currency: c.currency,
               }).format(c.price_minor / 100)}
         </p>
+        {c.price_minor > 0 && mode !== "live" && (
+          <p role="status" className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-7 text-amber-950">
+            Online payment is not yet open. You can explore the course and enquire about enrolment. Protected lessons and assessments require confirmed course access. Instructor and practical arrangements are confirmed before enrolment.
+          </p>
+        )}
         {c.starts_at && (
           <p className="mt-4">
             Starts:{" "}

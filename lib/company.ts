@@ -2,8 +2,8 @@ export const company = {
   name: "Mega Stride Technologies Limited",
   shortName: "Mega Stride",
   email: "info@megastride.com.ng",
-  phone: "+2348138463804",
-  phoneDisplay: "+234 813 846 3804",
+  phone: "+2347075721887",
+  phoneDisplay: "+234 707 572 1887",
   location: "Kubwa, Abuja, Nigeria",
   registration: "9629475",
   // Exact street number and the existing secondary/WhatsApp number need owner confirmation.
