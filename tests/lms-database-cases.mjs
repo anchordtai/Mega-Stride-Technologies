@@ -7,7 +7,7 @@ export async function runLmsChecks({ db, as, check, userA, userB, admin }) {
       db.exec(
         await readFile(
           new URL(
-            "../supabase/migrations/20261112100007_instructor_ready_lms.sql",
+            "../supabase/migrations/20261112104410_instructor_ready_lms.sql",
             import.meta.url,
           ),
           "utf8",
@@ -15,6 +15,10 @@ export async function runLmsChecks({ db, as, check, userA, userB, admin }) {
       ),
   );
 
+  await check("paid-access RPC keeps privileged logic outside the exposed schema",async()=>{
+    await db.exec(await readFile(new URL("../supabase/migrations/20261112104524_private_learning_access_helper.sql",import.meta.url),"utf8"));
+    assert.equal((await db.query("select prosecdef from pg_proc where oid='public.my_learning_access(uuid)'::regprocedure")).rows[0].prosecdef,false);
+  });
   const teacher = "55555555-5555-4555-8555-555555555555",
     other = "66666666-6666-4666-8666-666666666666";
   await db.exec(
