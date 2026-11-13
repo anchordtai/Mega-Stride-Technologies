@@ -1,7 +1,7 @@
 "use server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { userDatabase } from "@/lib/supabase/server";
+import { intakeDatabase, userDatabase } from "@/lib/supabase/server";
 import { finishAccountSetup } from "@/lib/account-access";
 import { databaseReady } from "@/lib/supabase/config";
 const accountSchema = z.object({
@@ -41,8 +41,10 @@ export async function accountAction(form: FormData) {
   const v = accountSchema.safeParse({ email, password });
   if (!v.success) redirect("/account?notice=invalid");
   if (mode === "register") {
-    if (process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED !== "true")
-      redirect("/account?notice=unavailable");
+    if (process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED !== "true") {
+      const {data:allowed,error}=await intakeDatabase().rpc("owner_signup_available",{p_email:email});
+      if(error||allowed!==true)redirect("/account/signup?notice=owner-only");
+    }
     if (form.get("consent") !== "on") redirect("/account?notice=invalid");
     const displayName = z.string().trim().min(2).max(120).safeParse(form.get("display_name"));
     const requestedRole = z.enum(["student", "instructor"]).safeParse(form.get("requested_role"));

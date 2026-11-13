@@ -7,6 +7,7 @@ export async function runOwnerChecks({db,as,check,admin}){
  await check('owner-management migration applies without granting an unverified owner',async()=>{
   await db.exec(await readFile(new URL('../supabase/migrations/20261113132449_academy_owner_and_member_management.sql',import.meta.url),'utf8'));
   await db.exec("insert into private.academy_owners(email) values('owner@example.invalid')");
+  await db.exec(await readFile(new URL('../supabase/migrations/20261113133502_owner_only_signup_setup.sql',import.meta.url),'utf8'));
   assert.equal((await db.query('select claim_academy_owner($1) ok',[owner])).rows[0].ok,false);
   assert.equal((await db.query('select count(*)::int n from private.staff_roles where user_id=$1',[owner])).rows[0].n,0);
  });
@@ -22,12 +23,19 @@ export async function runOwnerChecks({db,as,check,admin}){
   assert.equal((await db.query('select private.academy_super_admin($1) ok',[learner])).rows[0].ok,false);
   assert.equal((await db.query('select count(*)::int n from private.staff_roles where user_id=$1',[learner])).rows[0].n,0);
  });
+ await check('owner-only signup allows exactly the configured address while general signup stays off',async()=>{
+  assert.equal((await db.query("select owner_signup_available('owner@example.invalid') ok")).rows[0].ok,true);
+  assert.equal((await db.query("select owner_signup_available('student@example.invalid') ok")).rows[0].ok,false);
+  assert.equal((await db.query("select has_function_privilege('anon','public.owner_signup_available(text)','EXECUTE') ok")).rows[0].ok,false);
+  assert.equal((await db.query("select has_function_privilege('authenticated','public.owner_signup_available(text)','EXECUTE') ok")).rows[0].ok,false);
+ });
  await check('verified explicitly designated owner claims idempotent super-admin membership',async()=>{
   await db.query('update auth.users set email_confirmed_at=now() where id=$1',[owner]);
   assert.equal((await db.query('select claim_academy_owner($1) ok',[owner])).rows[0].ok,true);
   assert.equal((await db.query('select claim_academy_owner($1) ok',[owner])).rows[0].ok,true);
   assert.equal((await db.query("select count(*)::int n from private.academy_admin_changes where action='owner_claim'")).rows[0].n,1);
   assert.equal((await db.query('select role from private.staff_roles where user_id=$1',[owner])).rows[0].role,'admin');
+  assert.equal((await db.query("select owner_signup_available('owner@example.invalid') ok")).rows[0].ok,false);
  });
  await check('anonymous and ordinary accounts cannot call account administration RPCs',async()=>{
   for(const role of ['anon','authenticated'])assert.equal((await db.query("select has_function_privilege($1,'public.change_academy_role(uuid,uuid,text,text)','EXECUTE') ok",[role])).rows[0].ok,false);

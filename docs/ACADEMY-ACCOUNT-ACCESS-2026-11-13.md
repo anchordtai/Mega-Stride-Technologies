@@ -35,3 +35,15 @@ Validation: 20 application/security tests and 77 isolated PostgreSQL checks pass
 6. Revoke testing exceptions when finished. Actual payments stay disabled until the company gateway is securely configured and verified.
 
 Database migration applied to the dedicated Mega Stride project as `20261113132449_academy_owner_and_member_management`. Hosted verification: zero accounts/claimed owners, bootstrap disabled, service schema access available, no authenticated role-change RPC execution and no anonymous owner-claim execution. Security advisors report no ERROR/WARN; INFO-only deny-by-default private tables are intentional.
+
+## Owner-only activation update
+
+The public Auth settings confirmed email/password enabled and email auto-confirmation false. Trusted project administration enabled only the privately designated owner bootstrap. Zero real accounts or owner claims existed when enabling it. This does not mark an email verified.
+
+Automatic approval review rejected changing the production flag to open signup for every visitor, interpreting the request as owner testing. That production flag remains false. The narrower setup flow checks the submitted address through a service-only RPC and accepts only the unclaimed designated owner address. No general signup or privileged role selector is enabled. Once the owner is claimed, this setup exception closes automatically.
+
+Actual email delivery, callback and authenticated dashboard behaviour still need the owner-controlled password/verification test. Supabase dashboard sign-in remains incomplete after a CAPTCHA. Callback/custom SMTP configuration is not claimed as reviewed. If the default sender rejects the owner address or callback flow fails, complete Auth configuration before claiming the account workflow is operational.
+
+Validation now includes 78 isolated PostgreSQL checks plus 20 application/security tests, including the exact-address owner-only restriction and automatic closure after claim.
+
+Owner-only setup migration applied as `20261113133502_owner_only_signup_setup`. Hosted check: the designated owner address is allowed, an unrelated address is rejected, anonymous callers cannot invoke the allowlist lookup, and zero real accounts exist before the owner-controlled signup step. The production general-signup flag remains false.
