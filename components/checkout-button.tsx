@@ -43,7 +43,7 @@ export default function CheckoutButton({
           ? "Preparing secure checkout…"
           : test
             ? "Open test checkout"
-            : "Enrol with secure payment ↗"}
+            : "Pay securely with Paystack ↗"}
       </button>
       {test && (
         <p className="mt-3 text-sm text-amber-800">

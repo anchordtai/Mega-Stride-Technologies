@@ -1,11 +1,13 @@
+import { academyReturnPath } from "@/lib/academy-navigation";
 import PageShell from "@/components/page-shell";
 import { databaseReady } from "@/lib/supabase/config";
 import { intakeDatabase } from "@/lib/supabase/server";
 import { accountAction } from "../actions";
 export const metadata={title:"Create an Academy account",robots:{index:false,follow:false}};
 const messages:Record<string,string>={invalid:"Enter your name, a valid email, a password of 12–128 characters and accept the Academy terms.",failed:"Registration could not be completed. Check your details or try again later.","email-setup":"Verification email delivery needs the Academy sender configuration. Contact the Academy; verification is still required.","rate-limit":"Too many authentication requests. Please wait before trying again.","owner-only":"This setup form currently accepts only the designated owner email. General student and instructor registration is not open yet."};
-export default async function Signup({searchParams}:{searchParams:Promise<{notice?:string}>}){
- const {notice}=await searchParams;
+export default async function Signup({searchParams}:{searchParams:Promise<{notice?:string;next?:string}>}){
+ const {notice,next:requested}=await searchParams;
+ const next=academyReturnPath(requested);
  const publicSignup=process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED==="true";
  let ownerSetup=false;
  if(databaseReady()&&!publicSignup){const {data,error}=await intakeDatabase().rpc("owner_signup_available",{p_email:null});ownerSetup=!error&&data===true;}
@@ -17,7 +19,7 @@ export default async function Signup({searchParams}:{searchParams:Promise<{notic
  {ownerSetup&&<p className="mt-5 rounded-xl bg-blue-50 p-4 text-sm leading-7">Owner testing setup: this form accepts only the designated owner email. You must verify that email before super-admin access is assigned. General student and instructor signup remains closed.</p>}
  {notice&&<p role="alert" className="mt-5 rounded-xl bg-amber-50 p-4">{messages[notice]||messages.failed}</p>}
  {!enabled&&<p role="status" className="mt-5">Signup is being prepared. Please check again shortly.</p>}
- <input type="hidden" name="mode" value="register"/>
+ <input type="hidden" name="mode" value="register"/><input type="hidden" name="next" value={next||""}/>
  <fieldset disabled={!enabled}>
  <legend className="sr-only">Account details</legend>
  <label className="form-label mt-6">Full name<input name="display_name" className="form-input" autoComplete="name" required minLength={2} maxLength={120}/></label>
@@ -28,7 +30,7 @@ export default async function Signup({searchParams}:{searchParams:Promise<{notic
  <label className="mt-5 flex gap-3 text-sm leading-7"><input type="checkbox" name="consent" required/><span>I accept the <a className="underline" href="/academy/terms">Academy terms</a> and have read the <a className="underline" href="/privacy">privacy notice</a>.</span></label>
  <button className="primary-button mt-6">Create account & verify email</button>
  </fieldset>
- <p className="mt-6">Already registered? <a href="/account" className="text-link">Sign in →</a></p>
+ <p className="mt-6">Already registered? <a href={`/account${next?`?next=${encodeURIComponent(next)}`:""}`} className="text-link">Sign in →</a></p>
  </form>
  <aside className="platform-panel"><h2 className="text-2xl font-bold">Your account. Your workspace.</h2><ol className="mt-5 list-decimal space-y-4 pl-5 leading-8"><li>Create an account and verify your email.</li><li>Sign in to reach the workspace assigned to your role.</li><li>Students manage their own courses, progress and submissions.</li><li>Approved instructors teach their assigned courses.</li><li>The designated owner manages users, course assignments and audited test access in the super-admin dashboard.</li></ol><p className="mt-6 text-sm leading-7">Registration creates an account. Protected course access still requires verified course payment or an authorised, recorded exception.</p></aside>
  </div></PageShell>;

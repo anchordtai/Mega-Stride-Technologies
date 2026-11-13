@@ -1,7 +1,6 @@
-import CheckoutButton from "@/components/checkout-button";
+import CourseShare from "@/components/course-share";
+import { courseRegistrationPath } from "@/lib/academy-navigation";
 import { paymentMode } from "@/lib/payment-security";
-import { currentIdentity } from "@/lib/supabase/server";
-import { enrolFree } from "@/app/academy/actions";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/page-shell";
 import { userDatabase } from "@/lib/supabase/server";
@@ -41,7 +40,6 @@ export default async function Course({
   const { slug } = await params;
   const c = await course(slug);
   if (!c) notFound();
-  const identity = await currentIdentity();
   const mode = paymentMode();
   return (
     <PageShell eyebrow={c.category || "Mega Stride Academy"} title={c.title}>
@@ -87,7 +85,7 @@ export default async function Course({
         </p>
         {c.price_minor > 0 && mode !== "live" && (
           <p role="status" className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-7 text-amber-950">
-            Online payment is not yet open. You can explore the course and enquire about enrolment. Protected lessons and assessments require confirmed course access. Instructor and practical arrangements are confirmed before enrolment.
+            You can register your interest in this course now. Online payment is awaiting activation; your saved registration will remain pending until payment is available and verified.
           </p>
         )}
         {c.starts_at && (
@@ -102,34 +100,17 @@ export default async function Course({
           </p>
         )}
         <p className="mt-6 text-sm leading-7 text-slate-600">
-          Independent professional training. Enrolment, schedule and any payment
-          arrangements require confirmation by the Academy.
+          Independent professional training. Read the course details and Academy terms before registering. Paid lessons
+          unlock after verified payment.
         </p>
-        {identity && c.price_minor === 0 ? (
-          <form action={enrolFree} className="mt-7">
-            <input type="hidden" name="course" value={c.id} />
-            <button className="primary-button">
-              Enrol in this free course
-            </button>
-          </form>
-        ) : identity &&
-          c.price_minor > 0 &&
-          mode &&
-          (mode === "live" || identity.role === "admin") ? (
-          <div className="mt-7">
-            <CheckoutButton course={c.id} test={mode === "test"} />
-          </div>
-        ) : !identity && c.price_minor !== null ? (
-          <a className="primary-button mt-7" href="/account">
-            Sign in to discuss enrolment ↗
-          </a>
-        ) : null}
+        {c.price_minor !== null && <a className="primary-button mt-7" href={courseRegistrationPath(c.slug)}>Register for this course →</a>}
         <a
-          href={`/academy/register?course=${encodeURIComponent(c.title)}`}
-          className="primary-button mt-7"
+          href={`/academy/enquire?course=${encodeURIComponent(c.title)}`}
+          className="secondary-button mt-7 ml-3"
         >
           Enquire about this course ↗
         </a>
+        <CourseShare title={c.title} slug={c.slug}/>
       </article>
     </PageShell>
   );

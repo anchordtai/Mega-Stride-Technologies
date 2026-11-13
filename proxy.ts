@@ -28,6 +28,8 @@ export const config = {
   matcher: [
     "/account/:path*",
     "/academy/dashboard",
+    "/academy/register",
+    "/academy/payments",
     "/academy/learn/:path*",
     "/admin/:path*",
     "/super-admin/:path*",

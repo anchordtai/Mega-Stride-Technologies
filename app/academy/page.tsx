@@ -1,4 +1,5 @@
 import { FAQ, EditorialImage, SectionHeading } from "@/components/design";
+import CourseShare from "@/components/course-share";
 import PageShell from "@/components/page-shell";
 import { pathwayVisual } from "@/lib/visuals";
 import { pathways } from "@/lib/company";
@@ -39,8 +40,8 @@ export default async function Academy() {
       intro="Professional learning pathways for people building careers and organisations developing technical capability."
     >
       <div className="mb-12 flex flex-wrap gap-4">
-        <a href="/academy/register" className="primary-button">
-          Discuss your training goals ↗
+        <a href="/account/signup" className="primary-button">
+          Create an Academy account →
         </a>
         <a
           href="/academy/dashboard"
@@ -48,11 +49,11 @@ export default async function Academy() {
         >
           Learner workspace →
         </a>
-        <a href="/account/signup" className="self-center px-4 font-bold text-blue-700">Create an account →</a>
         <a href="/account" className="self-center px-4 font-bold text-blue-700">
           Learner sign in
         </a>
       </div>
+      <section className="platform-panel mb-8" aria-label="How to join the Academy"><h2 className="text-2xl font-bold">Your learning journey</h2><ol className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{["Sign up & verify your email","Sign in & register for a course","Make a secure payment","Start learning after verification"].map((step,index)=><li key={step}><strong className="text-blue-700">0{index+1}</strong><p className="mt-2 leading-7">{step}</p></li>)}</ol><a className="text-link mt-5" href="/academy/register">Choose a course to register →</a></section>
       <div className="learner-banner">
         <div>
           <strong>Learning built around your objectives.</strong>
@@ -61,7 +62,7 @@ export default async function Academy() {
             before enrolment.
           </p>
         </div>
-        <a className="text-link" href="/academy/register">
+        <a className="text-link" href="/academy/enquire">
           Discuss team training ↗
         </a>
       </div>
@@ -139,8 +140,9 @@ export default async function Academy() {
                   className="mt-6 inline-block font-bold text-blue-700"
                   href={`/academy/courses/${c.slug}`}
                 >
-                  View course →
+                  View course & register →
                 </a>
+                <CourseShare title={c.title} slug={c.slug}/>
               </article>
             ))}
           </div>
@@ -157,7 +159,7 @@ export default async function Academy() {
                 <h3 className="mt-5 text-xl font-bold">{title}</h3>
                 <a
                   className="mt-6 inline-block font-bold text-blue-700"
-                  href={`/academy/register?course=${encodeURIComponent(title)}`}
+                  href={`/academy/enquire?course=${encodeURIComponent(title)}`}
                 >
                   Ask about this pathway →
                 </a>

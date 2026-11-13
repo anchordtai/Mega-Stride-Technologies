@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   }
   const { data: t, error } = await i.db
     .from("transactions")
-    .select("reference,mode,status")
+    .select("reference,mode,status,course_id")
     .eq("reference", reference)
     .eq("user_id", i.user.id)
     .maybeSingle();
@@ -34,13 +34,14 @@ export async function POST(request: Request) {
       { status: 404 },
     );
   try {
-    await verifyPayment(reference);
+    if (!await verifyPayment(reference)) throw Error("Payment record unavailable");
     after(async () => {
       await deliverNotifications().catch(() => {});
     });
     return NextResponse.json({
       verified: true,
       mode: t.mode,
+      learningPath: t.mode === "live" ? `/academy/learn/${t.course_id}` : null,
       message:
         t.mode === "test"
           ? "Test payment verified. No real payment or course access was granted."
