@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
+import { finishAccountSetup } from "@/lib/account-access";
 import { userDatabase } from "@/lib/supabase/server";
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -22,7 +23,11 @@ export async function GET(request: Request) {
       });
       if (error) throw error;
     } else throw Error();
-    return NextResponse.redirect(new URL(next, url.origin));
+    if (next === "/account/reset") return NextResponse.redirect(new URL(next,url.origin));
+    const {data:{user},error} = await db.auth.getUser();
+    if (error || !user) throw Error("Confirmation requires a valid session");
+    const destination = await finishAccountSetup(db,user);
+    return NextResponse.redirect(new URL(destination, url.origin));
   } catch {
     return NextResponse.redirect(new URL("/account?notice=failed", url.origin));
   }

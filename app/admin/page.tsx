@@ -102,6 +102,7 @@ export default async function Admin({
       title="Manage the next stride."
     >
       <div className="mb-10 flex flex-wrap gap-5">
+        {i.isSuperAdmin && <a className="text-link" href="/super-admin">Super-admin dashboard →</a>}
         <a className="text-link" href="/instructor">
           Academy management
         </a>
