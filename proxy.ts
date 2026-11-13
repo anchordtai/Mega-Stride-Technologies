@@ -30,6 +30,8 @@ export const config = {
     "/academy/dashboard",
     "/academy/learn/:path*",
     "/admin/:path*",
+    "/super-admin/:path*",
+    "/instructor/:path*",
     "/api/admin/:path*",
     "/api/resources/:path*",
   ],

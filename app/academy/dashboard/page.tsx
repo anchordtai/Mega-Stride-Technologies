@@ -58,8 +58,8 @@ export default async function Page() {
           </a>
         ))}
         {i.role && (
-          <a className="text-link" href="/admin">
-            Staff workspace ↗
+          <a className="text-link" href={i.isSuperAdmin ? "/super-admin" : i.role === "instructor" ? "/instructor" : "/admin"}>
+            {i.isSuperAdmin ? "Super-admin dashboard" : i.role === "instructor" ? "Instructor workspace" : "Staff workspace"} ↗
           </a>
         )}
         <form action={accountAction}>

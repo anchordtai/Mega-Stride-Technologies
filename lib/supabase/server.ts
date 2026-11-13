@@ -41,6 +41,6 @@ export async function currentIdentity() {
     error,
   } = await db.auth.getUser();
   if (error || !user) return null;
-  const { data: role } = await db.rpc("my_staff_role");
-  return { user, role: role as string | null, db };
+  const [role, owner] = await Promise.all([db.rpc("my_staff_role"), db.rpc("my_academy_owner_status")]);
+  return { user, role: role.data as string | null, isSuperAdmin: !owner.error && owner.data === true, db };
 }

@@ -41,7 +41,7 @@ export default async function Page() {
             "Public learner signup",
             process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED === "true"
               ? "Enabled"
-              : "Held until SMTP verification",
+              : "Not enabled",
           ],
         ].map(([l, s]) => (
           <div className="platform-panel" key={l}>

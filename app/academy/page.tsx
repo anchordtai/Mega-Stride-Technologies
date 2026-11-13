@@ -48,6 +48,7 @@ export default async function Academy() {
         >
           Learner workspace →
         </a>
+        <a href="/account/signup" className="self-center px-4 font-bold text-blue-700">Create an account →</a>
         <a href="/account" className="self-center px-4 font-bold text-blue-700">
           Learner sign in
         </a>
