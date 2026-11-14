@@ -15,7 +15,7 @@ export default async function Page({
   const { data, error } = await i.db
     .from("transactions")
     .select(
-      "id,reference,amount_minor,currency,status,mode,created_at,courses(title)",
+      "id,reference,amount_minor,currency,status,mode,course_id,created_at,courses(title,slug)",
     )
     .eq("user_id", i.user.id)
     .order("created_at", { ascending: false })
@@ -36,7 +36,7 @@ export default async function Page({
         </p>
       )}
       {reference && /^MS-(test|live)-[a-f0-9]{32}$/.test(reference) && (
-        <PaymentVerification reference={reference} />
+        <PaymentVerification reference={reference} auto />
       )}
       <div className="space-y-5">
         {!data?.length && (
@@ -55,6 +55,7 @@ export default async function Page({
               }).format(t.amount_minor / 100)}
             </h2>
             <p className="mt-3 break-all text-sm">{t.reference}</p>
+            {t.status === "verified" && t.mode === "live" && <a className="primary-button mt-5 mr-4" href={`/academy/learn/${t.course_id}`}>Open paid course →</a>}
             {t.status === "verified" ? (
               <a
                 className="text-link mt-5"
@@ -62,7 +63,7 @@ export default async function Page({
               >
                 Download {t.mode === "test" ? "test " : ""}receipt (PDF) ↓
               </a>
-            ) : (
+            ) : t.status === "refunded" ? <p className="mt-5">This payment was refunded. Contact Academy support about course access.</p> : (
               <div className="mt-5">
                 <PaymentVerification reference={t.reference} />
               </div>

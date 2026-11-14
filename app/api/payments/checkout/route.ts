@@ -36,6 +36,8 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "Invalid course." }, { status: 400 });
   }
+  const {data: registration,error: registrationError} = await i.db.from("enrolments").select("status").eq("user_id",i.user.id).eq("course_id",course).maybeSingle();
+  if(registrationError||registration?.status!=="pending")return NextResponse.json({error:"Register for this course first. If you already have access or your registration was cancelled, check your dashboard."},{status:409});
   const db = intakeDatabase();
   const { data: t, error } = await db.rpc("begin_checkout", {
     p_user: i.user.id,

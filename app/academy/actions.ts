@@ -104,3 +104,16 @@ export async function replyTicket(f: FormData) {
   revalidatePath("/academy/support");
   revalidatePath("/admin/learning");
 }
+
+export async function registerCourse(f: FormData) {
+  const i = await requireLearner();
+  const course = z.uuid().parse(f.get("course"));
+  if (f.get("consent") !== "on") redirect("/academy/register?notice=terms");
+  const {data: c} = await i.db.from("courses").select("slug").eq("id",course).eq("status","published").maybeSingle();
+  if (!c) redirect("/academy/register?notice=unavailable");
+  const path = `/academy/register?course=${encodeURIComponent(c.slug)}`;
+  const {error} = await intakeDatabase().rpc("register_academy_course",{p_user:i.user.id,p_course:course});
+  if (error) redirect(`${path}&notice=registration-error`);
+  revalidatePath("/academy/dashboard");
+  redirect(`${path}&notice=registered`);
+}

@@ -1,3 +1,5 @@
+import CourseShare from "@/components/course-share";
+import {courseRegistrationPath} from "@/lib/academy-navigation";
 import PageShell from "@/components/page-shell";
 import { requireLearner } from "@/lib/academy";
 import { accountAction } from "@/app/account/actions";
@@ -122,6 +124,7 @@ export default async function Page() {
                 <h3 className="mt-4 text-2xl font-bold">
                   {c?.title || "Course"}
                 </h3>
+                {e.status==="pending"&&<p className="mt-4 text-sm leading-7">Registration saved · payment required before paid lessons open.</p>}
                 <p className="mt-4 text-sm">
                   {done} of {total.length} published lessons marked complete
                 </p>
@@ -139,10 +142,11 @@ export default async function Page() {
                     Continue learning ↗
                   </a>
                 ) : (
-                  <a className="text-link mt-5" href="/academy/support">
-                    Ask about access ↗
+                  <a className="primary-button mt-5" href={e.status==="pending"&&c?.slug?courseRegistrationPath(c.slug):"/academy/support"}>
+                    {e.status==="pending"?"Complete registration & payment →":"Ask about access →"}
                   </a>
                 )}
+                {c?.slug&&<CourseShare title={c.title} slug={c.slug}/>}
               </article>
             );
           })}

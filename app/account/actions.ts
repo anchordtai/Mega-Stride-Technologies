@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { intakeDatabase, userDatabase } from "@/lib/supabase/server";
+import { academyReturnPath } from "@/lib/academy-navigation";
 import { finishAccountSetup } from "@/lib/account-access";
 import { databaseReady } from "@/lib/supabase/config";
 const accountSchema = z.object({
@@ -10,6 +11,9 @@ const accountSchema = z.object({
 });
 export async function accountAction(form: FormData) {
   const mode = String(form.get("mode"));
+  const next = academyReturnPath(form.get("next"));
+  const signinPath = (notice: string) => `/account?${new URLSearchParams({notice,...(next?{next}:{})})}`;
+  const signupPath = (notice: string) => `/account/signup?${new URLSearchParams({notice,...(next?{next}:{})})}`;
   if (!databaseReady()) redirect("/account?notice=unavailable");
   const db = await userDatabase();
   if (mode === "logout") {
@@ -39,32 +43,33 @@ export async function accountAction(form: FormData) {
     redirect("/account?notice=updated");
   }
   const v = accountSchema.safeParse({ email, password });
-  if (!v.success) redirect("/account?notice=invalid");
+  if (!v.success) redirect(mode === "register" ? signupPath("invalid") : signinPath("invalid"));
   if (mode === "register") {
     if (process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED !== "true") {
       const {data:allowed,error}=await intakeDatabase().rpc("owner_signup_available",{p_email:email});
-      if(error||allowed!==true)redirect("/account/signup?notice=owner-only");
+      if(error||allowed!==true)redirect(signupPath("owner-only"));
     }
-    if (form.get("consent") !== "on") redirect("/account?notice=invalid");
+    if (form.get("consent") !== "on") redirect(signupPath("invalid"));
     const displayName = z.string().trim().min(2).max(120).safeParse(form.get("display_name"));
     const requestedRole = z.enum(["student", "instructor"]).safeParse(form.get("requested_role"));
-    if (!displayName.success || !requestedRole.success) redirect("/account/signup?notice=invalid");
+    if (!displayName.success || !requestedRole.success) redirect(signupPath("invalid"));
     const { data, error } = await db.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: `${origin}/account/confirm`, data: {display_name:displayName.data, requested_role:requestedRole.data} },
+      options: { emailRedirectTo: `${origin}/account/confirm${next ? `?next=${encodeURIComponent(next)}` : ""}`, data: {display_name:displayName.data, requested_role:requestedRole.data} },
     });
     if (error) {
-      if (["email_address_not_authorized", "email_address_invalid"].includes(error.code || "")) redirect("/account/signup?notice=email-setup");
-      if (error.status === 429) redirect("/account/signup?notice=rate-limit");
-      redirect("/account/signup?notice=failed");
+      if (["email_address_not_authorized", "email_address_invalid"].includes(error.code || "")) redirect(signupPath("email-setup"));
+      if (error.status === 429) redirect(signupPath("rate-limit"));
+      redirect(signupPath("failed"));
     }
-    if (data.session && data.user?.email_confirmed_at) redirect(await finishAccountSetup(db,data.user));
-    redirect("/account?notice=confirmation");
+    if (data.session && data.user?.email_confirmed_at) { await finishAccountSetup(db,data.user); await db.auth.signOut(); redirect(signinPath("verified")); }
+    redirect(signinPath("confirmation"));
   }
   if (mode !== "login") redirect("/account?notice=invalid");
   // Supabase Auth rate limits login requests. All returned errors remain generic.
   const { data, error } = await db.auth.signInWithPassword({ email, password });
-  if (error || !data.user) redirect("/account?notice=failed");
-  redirect(await finishAccountSetup(db,data.user));
+  if (error || !data.user) redirect(signinPath("failed"));
+  const home = await finishAccountSetup(db,data.user);
+  redirect(data.user.email_confirmed_at && next ? next : home);
 }

@@ -1,3 +1,4 @@
+import { academyReturnPath } from "@/lib/academy-navigation";
 import { NextResponse } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { finishAccountSetup } from "@/lib/account-access";
@@ -26,8 +27,11 @@ export async function GET(request: Request) {
     if (next === "/account/reset") return NextResponse.redirect(new URL(next,url.origin));
     const {data:{user},error} = await db.auth.getUser();
     if (error || !user) throw Error("Confirmation requires a valid session");
-    const destination = await finishAccountSetup(db,user);
-    return NextResponse.redirect(new URL(destination, url.origin));
+    await finishAccountSetup(db,user);
+    await db.auth.signOut();
+    const returnPath = academyReturnPath(url.searchParams.get("next"));
+    const signin = `/account?${new URLSearchParams({notice:"verified",...(returnPath?{next:returnPath}:{})})}`;
+    return NextResponse.redirect(new URL(signin, url.origin));
   } catch {
     return NextResponse.redirect(new URL("/account?notice=failed", url.origin));
   }
