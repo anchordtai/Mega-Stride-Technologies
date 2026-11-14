@@ -1,0 +1,5 @@
+Course registration previously queried auth.users as service_role, which has no raw SELECT grant in the hosted project. A private service-only verified-account predicate now performs that minimal lookup; registration remains SECURITY INVOKER and service-only. No raw Auth grants or payment access rules changed.
+
+Verified: 21 application tests and 83 isolated PostgreSQL checks, including registration under the actual service_role without Auth table access. Hosted read-only service-role checks confirmed verified-owner=true, nonexistent-account=false, raw Auth SELECT=false and authenticated predicate EXECUTE=false. No synthetic production registrations or payments were created. Existing function source is retained in docs/rollback/2026-11-14-academy-registration.sql; this source-only rollback contains no application records.
+
+Public signup and course sharing are deployed. Confirmation-email delivery remains unverified, and Paystack live payment still requires company configuration before paid checkout can open.
