@@ -52,8 +52,7 @@ export default async function QuotationPage({
             available={intakeReady()}
           />
           <p className="mt-6 text-sm leading-7 text-slate-600">
-            After your enquiry is received, our team can arrange a secure way to
-            share supporting documents. Please do not include passwords,
+            You can attach up to three PDF or image files using this form. Please do not include passwords,
             payment-card information or confidential credentials.
           </p>
         </div>

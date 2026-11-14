@@ -2,7 +2,21 @@ import type { NextConfig } from "next";
 const config: NextConfig = {
   poweredByHeader: false,
   outputFileTracingIncludes: {
-    "/api/academy/certificates/*": ["./public/fonts/manrope.ttf", "./public/brand/mega-stride-logo.jpg"],
+    "/api/business-desk/documents/*": [
+      "./public/fonts/manrope-400.ttf",
+      "./public/fonts/manrope-700.ttf",
+      "./public/brand/mega-stride-logo.jpg",
+    ],
+    "/api/business-desk/reports": ["./public/fonts/manrope-400.ttf"],
+    "/api/internal/notifications": [
+      "./public/fonts/manrope-400.ttf",
+      "./public/fonts/manrope-700.ttf",
+      "./public/brand/mega-stride-logo.jpg",
+    ],
+    "/api/academy/certificates/*": [
+      "./public/fonts/manrope.ttf",
+      "./public/brand/mega-stride-logo.jpg",
+    ],
   },
   experimental: { serverActions: { bodySizeLimit: "4mb" } },
   async headers() {

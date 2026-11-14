@@ -40,6 +40,8 @@ export async function POST(request: Request) {
       p_at: e.created_at,
     });
     if (error) throw Error();
+    const {error:businessError}=await intakeDatabase().rpc("msbd_record_email_event",{p_provider:e.data.email_id,p_status:type,p_at:e.created_at});
+    if(businessError)throw Error();
     return NextResponse.json({ received: true });
   } catch {
     return NextResponse.json(

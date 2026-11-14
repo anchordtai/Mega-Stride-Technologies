@@ -29,6 +29,7 @@ export default function Privacy() {
             network identifiers, to prevent abuse.
           </p>
         </section>
+        <section><h2 className="text-xl font-bold">Business documents and client accounts</h2><p>Business Desk stores client contact and billing information, quotation and invoice versions, payment references, reconciliation evidence, document responses and audit records to manage the requested company service. Supporting files are stored privately. Verified client accounts see only records linked after an authorised identity review; internal staff notes and reconciliation evidence are not exposed through the client portal. Public QR verification shows limited authenticity and status information without exposing client contact or payment details. Transactional document emails relate to the requested service and do not subscribe you to marketing.</p></section>
         <section>
           <h2 className="text-xl font-bold">Who can access it</h2>
           <p>
@@ -70,7 +71,7 @@ export default function Privacy() {
             about a privacy concern.
           </p>
         </section>
-        <p className="text-sm text-slate-600">Last updated: 5 November 2026.</p>
+        <p className="text-sm text-slate-600">Last updated: 14 November 2026.</p>
       </article>
     </PageShell>
   );

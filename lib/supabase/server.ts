@@ -1,4 +1,5 @@
 import "server-only";
+import {cache} from "react";
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
@@ -34,7 +35,7 @@ export function intakeDatabase() {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
-export async function currentIdentity() {
+export const currentIdentity=cache(async function currentIdentity() {
   const db = await userDatabase();
   const {
     data: { user },
@@ -43,4 +44,4 @@ export async function currentIdentity() {
   if (error || !user) return null;
   const [role, owner] = await Promise.all([db.rpc("my_staff_role"), db.rpc("my_academy_owner_status")]);
   return { user, role: role.data as string | null, isSuperAdmin: !owner.error && owner.data === true, db };
-}
+});

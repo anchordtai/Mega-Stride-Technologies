@@ -773,6 +773,7 @@ await check(
 await (await import("./lms-database-cases.mjs")).runLmsChecks({db,as,check,userA,userB,admin});
 await (await import("./owner-database-cases.mjs")).runOwnerChecks({db,as,check,admin});
 await (await import("./registration-database-cases.mjs")).runRegistrationChecks({db,as,check});
+await (await import("./business-desk-database-cases.mjs")).runBusinessChecks({db,as,check});
 console.log(
   `${passed} isolated PostgreSQL checks passed. Auth/Storage API and hosted restore remain release gates.`,
 );
