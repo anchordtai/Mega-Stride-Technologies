@@ -30,5 +30,8 @@ export async function finishAccountSetup(db: Awaited<ReturnType<typeof userDatab
   }
   const [role, owner] = await Promise.all([db.rpc("my_staff_role"),db.rpc("my_academy_owner_status")]);
   if (role.error || owner.error) throw Error("Account permissions are unavailable.");
-  return accountHome(role.data as string|null,owner.data === true);
+  if(owner.data === true)return "/super-admin";
+  const business=await db.rpc("my_business_role");if(!business.error&&business.data)return "/business-desk/dashboard";
+  const client=await db.from("msbd_clients").select("id").eq("portal_user",user.id).limit(1);if(!client.error&&client.data?.length)return "/client-portal";
+  return accountHome(role.data as string|null,false);
 }

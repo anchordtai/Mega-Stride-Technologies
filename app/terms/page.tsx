@@ -22,6 +22,7 @@ export default function Terms() {
             confirmed separately in an approved quotation or written agreement.
           </p>
         </section>
+        <section><h2 className="text-xl font-bold">Business documents and client portal</h2><p>Draft document previews are not issued quotations, invoices or proof of payment. Read the exact issued document and its terms before submitting an acceptance through your verified client account. Opening or downloading a document does not accept it. Use the document’s QR code to check its current status. Recording payment or refund evidence in Business Desk does not transfer money; authorised personnel separately reconcile actual received or refunded funds. Do not share your account or another client’s private documents.</p></section>
         <section>
           <h2 className="text-xl font-bold">Appropriate use</h2>
           <p>

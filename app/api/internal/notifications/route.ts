@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
+import { deliverBusinessNotifications } from "@/lib/business-desk/notifications";
 import { deliverNotifications } from "@/lib/notifications";
 export async function POST(request: Request) {
   const expected = process.env.CRON_SECRET;
@@ -11,7 +12,8 @@ export async function POST(request: Request) {
   )
     return NextResponse.json({ error: "Access denied." }, { status: 401 });
   try {
-    return NextResponse.json(await deliverNotifications(), {
+    const [website,business]=await Promise.all([deliverNotifications(),deliverBusinessNotifications()]);
+    return NextResponse.json({website,business}, {
       headers: { "Cache-Control": "no-store" },
     });
   } catch {

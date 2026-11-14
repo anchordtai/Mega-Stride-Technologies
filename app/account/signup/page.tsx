@@ -7,12 +7,12 @@ export const metadata={title:"Create an Academy account",robots:{index:false,fol
 const messages:Record<string,string>={invalid:"Enter your name, a valid email, a password of 12–128 characters and accept the Academy terms.",failed:"Registration could not be completed. Check your details or try again later.","email-setup":"Verification email delivery needs the Academy sender configuration. Contact the Academy; verification is still required.","rate-limit":"Too many authentication requests. Please wait before trying again.","owner-only":"This setup form currently accepts only the designated owner email. General student and instructor registration is not open yet."};
 export default async function Signup({searchParams}:{searchParams:Promise<{notice?:string;next?:string}>}){
  const {notice,next:requested}=await searchParams;
- const next=academyReturnPath(requested);
+ const next=academyReturnPath(requested);const business=next==="/business-desk"||next==="/client-portal";
  const publicSignup=process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED==="true";
  let ownerSetup=false;
  if(databaseReady()&&!publicSignup){const {data,error}=await intakeDatabase().rpc("owner_signup_available",{p_email:null});ownerSetup=!error&&data===true;}
  const enabled=databaseReady()&&(publicSignup||ownerSetup);
- return <PageShell eyebrow="Join Mega Stride Academy" title="Start your learning journey." intro="Create one verified account. Your assigned role determines the workspace you can access.">
+ return <PageShell eyebrow={business?"Mega Stride client account":"Join Mega Stride Academy"} title={business?"Create your secure company account.":"Start your learning journey."} intro="Create one verified account. Your assigned role determines the workspace you can access.">
  <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr]">
  <form action={accountAction} className="platform-panel">
  <h2 className="text-2xl font-bold">{ownerSetup?"Set up the owner account":"Create your account"}</h2>
@@ -25,9 +25,9 @@ export default async function Signup({searchParams}:{searchParams:Promise<{notic
  <label className="form-label mt-6">Full name<input name="display_name" className="form-input" autoComplete="name" required minLength={2} maxLength={120}/></label>
  <label className="form-label mt-5">Email address<input name="email" type="email" className="form-input" autoComplete="email" required maxLength={254}/></label>
  <label className="form-label mt-5">Password · at least 12 characters<input name="password" type="password" className="form-input" autoComplete="new-password" required minLength={12} maxLength={128}/></label>
- {publicSignup ? <label className="form-label mt-5">Account purpose<select name="requested_role" className="form-input" defaultValue="student"><option value="student">Learn as a student</option><option value="instructor">Apply to teach · approval required</option></select></label> : <input type="hidden" name="requested_role" value="student"/>}
+ {publicSignup&&!business ? <label className="form-label mt-5">Account purpose<select name="requested_role" className="form-input" defaultValue="student"><option value="student">Learn as a student</option><option value="instructor">Apply to teach · approval required</option></select></label> : <input type="hidden" name="requested_role" value="student"/>}
  <p className="mt-3 text-sm leading-7 text-slate-600">Instructor applications start with student access. Only the super admin can approve teaching or administrative permissions.</p>
- <label className="mt-5 flex gap-3 text-sm leading-7"><input type="checkbox" name="consent" required/><span>I accept the <a className="underline" href="/academy/terms">Academy terms</a> and have read the <a className="underline" href="/privacy">privacy notice</a>.</span></label>
+ <label className="mt-5 flex gap-3 text-sm leading-7"><input type="checkbox" name="consent" required/><span>I accept the <a className="underline" href={business?"/terms":"/academy/terms"}>{business?"company terms":"Academy terms"}</a> and have read the <a className="underline" href="/privacy">privacy notice</a>.</span></label>
  <button className="primary-button mt-6">Create account & verify email</button>
  </fieldset>
  <p className="mt-6">Already registered? <a href={`/account${next?`?next=${encodeURIComponent(next)}`:""}`} className="text-link">Sign in →</a></p>
