@@ -94,6 +94,35 @@ h3 {
   align-items: center;
   gap: 24px;
 }
+.workspace-nav {
+  background: #f4f7fb;
+  border-top: 1px solid var(--line);
+}
+.workspace-nav-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 24px;
+}
+.workspace-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.workspace-nav a:hover,
+.workspace-nav a[aria-current] {
+  color: var(--blue);
+}
+.workspace-nav a:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
 .nav-item {
   font-size: 12px;
   font-weight: 600;
