@@ -19,6 +19,7 @@ export default async function SuperAdmin({searchParams}:{searchParams:Promise<{q
  const d=data as Dashboard;
  const pageLink=(n:number)=>`/super-admin?${new URLSearchParams({q,role,page:String(n)})}`;
  return <PageShell eyebrow="Mega Stride Academy · Super admin" title="Lead the learning experience." intro="Manage verified accounts, teaching assignments and enrolments. Every privileged change is recorded.">
+ <a className="primary-button mb-8" href="/business-desk">Open Business Desk →</a>
  <nav className="mb-8 flex flex-wrap gap-5" aria-label="Super-admin workspace"><a className="text-link" href="/admin">Website administration →</a><a className="text-link" href="/admin/learning">Course management →</a><a className="text-link" href="/instructor">Instructor workspace →</a><a className="text-link" href="/academy/dashboard">Student workspace →</a><a className="text-link" href="/admin/integrations">Email & payments →</a><form action={accountAction}><input type="hidden" name="mode" value="logout"/><button className="text-link">Sign out</button></form></nav>
  {params.notice&&<p role="status" className="platform-panel mb-8">{notices[params.notice]||"Please check the requested change."}</p>}
  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">{Object.entries(d.stats).map(([name,value])=><section className="platform-panel" key={name}><p className="section-kicker">{name}</p><p className="mt-4 text-4xl font-bold">{value}</p></section>)}</div>

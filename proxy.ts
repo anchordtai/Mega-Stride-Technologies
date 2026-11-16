@@ -27,6 +27,9 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/account/:path*",
+    "/business-desk/:path*",
+    "/client-portal/:path*",
+    "/api/business-desk/:path*",
     "/academy/dashboard",
     "/academy/register",
     "/academy/payments",

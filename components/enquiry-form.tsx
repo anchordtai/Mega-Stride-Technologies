@@ -23,6 +23,7 @@ export default function EnquiryForm({
   const [pending, setPending] = useState(false),
     [error, setError] = useState(""),
     [reference, setReference] = useState("");
+  const [attachmentMessage,setAttachmentMessage]=useState("");
   const [scriptReady, setScriptReady] = useState(false);
   const sending = useRef(false);
   const challenge = useRef("");
@@ -86,6 +87,7 @@ export default function EnquiryForm({
       quantity: String(f.get("quantity") || ""),
       destination: String(f.get("destination") || ""),
       timeframe: String(f.get("timeframe") || ""),
+      state:String(f.get("state")||""),budget:String(f.get("budget")||""),preferred_contact:String(f.get("preferred_contact")||""),
       website: String(f.get("website") || ""),
       consent: f.get("consent") === "on",
       turnstileToken: token.current,
@@ -108,6 +110,9 @@ export default function EnquiryForm({
         );
       const data = await r.json();
       if (!r.ok) throw Error(data.error);
+      const files=f.getAll("attachments").filter((x):x is File=>x instanceof File&&x.size>0);
+      if(files.length&&data.attachmentPermit){let saved=0;for(const file of files.slice(0,3)){const upload=new FormData();upload.set("file",file);try{const r=await fetch("/api/business-desk/attachments",{method:"POST",headers:{Authorization:`Bearer ${data.attachmentPermit}`},body:upload,signal:AbortSignal.timeout(20000)});if(r.ok)saved++;}catch{}}setAttachmentMessage(`${saved} of ${files.length} attachments saved. ${saved<files.length?"Your enquiry is received. Contact the company with your reference to share any remaining files.":""}`);}
+      else if(files.length)setAttachmentMessage("Your enquiry is saved. Contact the company with your reference to share supporting files.");
       setReference(data.reference);
     } catch (err) {
       setError(
@@ -152,6 +157,7 @@ export default function EnquiryForm({
           Your reference is <strong>{reference}</strong>. Our team will review
           your requirements.
         </p>
+        {attachmentMessage&&<p className="mt-5 text-sm leading-7">{attachmentMessage}</p>}
       </div>
     );
   return (
@@ -253,6 +259,7 @@ export default function EnquiryForm({
               maxLength={120}
             />
           </label>
+          {kind === "quotation"&&<><label className="form-label">State / region<input name="state" className="form-input" maxLength={100}/></label><label className="form-label">Estimated budget · optional<input name="budget" className="form-input" maxLength={120}/></label><label className="form-label">Expected completion / timeframe<input name="timeframe" className="form-input" maxLength={120}/></label><label className="form-label">Preferred contact<select name="preferred_contact" className="form-input"><option value="email">Email</option><option value="phone">Phone</option><option value="whatsapp">WhatsApp</option></select></label><label className="form-label sm:col-span-2">Supporting files · up to three PDF, PNG or JPEG files, 2 MiB each<input type="file" name="attachments" className="form-input" multiple accept="application/pdf,image/png,image/jpeg" onChange={e=>{const files=Array.from(e.currentTarget.files||[]);if(files.length>3||files.some(f=>f.size>2097152)){e.currentTarget.setCustomValidity("Select up to three files, each no larger than 2 MiB.");}else e.currentTarget.setCustomValidity("");}}/></label></>}
           {kind === "trade" && (
             <>
               <label className="form-label">

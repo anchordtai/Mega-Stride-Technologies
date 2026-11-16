@@ -1,3 +1,4 @@
+import {attachmentPermit} from "@/lib/business-desk/attachments";
 import { NextResponse, after } from "next/server";
 import { deliverNotifications } from "@/lib/notifications";
 import { createHash } from "node:crypto";
@@ -154,6 +155,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         reference: data,
+        ...(v.kind==="quotation"&&process.env.RATE_LIMIT_SALT?await (async()=>{const r=await intakeDatabase().from("enquiries").select("id").eq("reference",data).single();return r.data?{attachmentPermit:attachmentPermit(r.data.id,process.env.RATE_LIMIT_SALT!)}:{};})():{}),
         message: "Your enquiry has been received. Please keep your reference.",
       },
       { status: 201 },

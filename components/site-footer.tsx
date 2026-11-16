@@ -57,6 +57,8 @@ export default function SiteFooter() {
               ["Global trade", "/trade"],
               ["Learner sign in", "/account"],
               ["Create an Academy account", "/account/signup"],
+              ["Client portal", "/client-portal"],
+              ["Verify a document", "/document/verify"],
             ].map(([l, h]) => (
               <a href={h} key={h}>
                 {l}
