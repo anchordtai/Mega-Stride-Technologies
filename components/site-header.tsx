@@ -11,6 +11,10 @@ const links = [
   ["Insights", "/insights"],
   ["Global trade", "/trade"],
 ];
+const workspaceLinks = [
+  ["Client Portal", "/client-portal"],
+  ["Business Desk", "/business-desk"],
+];
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
@@ -116,6 +120,19 @@ export default function SiteHeader() {
           <span aria-hidden="true">{open ? "×" : "☰"}</span>
         </button>
       </div>
+      <nav className="workspace-nav" aria-label="Account navigation">
+        <div className="container workspace-nav-row">
+          {workspaceLinks.map(([label, href]) => (
+            <a
+              key={href}
+              href={href}
+              aria-current={active(href) ? "page" : undefined}
+            >
+              {label} <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      </nav>
       {open && (
         <nav
           id="mobile-navigation"
@@ -128,6 +145,7 @@ export default function SiteHeader() {
               links[0],
               ["Solutions", "/services"],
               ...links.slice(1),
+              ...workspaceLinks,
               ["Contact", "/contact"],
               ["Request a quotation", "/quotation"],
             ].map(([l, h]) => (
