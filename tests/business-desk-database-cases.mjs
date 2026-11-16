@@ -6,7 +6,7 @@ export async function runBusinessChecks({ db, as, check }) {
     () =>
       readFile(
         new URL(
-          "../supabase/migrations/20261114105720_business_desk_foundation.sql",
+          "../supabase/migrations/20261116115740_business_desk_foundation.sql",
           import.meta.url,
         ),
         "utf8",

@@ -1,10 +1,10 @@
 # Mega Stride Business Desk
 
-## Release status · 14 November 2026
+## Release status · 16 November 2026
 
-The module is implemented on the `feat/mega-stride-business-desk` branch and is prepared for review. **It has not been migrated into or deployed to production.** The owner explicitly approved publication of the implementation, migration SQL and technical documentation on 14 November 2026. The requested pre-migration application-data backup remains blocked by automatic approval review: explicit approval is required for the sensitive application data and the private ChatGPT-file destination. No backup data was exported. Do not apply the Business Desk migration, merge or deploy this branch until the backup prerequisite and release gates below are resolved.
+The module is implemented on the `feat/mega-stride-business-desk` branch and is prepared for review. **It has not been migrated into or deployed to production.** The owner explicitly approved publication of the implementation, migration SQL and technical documentation on 14 November 2026. The pre-migration backup remains blocked by automatic approval review. The earlier application-data export to private ChatGPT files was not approved. A narrower alternative is now prepared and locally tested: protected rollback copies of existing public/private application rows and DDL metadata retained only inside this same Supabase project. Automatic review also requires explicit user approval for that sensitive-data duplicate. Neither backup action ran. See BUSINESS-DESK-ROLLBACK-PROPOSAL.md. Do not apply the Business Desk migration, merge or deploy this branch until the backup prerequisite and release gates below are resolved.
 
-The Academy release in PR #12 and the service-role registration fix in PR #13 are separately merged. The identity predicate migration is applied and verified on the hosted project. Public signup, pending course registration, verified-payment access routing and course sharing are live. Live Paystack credentials are absent, and public Auth email delivery remains unverified; paid checkout is not represented as operational.
+The Academy release in PR #12 and the service-role registration fix in PR #13 are separately merged. The identity predicate migration is applied and verified on the hosted project. Public signup, pending course registration, verified-payment access routing and course sharing are live. The Resend sending domain is verified, the owner saved RESEND_API_KEY as a Production secret, and the current main website was redeployed with that configuration. Receiving-mailbox setup, delivery-webhook verification and public Auth SMTP delivery remain pending. Live Paystack credentials are absent, so paid checkout remains closed.
 
 ## Architecture and isolation
 
@@ -14,7 +14,7 @@ Only the pinned Mega Stride project `okknsxrhbiiunjlaitcy` is permitted by `lib/
 
 ## Data model
 
-The additive migration `20261114105720_business_desk_foundation.sql` creates:
+The additive migration `20261116115740_business_desk_foundation.sql` creates:
 
 - Private role mappings, document sequences and full command audit history: `private.msbd_roles`, `private.msbd_sequences`, `private.msbd_audit`.
 - Company profile and financial configuration: `public.msbd_settings`.
@@ -58,7 +58,7 @@ Online Business Desk gateway charging is not enabled. Bank/cash/POS/gateway paym
 
 ## Release gates and operational boundaries
 
-1. Obtain explicit approval for the application-data backup and its private destination; create and verify the backup before structural production changes. Exclude passwords, API keys, Auth sessions and sign-in secrets. Retain the source commit and migration catalogue. An application-data export is not a provider-managed Auth/Storage point-in-time backup; document its restoration scope.
+1. Obtain explicit approval for the proposed same-project protected rollback snapshot. Apply and verify it before the Business Desk migration; abort on any verification failure. This copies application rows and DDL metadata only. Auth credentials, sessions, API keys and Storage object bytes are excluded. It does not provide off-site disaster recovery or provider-managed point-in-time restoration. Retain the pinned source and migration catalogue.
 2. Recheck the exact Mega Stride target, apply the migration once, inspect grants/RLS/advisors, and run read-only hosted verification.
 3. Deploy the reviewed source only after the database prerequisite is complete. Use the verified owner account to test staff navigation, portal linking and PDF access. Do not weaken authentication or enable an assumed identity to test it.
 4. Use isolated test identities and transactions for permission and reconciliation tests. No real financial transaction or client email is authorised merely by the QA fixture.
@@ -69,7 +69,7 @@ The directory paginates clients in groups of 25. Selection lists load up to 250 
 
 ## Validation completed before review
 
-- 23 application/security tests and 102 isolated PostgreSQL checks pass. Business commands and private identity lookups are exercised under the real service_role with no SELECT grant on auth.users.
+- 23 application/security tests and 105 isolated PostgreSQL checks pass locally, including the proposed protected rollback snapshot. Business commands and private identity lookups are exercised under the real service_role with no SELECT grant on auth.users.
 - Permission cases include owner-only role grants, staff directory scope, assigned sales records, management draft exclusion, client isolation, exact verified email linking and removal of stale portal links after an email change.
 - Financial cases cover exact totals, approval, immutable snapshots, duplicate-safe conversion, pending vs confirmed receipts, overpayment rejection, credits and full/partial refunds. Email cases cover default-off notifications, idempotency, exclusive leases and terminal bounce events.
 - TypeScript and the production build pass. Multi-page PDF fixture output was rendered and inspected. Authenticated hosted Business Desk browser checks remain pending until the backup, migration and deployment gates are completed.
