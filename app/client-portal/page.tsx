@@ -8,6 +8,7 @@ import {
 } from "@/lib/business-desk/server";
 import { money } from "@/lib/business-desk/money";
 import { clientResponse } from "@/app/business-desk/actions";
+import { accountAction } from "@/app/account/actions";
 export const maxDuration = 60;
 export const metadata = {
   title: "Secure client portal",
@@ -29,6 +30,9 @@ export default async function Portal({
       >
         <a className="primary-button" href="/account?next=%2Fclient-portal">
           Sign in to the client portal →
+        </a>
+        <a className="text-link mt-5 block sm:ml-6 sm:inline-block" href="/account/signup?next=%2Fclient-portal">
+          Create a client account →
         </a>
         <p className="mt-6 leading-8">
           The company must verify your identity and link your account to the
@@ -88,6 +92,13 @@ export default async function Portal({
       title="A clear view of your documents."
       intro="Review quotations, respond explicitly and keep track of invoices and official payment receipts."
     >
+      <div className="platform-panel mb-7 flex flex-wrap items-center justify-between gap-5">
+        <p>Signed in as <strong>{i.user.email}</strong></p>
+        <div className="flex flex-wrap items-center gap-5">
+          {i.businessRole && <a className="text-link" href="/business-desk/dashboard">Open Business Desk →</a>}
+          <form action={accountAction}><input type="hidden" name="mode" value="logout" /><button className="text-link">Sign out</button></form>
+        </div>
+      </div>
       {notice && (
         <p role="status" className="platform-panel mb-7">
           {notice === "response-saved"
@@ -107,6 +118,11 @@ export default async function Portal({
         </p>
       )}
       <div className="grid gap-6 md:grid-cols-2">
+        {ids.size > 0 && documents.length === 0 && (
+          <p role="status" className="platform-panel mb-7">
+            {page > 1 ? "No more documents on this page. Use Previous documents below." : "Your client account is connected. Quotations, invoices and receipts will appear here when Mega Stride issues them to you."}
+          </p>
+        )}
         {clients.data?.map((c) => (
           <article className="platform-panel" key={c.id}>
             <p className="section-kicker">{c.number}</p>

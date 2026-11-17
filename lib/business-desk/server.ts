@@ -14,7 +14,8 @@ export const businessIdentity = cache(async function businessIdentity() {
   const i = await currentIdentity();
   if (!i || !i.user.email_confirmed_at) return null;
   const { data, error } = await i.db.rpc("my_business_role");
-  return { ...i, businessRole: (!error ? data : null) as BusinessRole | null };
+  if (error) throw Error("Workspace permissions could not load. Please retry shortly.");
+  return { ...i, businessRole: data as BusinessRole | null };
 });
 export async function requireBusiness(
   roles: BusinessRole[] = [

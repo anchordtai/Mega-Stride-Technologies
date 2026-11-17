@@ -1,4 +1,5 @@
 import { requireBusiness } from "@/lib/business-desk/server";
+import { accountAction } from "@/app/account/actions";
 import "./business-desk.css";
 export const maxDuration = 60;
 export const metadata = {
@@ -17,10 +18,9 @@ export default async function Layout({
     "quotation-requests",
     "quotations",
     "invoices",
-    "receipts",
-    "payments",
+    ...(i.businessRole !== "sales" ? ["receipts", "payments"] : []),
     "services",
-    "reports",
+    ...(i.businessRole !== "sales" ? ["reports"] : []),
     ...(i.businessRole === "super_admin" ? ["settings"] : []),
   ];
   return (
@@ -50,7 +50,13 @@ export default async function Layout({
       <main className="bd-main">
         <div className="bd-top">
           <strong>MEGA STRIDE TECHNOLOGIES LIMITED</strong>
-          <a href="/client-portal">Client portal →</a>
+          <div className="bd-actions">
+            <a href="/client-portal">Client portal →</a>
+            <form action={accountAction}>
+              <input type="hidden" name="mode" value="logout" />
+              <button className="bd-secondary">Sign out</button>
+            </form>
+          </div>
         </div>
         {children}
       </main>

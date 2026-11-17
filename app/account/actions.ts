@@ -5,10 +5,7 @@ import { intakeDatabase, userDatabase } from "@/lib/supabase/server";
 import { academyReturnPath } from "@/lib/academy-navigation";
 import { finishAccountSetup } from "@/lib/account-access";
 import { databaseReady } from "@/lib/supabase/config";
-const accountSchema = z.object({
-  email: z.email().max(254),
-  password: z.string().min(12).max(128),
-});
+import { loginCredentials, registrationCredentials } from "@/lib/account-validation";
 export async function accountAction(form: FormData) {
   const mode = String(form.get("mode"));
   const next = academyReturnPath(form.get("next"));
@@ -26,10 +23,11 @@ export async function accountAction(form: FormData) {
   if (mode === "recover") {
     if (!z.email().safeParse(email).success)
       redirect("/account?notice=invalid");
-    await db.auth.resetPasswordForEmail(email, {
+    const { error } = await db.auth.resetPasswordForEmail(email, {
       redirectTo: `${origin}/account/confirm?next=/account/reset`,
     });
-    redirect("/account?notice=recovery");
+    if (error) redirect(signinPath(error.status === 429 ? "rate-limit" : "recovery-unavailable"));
+    redirect(signinPath("recovery"));
   }
   if (mode === "reset") {
     const {
@@ -42,7 +40,7 @@ export async function accountAction(form: FormData) {
     await db.auth.signOut();
     redirect("/account?notice=updated");
   }
-  const v = accountSchema.safeParse({ email, password });
+  const v = (mode === "register" ? registrationCredentials : loginCredentials).safeParse({ email, password });
   if (!v.success) redirect(mode === "register" ? signupPath("invalid") : signinPath("invalid"));
   if (mode === "register") {
     if (process.env.ACADEMY_PUBLIC_SIGNUP_ENABLED !== "true") {
@@ -69,7 +67,7 @@ export async function accountAction(form: FormData) {
   if (mode !== "login") redirect("/account?notice=invalid");
   // Supabase Auth rate limits login requests. All returned errors remain generic.
   const { data, error } = await db.auth.signInWithPassword({ email, password });
-  if (error || !data.user) redirect(signinPath("failed"));
+  if (error || !data.user) redirect(signinPath(error?.status === 429 ? "rate-limit" : error?.code === "email_not_confirmed" ? "verify-email" : "failed"));
   const home = await finishAccountSetup(db,data.user);
   redirect(data.user.email_confirmed_at && next ? next : home);
 }
